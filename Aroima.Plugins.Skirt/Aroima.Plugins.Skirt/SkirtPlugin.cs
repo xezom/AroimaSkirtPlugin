@@ -84,5 +84,30 @@ namespace Aroima.Plugins.Skirt
             this.connect.View.PMDView.UpdateView();
         }
 
+        public void RemoveAllSkirtJoint()
+        {
+            var jointList = pmx.Joint.Where(j => j.Name.StartsWith("スカート")).ToList();
+            foreach ( var joint in jointList)
+            {
+                pmx.Joint.Remove(joint);
+            }
+        }
+        public void RemoveAllSkirtBody()
+        {
+            var bodyList = pmx.Body.Where(j => j.Name.StartsWith("スカート_")).ToList();
+            foreach (var body in bodyList)
+            {
+                pmx.Body.Remove(body);
+            }
+        }
+        public void RemoveAllSkirtBone()
+        {
+            var boneList = pmx.Bone.Where(j => j.Name.StartsWith("スカート_")).ToList();
+            foreach (var bone in boneList)
+            {
+                pmx.Bone.Remove(bone);
+            }
+        }
+
     }
 }

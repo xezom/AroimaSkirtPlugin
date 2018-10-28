@@ -12,6 +12,7 @@ using PEPlugin.SDX;
 using PEPlugin.View;
 using PEPlugin.Vmd;
 using PEPlugin.Vme;
+using SlimDX;
 
 namespace Aroima.Plugins.Skirt
 {
@@ -21,11 +22,31 @@ namespace Aroima.Plugins.Skirt
         string parentBoneName;
         IPXBone parentBone;
         int layerCount = 0;
+        SkirtPlugin plugin;
 
-        public List<SkirtColumn> ColumnList { get => columnList;  }
+        public List<SkirtColumn> ColumnList { get => columnList; }
         public string ParentBoneName { get => parentBoneName; set => parentBoneName = value; }
         public IPXBone ParentBone { get => parentBone; set => parentBone = value; }
         public int LayerCount { get => layerCount; set => layerCount = value; }
+        public SkirtPlugin Plugin { get => plugin; set => plugin = value; }
+
+        public void CreatBody()
+        {
+            foreach (var col in columnList)
+                col.CreatedBody();
+        }
+
+        public void RemoveAllBody()
+        {
+            foreach ( var col in columnList)
+            {
+                foreach ( var bone in col.BoneList)
+                {
+                    bone.Body = null;
+                }
+            }
+        }
+
     }
 
     public class SkirtColumn
@@ -37,8 +58,34 @@ namespace Aroima.Plugins.Skirt
         public string Name { get => name; set => name = value; }
         public List<SkirtBone> BoneList { get => boneList; }
         public SkirtModel Model { get => model; set => model = value; }
-    }
 
+
+        public void CreatedBody()
+        {
+
+
+            foreach (var bone in boneList)
+            {
+                var body = bone.AddBody();
+                if (body != null)
+                    model.Plugin.PMX.Body.Add(body);
+            }
+            foreach (var bone in boneList)
+            {
+                bone.SetBodyAngle();
+            }
+        }
+
+        public void CreatedJoint()
+        {
+            foreach (var bone in boneList)
+            {
+                var joint = bone.AddJoint();
+                if (joint != null)
+                    model.Plugin.PMX.Joint.Add(joint);
+            }
+        }
+    }
     public class SkirtBone
     {
         int pos;
@@ -48,14 +95,24 @@ namespace Aroima.Plugins.Skirt
         IPXBody body;
         SkirtColumn column;
         SkirtModel model;
+        Matrix rotaionMatrix;
 
 
         public string Name { get => name; set => name = value; }
-        public IPXBone Bone { get => bone; set => bone = value; }
         public int Pos { get => pos; set => pos = value; }
         public SkirtColumn Column { get => column; set => column = value; }
-        public IPXVertex Vertex { get => vertex; set => vertex = value; }
         public SkirtModel Model { get => model; set => model = value; }
+
+        /// <summary>
+        /// 回転行列
+        /// </summary>
+        public Matrix RotaionMatrix { get => rotaionMatrix; set => rotaionMatrix = value; }
+
+        public IPXVertex Vertex { get => vertex; set => vertex = value; }
+        public IPXBone Bone { get => bone; set => bone = value; }
+        public IPXBody Body { get => body; set => body = value; }
+
+
 
         public void CreateBone(IPXVertex v)
         {
@@ -78,91 +135,98 @@ namespace Aroima.Plugins.Skirt
                 bone.Parent.ToBone = bone;
         }
 
-        public IPXBody AddBone()
+        /// <summary>
+        /// 新規剛体の追加
+        /// </summary>
+        /// <returns>剛体</returns>
+        public IPXBody AddBody()
         {
-            if (body != null)
-                return body;
-            body = (IPXBody)PEStaticBuilder.Pmx.Body();
-            body.Name = bone.Name;
-            body.Bone = bone;
-            body.Mode = BodyMode.Dynamic;
-            body.Group = 9;
-            body.BoxSize.X = 0.2f;
-            body.Position = bone.Position;
-
-            /*
-            SlimDX.Vector3 u = new SlimDX.Vector3(0, 0, -1);
-            SlimDX.Vector3 v = vertex.Normal.ToVector3();
-            v.Normalize();
-            var q = Operation.FromTwoVector(u, v);
+            if (Body != null)
+                return Body;
+            Body = (IPXBody)PEStaticBuilder.Pmx.Body();
+            Body.Name = bone.Name;
+            Body.Bone = bone;
+            Body.Mode = BodyMode.Dynamic;
+            Body.Group = 9;
+            Body.BoxSize.X = 0.2f;
+            Body.Position = bone.Position;
 
 
-            //var m = SlimDX.Matrix.LookAtLH(SlimDX.Vector3.Zero, v, SlimDX.Vector3.UnitZ);
-            
-            body.Rotation = Operation.ToEuler(q);
-            */
-
-            return body;
+            return Body;
         }
         public void SetBodyAngle()
         {
             if (bone == null)
                 return;
-            if (body == null)
+
+            if (Body == null)
                 return;
 
             var Z = -vertex.Normal;
             Z.Normalize();
-            var Y = bone.Position - bone.ToBone.Position;
+
+            Vector3 Y = Vector3.Zero;
+            if (Pos == Model.LayerCount - 1)
+                Y = column.BoneList[Pos - 1].bone.Position - bone.Position;
+            else
+                Y = bone.Position - bone.ToBone.Position;
             Y.Normalize();
-            
+
             var X = SlimDX.Vector3.Cross(Y, Z);
+            X.Normalize();
             Y = SlimDX.Vector3.Cross(Z, X);
 
 
-            var rot = Geom.ToEuler_ZYX(X, Y, Z);
+            rotaionMatrix = new Matrix();
+            rotaionMatrix.M11 = X.X;
+            rotaionMatrix.M12 = X.Y;
+            rotaionMatrix.M13 = X.Z;
+            rotaionMatrix.M21 = Y.X;
+            rotaionMatrix.M22 = Y.Y;
+            rotaionMatrix.M23 = Y.Z;
+            rotaionMatrix.M31 = Z.X;
+            rotaionMatrix.M32 = Z.Y;
+            rotaionMatrix.M33 = Z.Z;
+
+            //var rot = Geom.ToEuler_ZYX(X, Y, Z);
             //return Vec3f(x, y, z);
-            
-            body.Rotation = rot;
-            
+            var rot = Geom.ToEuler_YXZ(X, Y, Z);
+            rot = -rot;
+
+            Body.Rotation = rot;
+
+
+
         }
-    }
 
-    public class SkirtModelBuilder
-    {
-
-        public SkirtModel Build(int colNum, int layerNum)
+        public IPXJoint AddJoint()
         {
-            var model = new SkirtModel()
-            {
-                LayerCount = layerNum
-            };
+            if (bone == null)
+                return null;
+            if (bone.ToBone == null)
+                return null;
+            if (Body == null)
+                return null;
+            if (Pos == model.LayerCount - 1)
+                return null;
 
-            for ( int i = 0; i < colNum; i++)
-            {
-                var col = new SkirtColumn()
-                {
-                    Name = "列" + i.ToString(),
-                    Model = model
-                };
-                model.ColumnList.Add(col);
-                for ( int j = 0; j < layerNum; j++)
-                {
-                    var bone = new SkirtBone()
-                    {
-                        Name = $"スカート_{j}_{i}",
-                        Model = model,
-                        Pos = j,
-                        Column = col
-                    };
+            var nextBone = column.BoneList[Pos + 1];
+            if (nextBone.body == null)
+                return null;
 
-                    col.BoneList.Add(bone);
-                }
-            }
+            var joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
+            joint.Name = bone.Name;
+            joint.BodyA = body;
+            joint.BodyB = nextBone.Body;
+            joint.Position = 0.5f * (body.Position + nextBone.body.Position);
+            joint.Rotation = 0.5f * (body.Rotation + nextBone.body.Rotation);
 
-            return model;
+            return joint;
+
         }
     }
+
+
 
     public class Operation
     {
@@ -197,7 +261,7 @@ namespace Aroima.Plugins.Skirt
             result.X = (float)Math.Atan2(sr, cr);
             //pitch (Y):
             float sip = 2f * (q.W * q.Y - q.Z * q.X);
-            result.Y = Math.Abs(sip) >= 1 ? CopySign((float)Math.PI / 2, sip) 
+            result.Y = Math.Abs(sip) >= 1 ? CopySign((float)Math.PI / 2, sip)
                 : (float)Math.Asin(sip);
             //yaw (Z):
             float sy = 2f * (q.W * q.Z + q.X * q.Y);
@@ -242,7 +306,7 @@ namespace Aroima.Plugins.Skirt
         /// </summary>
         /// <param name="Joint"></param>
         /// <returns></returns>
-        public static  SlimDX.Matrix GetPhyObjectMatrix(V3 Rotation)
+        public static SlimDX.Matrix GetPhyObjectMatrix(V3 Rotation)
         {
             return SlimDX.Matrix.RotationYawPitchRoll(Rotation.Y, Rotation.X, Rotation.Z);
         }
@@ -554,3 +618,4 @@ namespace Aroima.Plugins.Skirt
         }
     }
 }
+

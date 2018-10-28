@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="PEPlugin">
       <HintPath>..\Lib\PEPlugin.dll</HintPath>
     </Reference>
@@ -50,6 +53,12 @@
   <ItemGroup>
     <Compile Include="Geom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoveDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemoveDialog.Designer.cs">
+      <DependentUpon>RemoveDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="SkirtForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,12 +66,28 @@
       <DependentUpon>SkirtForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SkirtModel.cs" />
+    <Compile Include="SkirtModelBuilder.cs" />
     <Compile Include="SkirtPlugin.cs" />
+    <Compile Include="VertexDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VertexDialog.Designer.cs">
+      <DependentUpon>VertexDialog.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="RemoveDialog.resx">
+      <DependentUpon>RemoveDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SkirtForm.resx">
       <DependentUpon>SkirtForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VertexDialog.resx">
+      <DependentUpon>VertexDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
