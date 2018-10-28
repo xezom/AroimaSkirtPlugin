@@ -34,7 +34,7 @@ namespace Aroima.Plugins.Skirt
                 r.Y = (float)Math.PI / 2;
                 r.Z = 0;
             }
-            r *= 180f / (float)Math.PI;
+            //r *= 180f / (float)Math.PI;
             return r;
         }
     }

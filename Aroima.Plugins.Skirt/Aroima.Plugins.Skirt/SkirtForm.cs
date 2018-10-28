@@ -146,6 +146,9 @@ namespace Aroima.Plugins.Skirt
                 return;
             textBoneName.Text = bone.Name;
             chkBone.Checked = bone.Bone != null;
+
+
+
             if (bone.Bone != null && bone.Bone.Parent != null)
                 textParentName.Text = bone.Bone.Parent.Name;
             else
@@ -154,6 +157,14 @@ namespace Aroima.Plugins.Skirt
                 textToBone.Text = bone.Bone.ToBone.Name;
             else
                 textToBone.Text = "";
+
+            if ( bone.Bone != null )
+            {
+                textPosX.Text = bone.Bone.Position.X.ToString();
+                textPosY.Text = bone.Bone.Position.Y.ToString();
+            }
+            
+
         }
 
         private void cmbBoneList_SelectedIndexChanged(object sender, EventArgs e)

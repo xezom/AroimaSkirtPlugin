@@ -29,7 +29,7 @@ namespace Aroima.Plugins.Skirt
         IPXPmxViewConnector pmxView;
         IPEPMDViewConnector pmdView;
 
-        //SkirtForm form = null;
+        SkirtForm form = null;
 
         public SkirtPlugin() : base()
         {
@@ -60,7 +60,7 @@ namespace Aroima.Plugins.Skirt
             pmxView = connect.View.PmxView;
             pmdView = connect.View.PMDView;
 
-            /*
+            
             if (form == null)
             {
                 form = new SkirtForm();
@@ -68,12 +68,12 @@ namespace Aroima.Plugins.Skirt
                 form.FormClosed += Form_FormClosed;
             }
             form.Visible = true;
-            */
+           
         }
 
         private void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //form = null;
+            form = null;
         }
 
         public void UpdateView()

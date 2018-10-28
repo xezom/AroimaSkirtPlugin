@@ -120,43 +120,10 @@ namespace Aroima.Plugins.Skirt
             Y = SlimDX.Vector3.Cross(Z, X);
 
 
-
-
-            //float sy = sqrt(R.at<double>(0, 0) * R.at<double>(0, 0) + R.at<double>(1, 0) * R.at<double>(1, 0));
-
-            float sy = (float)Math.Sqrt(X.X * X.X + Y.X * Y.X);
-
-            //bool singular = sy < 1e-6; // If
-
-            bool singular = sy < 1e-6;
-
-            float x, y, z;
-            if (!singular)
-            {
-                /*
-                x = atan2(R.at<double>(2, 1), R.at<double>(2, 2));
-                y = atan2(-R.at<double>(2, 0), sy);
-                z = atan2(R.at<double>(1, 0), R.at<double>(0, 0));
-                 */
-
-                x = (float)Math.Atan2(Z.Y, Z.Z);
-                y = (float)Math.Atan2(-Z.X, sy);
-                z = (float)Math.Atan2(Y.X, X.X);
-            }
-            else
-            {
-                /*
-                x = atan2(-R.at<double>(1, 2), R.at<double>(1, 1));
-                y = atan2(-R.at<double>(2, 0), sy);
-                z = 0;
-                */
-                x = (float)Math.Atan2(-Y.Z, Y.Y);
-                y = (float)Math.Atan2(-Z.X, sy);
-                z = 0;
-            }
+            var rot = Geom.ToEuler_ZYX(X, Y, Z);
             //return Vec3f(x, y, z);
-
-            body.Rotation = new V3(x, y, z);
+            
+            body.Rotation = rot;
             
         }
     }
