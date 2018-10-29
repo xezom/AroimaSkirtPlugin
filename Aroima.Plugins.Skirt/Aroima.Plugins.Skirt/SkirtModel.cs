@@ -150,8 +150,8 @@ namespace Aroima.Plugins.Skirt
             Body.Group = 9;
             Body.BoxSize.X = 0.2f;
             Body.Position = bone.Position;
-
-
+           
+            
             return Body;
         }
         public void SetBodyAngle()

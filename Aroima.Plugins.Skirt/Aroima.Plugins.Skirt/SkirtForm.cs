@@ -159,6 +159,7 @@ namespace Aroima.Plugins.Skirt
                 case 2:
                     tabControl1.SelectedTab = tabPageBone;
                     bone = (SkirtBone)e.Node.Tag;
+                    column = bone.Column;
                     ShowBone(bone);
                     break;
             }
@@ -376,6 +377,17 @@ namespace Aroima.Plugins.Skirt
 
             column.CreatedJoint();
             plugin.UpdateView();
+        }
+
+        private void tsbBodySettings_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new BodySettingsDialog()
+            {
+                Settings = new BodySettings()
+            })
+            {
+                                dlg.ShowDialog();
+            }
         }
     }
 }

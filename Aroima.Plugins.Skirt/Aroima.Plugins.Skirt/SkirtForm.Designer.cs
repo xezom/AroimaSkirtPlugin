@@ -38,6 +38,17 @@
             this.mainTreeView = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageBone = new System.Windows.Forms.TabPage();
+            this.btnAddJoint = new System.Windows.Forms.Button();
+            this.textM33 = new System.Windows.Forms.TextBox();
+            this.textM32 = new System.Windows.Forms.TextBox();
+            this.textM31 = new System.Windows.Forms.TextBox();
+            this.textM23 = new System.Windows.Forms.TextBox();
+            this.textM22 = new System.Windows.Forms.TextBox();
+            this.textM21 = new System.Windows.Forms.TextBox();
+            this.textM13 = new System.Windows.Forms.TextBox();
+            this.textM12 = new System.Windows.Forms.TextBox();
+            this.textM11 = new System.Windows.Forms.TextBox();
+            this.linkToBonePos = new System.Windows.Forms.LinkLabel();
             this.textToBonePosZ = new System.Windows.Forms.TextBox();
             this.linkNormal = new System.Windows.Forms.LinkLabel();
             this.textToBonePosY = new System.Windows.Forms.TextBox();
@@ -46,6 +57,9 @@
             this.textNormalY = new System.Windows.Forms.TextBox();
             this.textNormalX = new System.Windows.Forms.TextBox();
             this.linkBonePos = new System.Windows.Forms.LinkLabel();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.textPosZ = new System.Windows.Forms.TextBox();
             this.textPosY = new System.Windows.Forms.TextBox();
             this.textPosX = new System.Windows.Forms.TextBox();
@@ -63,28 +77,16 @@
             this.tabPageModel = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBoneList = new System.Windows.Forms.ComboBox();
+            this.tabPageColumn = new System.Windows.Forms.TabPage();
+            this.btnCreateJoint = new System.Windows.Forms.Button();
+            this.textColumnName = new System.Windows.Forms.TextBox();
+            this.btnCreateBody = new System.Windows.Forms.Button();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbCreateModel = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveAllComponent = new System.Windows.Forms.ToolStripButton();
-            this.linkToBonePos = new System.Windows.Forms.LinkLabel();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.textM11 = new System.Windows.Forms.TextBox();
-            this.textM12 = new System.Windows.Forms.TextBox();
-            this.textM13 = new System.Windows.Forms.TextBox();
-            this.textM21 = new System.Windows.Forms.TextBox();
-            this.textM22 = new System.Windows.Forms.TextBox();
-            this.textM23 = new System.Windows.Forms.TextBox();
-            this.textM31 = new System.Windows.Forms.TextBox();
-            this.textM32 = new System.Windows.Forms.TextBox();
-            this.textM33 = new System.Windows.Forms.TextBox();
-            this.btnAddJoint = new System.Windows.Forms.Button();
             this.tsbCreateBodyAndJoint = new System.Windows.Forms.ToolStripButton();
-            this.tabPageColumn = new System.Windows.Forms.TabPage();
-            this.btnCreateBody = new System.Windows.Forms.Button();
-            this.textColumnName = new System.Windows.Forms.TextBox();
-            this.btnCreateJoint = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tsbBodySettings = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -96,10 +98,10 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageBone.SuspendLayout();
-            this.tabPageModel.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.tabPageModel.SuspendLayout();
             this.tabPageColumn.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -229,6 +231,99 @@
             this.tabPageBone.Text = "ボーン";
             this.tabPageBone.UseVisualStyleBackColor = true;
             // 
+            // btnAddJoint
+            // 
+            this.btnAddJoint.Location = new System.Drawing.Point(78, 283);
+            this.btnAddJoint.Name = "btnAddJoint";
+            this.btnAddJoint.Size = new System.Drawing.Size(75, 23);
+            this.btnAddJoint.TabIndex = 32;
+            this.btnAddJoint.Text = "Add Joint";
+            this.btnAddJoint.UseVisualStyleBackColor = true;
+            this.btnAddJoint.Click += new System.EventHandler(this.btnAddJoint_Click);
+            // 
+            // textM33
+            // 
+            this.textM33.Location = new System.Drawing.Point(410, 298);
+            this.textM33.Name = "textM33";
+            this.textM33.Size = new System.Drawing.Size(73, 19);
+            this.textM33.TabIndex = 31;
+            this.textM33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM32
+            // 
+            this.textM32.Location = new System.Drawing.Point(335, 298);
+            this.textM32.Name = "textM32";
+            this.textM32.Size = new System.Drawing.Size(73, 19);
+            this.textM32.TabIndex = 30;
+            this.textM32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM31
+            // 
+            this.textM31.Location = new System.Drawing.Point(260, 298);
+            this.textM31.Name = "textM31";
+            this.textM31.Size = new System.Drawing.Size(73, 19);
+            this.textM31.TabIndex = 29;
+            this.textM31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM23
+            // 
+            this.textM23.Location = new System.Drawing.Point(410, 273);
+            this.textM23.Name = "textM23";
+            this.textM23.Size = new System.Drawing.Size(73, 19);
+            this.textM23.TabIndex = 28;
+            this.textM23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM22
+            // 
+            this.textM22.Location = new System.Drawing.Point(335, 273);
+            this.textM22.Name = "textM22";
+            this.textM22.Size = new System.Drawing.Size(73, 19);
+            this.textM22.TabIndex = 27;
+            this.textM22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM21
+            // 
+            this.textM21.Location = new System.Drawing.Point(260, 273);
+            this.textM21.Name = "textM21";
+            this.textM21.Size = new System.Drawing.Size(73, 19);
+            this.textM21.TabIndex = 26;
+            this.textM21.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM13
+            // 
+            this.textM13.Location = new System.Drawing.Point(410, 248);
+            this.textM13.Name = "textM13";
+            this.textM13.Size = new System.Drawing.Size(73, 19);
+            this.textM13.TabIndex = 25;
+            this.textM13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM12
+            // 
+            this.textM12.Location = new System.Drawing.Point(335, 248);
+            this.textM12.Name = "textM12";
+            this.textM12.Size = new System.Drawing.Size(73, 19);
+            this.textM12.TabIndex = 24;
+            this.textM12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM11
+            // 
+            this.textM11.Location = new System.Drawing.Point(260, 248);
+            this.textM11.Name = "textM11";
+            this.textM11.Size = new System.Drawing.Size(73, 19);
+            this.textM11.TabIndex = 23;
+            this.textM11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // linkToBonePos
+            // 
+            this.linkToBonePos.AutoSize = true;
+            this.linkToBonePos.Location = new System.Drawing.Point(229, 115);
+            this.linkToBonePos.Name = "linkToBonePos";
+            this.linkToBonePos.Size = new System.Drawing.Size(29, 12);
+            this.linkToBonePos.TabIndex = 22;
+            this.linkToBonePos.TabStop = true;
+            this.linkToBonePos.Text = "位置";
+            this.linkToBonePos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkToBonePos_LinkClicked);
+            // 
             // textToBonePosZ
             // 
             this.textToBonePosZ.Location = new System.Drawing.Point(409, 112);
@@ -300,6 +395,27 @@
             this.linkBonePos.TabStop = true;
             this.linkBonePos.Text = "位置";
             this.linkBonePos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkBonePos_LinkClicked);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(180, 48);
+            this.contextMenuStrip1.Text = "コピー";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
+            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(179, 22);
+            this.toolStripMenuItem2.Text = "toolStripMenuItem2";
             // 
             // textPosZ
             // 
@@ -457,6 +573,47 @@
             this.cmbBoneList.TabIndex = 0;
             this.cmbBoneList.SelectedIndexChanged += new System.EventHandler(this.cmbBoneList_SelectedIndexChanged);
             // 
+            // tabPageColumn
+            // 
+            this.tabPageColumn.Controls.Add(this.btnCreateJoint);
+            this.tabPageColumn.Controls.Add(this.textColumnName);
+            this.tabPageColumn.Controls.Add(this.btnCreateBody);
+            this.tabPageColumn.Location = new System.Drawing.Point(4, 22);
+            this.tabPageColumn.Name = "tabPageColumn";
+            this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageColumn.Size = new System.Drawing.Size(515, 352);
+            this.tabPageColumn.TabIndex = 2;
+            this.tabPageColumn.Text = "列";
+            this.tabPageColumn.UseVisualStyleBackColor = true;
+            // 
+            // btnCreateJoint
+            // 
+            this.btnCreateJoint.Location = new System.Drawing.Point(21, 77);
+            this.btnCreateJoint.Name = "btnCreateJoint";
+            this.btnCreateJoint.Size = new System.Drawing.Size(130, 23);
+            this.btnCreateJoint.TabIndex = 2;
+            this.btnCreateJoint.Text = "Create Joint";
+            this.btnCreateJoint.UseVisualStyleBackColor = true;
+            this.btnCreateJoint.Click += new System.EventHandler(this.btnCreateJoint_Click);
+            // 
+            // textColumnName
+            // 
+            this.textColumnName.Location = new System.Drawing.Point(21, 23);
+            this.textColumnName.Name = "textColumnName";
+            this.textColumnName.ReadOnly = true;
+            this.textColumnName.Size = new System.Drawing.Size(100, 19);
+            this.textColumnName.TabIndex = 1;
+            // 
+            // btnCreateBody
+            // 
+            this.btnCreateBody.Location = new System.Drawing.Point(21, 48);
+            this.btnCreateBody.Name = "btnCreateBody";
+            this.btnCreateBody.Size = new System.Drawing.Size(130, 23);
+            this.btnCreateBody.TabIndex = 0;
+            this.btnCreateBody.Text = "Create Body";
+            this.btnCreateBody.UseVisualStyleBackColor = true;
+            this.btnCreateBody.Click += new System.EventHandler(this.btnCreateBody_Click);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
@@ -464,10 +621,11 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbCreateModel,
             this.tsbRemoveAllComponent,
-            this.tsbCreateBodyAndJoint});
+            this.tsbCreateBodyAndJoint,
+            this.tsbBodySettings});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(120, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(187, 39);
             this.toolStrip1.TabIndex = 0;
             // 
             // tsbCreateModel
@@ -490,120 +648,6 @@
             this.tsbRemoveAllComponent.Text = "RemoveAllComponent";
             this.tsbRemoveAllComponent.Click += new System.EventHandler(this.tsbRemoveAllComponent_Click);
             // 
-            // linkToBonePos
-            // 
-            this.linkToBonePos.AutoSize = true;
-            this.linkToBonePos.Location = new System.Drawing.Point(229, 115);
-            this.linkToBonePos.Name = "linkToBonePos";
-            this.linkToBonePos.Size = new System.Drawing.Size(29, 12);
-            this.linkToBonePos.TabIndex = 22;
-            this.linkToBonePos.TabStop = true;
-            this.linkToBonePos.Text = "位置";
-            this.linkToBonePos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkToBonePos_LinkClicked);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1,
-            this.toolStripMenuItem2});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(180, 48);
-            this.contextMenuStrip1.Text = "コピー";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(179, 22);
-            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(179, 22);
-            this.toolStripMenuItem2.Text = "toolStripMenuItem2";
-            // 
-            // textM11
-            // 
-            this.textM11.Location = new System.Drawing.Point(260, 248);
-            this.textM11.Name = "textM11";
-            this.textM11.Size = new System.Drawing.Size(73, 19);
-            this.textM11.TabIndex = 23;
-            this.textM11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM12
-            // 
-            this.textM12.Location = new System.Drawing.Point(335, 248);
-            this.textM12.Name = "textM12";
-            this.textM12.Size = new System.Drawing.Size(73, 19);
-            this.textM12.TabIndex = 24;
-            this.textM12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM13
-            // 
-            this.textM13.Location = new System.Drawing.Point(410, 248);
-            this.textM13.Name = "textM13";
-            this.textM13.Size = new System.Drawing.Size(73, 19);
-            this.textM13.TabIndex = 25;
-            this.textM13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM21
-            // 
-            this.textM21.Location = new System.Drawing.Point(260, 273);
-            this.textM21.Name = "textM21";
-            this.textM21.Size = new System.Drawing.Size(73, 19);
-            this.textM21.TabIndex = 26;
-            this.textM21.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM22
-            // 
-            this.textM22.Location = new System.Drawing.Point(335, 273);
-            this.textM22.Name = "textM22";
-            this.textM22.Size = new System.Drawing.Size(73, 19);
-            this.textM22.TabIndex = 27;
-            this.textM22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM23
-            // 
-            this.textM23.Location = new System.Drawing.Point(410, 273);
-            this.textM23.Name = "textM23";
-            this.textM23.Size = new System.Drawing.Size(73, 19);
-            this.textM23.TabIndex = 28;
-            this.textM23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM31
-            // 
-            this.textM31.Location = new System.Drawing.Point(260, 298);
-            this.textM31.Name = "textM31";
-            this.textM31.Size = new System.Drawing.Size(73, 19);
-            this.textM31.TabIndex = 29;
-            this.textM31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM32
-            // 
-            this.textM32.Location = new System.Drawing.Point(335, 298);
-            this.textM32.Name = "textM32";
-            this.textM32.Size = new System.Drawing.Size(73, 19);
-            this.textM32.TabIndex = 30;
-            this.textM32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM33
-            // 
-            this.textM33.Location = new System.Drawing.Point(410, 298);
-            this.textM33.Name = "textM33";
-            this.textM33.Size = new System.Drawing.Size(73, 19);
-            this.textM33.TabIndex = 31;
-            this.textM33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // btnAddJoint
-            // 
-            this.btnAddJoint.Location = new System.Drawing.Point(78, 283);
-            this.btnAddJoint.Name = "btnAddJoint";
-            this.btnAddJoint.Size = new System.Drawing.Size(75, 23);
-            this.btnAddJoint.TabIndex = 32;
-            this.btnAddJoint.Text = "Add Joint";
-            this.btnAddJoint.UseVisualStyleBackColor = true;
-            this.btnAddJoint.Click += new System.EventHandler(this.btnAddJoint_Click);
-            // 
             // tsbCreateBodyAndJoint
             // 
             this.tsbCreateBodyAndJoint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -614,46 +658,21 @@
             this.tsbCreateBodyAndJoint.Text = "剛体とジョイントの作成";
             this.tsbCreateBodyAndJoint.Click += new System.EventHandler(this.tsbCreateBodyAndJoint_Click);
             // 
-            // tabPageColumn
+            // imageList1
             // 
-            this.tabPageColumn.Controls.Add(this.btnCreateJoint);
-            this.tabPageColumn.Controls.Add(this.textColumnName);
-            this.tabPageColumn.Controls.Add(this.btnCreateBody);
-            this.tabPageColumn.Location = new System.Drawing.Point(4, 22);
-            this.tabPageColumn.Name = "tabPageColumn";
-            this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageColumn.Size = new System.Drawing.Size(515, 352);
-            this.tabPageColumn.TabIndex = 2;
-            this.tabPageColumn.Text = "列";
-            this.tabPageColumn.UseVisualStyleBackColor = true;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // btnCreateBody
+            // tsbBodySettings
             // 
-            this.btnCreateBody.Location = new System.Drawing.Point(21, 48);
-            this.btnCreateBody.Name = "btnCreateBody";
-            this.btnCreateBody.Size = new System.Drawing.Size(130, 23);
-            this.btnCreateBody.TabIndex = 0;
-            this.btnCreateBody.Text = "Create Body";
-            this.btnCreateBody.UseVisualStyleBackColor = true;
-            this.btnCreateBody.Click += new System.EventHandler(this.btnCreateBody_Click);
-            // 
-            // textColumnName
-            // 
-            this.textColumnName.Location = new System.Drawing.Point(21, 23);
-            this.textColumnName.Name = "textColumnName";
-            this.textColumnName.ReadOnly = true;
-            this.textColumnName.Size = new System.Drawing.Size(100, 19);
-            this.textColumnName.TabIndex = 1;
-            // 
-            // btnCreateJoint
-            // 
-            this.btnCreateJoint.Location = new System.Drawing.Point(21, 77);
-            this.btnCreateJoint.Name = "btnCreateJoint";
-            this.btnCreateJoint.Size = new System.Drawing.Size(130, 23);
-            this.btnCreateJoint.TabIndex = 2;
-            this.btnCreateJoint.Text = "Create Joint";
-            this.btnCreateJoint.UseVisualStyleBackColor = true;
-            this.btnCreateJoint.Click += new System.EventHandler(this.btnCreateJoint_Click);
+            this.tsbBodySettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBodySettings.Image = ((System.Drawing.Image)(resources.GetObject("tsbBodySettings.Image")));
+            this.tsbBodySettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbBodySettings.Name = "tsbBodySettings";
+            this.tsbBodySettings.Size = new System.Drawing.Size(36, 36);
+            this.tsbBodySettings.Text = "BodySettings";
+            this.tsbBodySettings.Click += new System.EventHandler(this.tsbBodySettings_Click);
             // 
             // SkirtForm
             // 
@@ -680,13 +699,13 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageBone.ResumeLayout(false);
             this.tabPageBone.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.tabPageModel.ResumeLayout(false);
             this.tabPageModel.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.tabPageColumn.ResumeLayout(false);
             this.tabPageColumn.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -747,5 +766,7 @@
         private System.Windows.Forms.Button btnCreateBody;
         private System.Windows.Forms.TextBox textColumnName;
         private System.Windows.Forms.Button btnCreateJoint;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ToolStripButton tsbBodySettings;
     }
 }
