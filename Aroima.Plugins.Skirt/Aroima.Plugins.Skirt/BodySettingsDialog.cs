@@ -14,6 +14,7 @@ namespace Aroima.Plugins.Skirt
     public partial class BodySettingsDialog : Form
     {
         BodySettings settings;
+        bool modified = false;
 
         CheckBox[] chkPassGroup = new CheckBox[16];
 
@@ -61,6 +62,8 @@ namespace Aroima.Plugins.Skirt
         private void BodySettingsDialog_Load(object sender, EventArgs e)
         {
             UpdateView();
+
+            modified = false;
         }
 
         private void UpdateView()
@@ -105,7 +108,6 @@ namespace Aroima.Plugins.Skirt
 
             cmbGroup.SelectedIndex = settings.Group;
 
-
             var list = new List<string>();
             for (int i = 0; i < 16; i++)
             {
@@ -115,6 +117,7 @@ namespace Aroima.Plugins.Skirt
             }
             textPassGroup.Text = String.Join(",", list.ToArray());
         }
+
         private void UpdateData()
         {
             var t = new BodySettings();
@@ -274,12 +277,34 @@ namespace Aroima.Plugins.Skirt
                 textSize3.Visible = false;
             }
 
-
+            modified = true;
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            var list = new List<string>();
+            for (int i = 0; i < 16; i++)
+            {
+                if (chkPassGroup[i].Checked)
+                    list.Add((i + 1).ToString());
+            }
+            textPassGroup.Text = String.Join(",", list.ToArray());
+            modified = true;
+        }
+
+        private void textbox_TextChanged(object sender, EventArgs e)
+        {
+            modified = true;
+        }
+
+        private void cmbGroup_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            modified = true;
         }
     }
 
