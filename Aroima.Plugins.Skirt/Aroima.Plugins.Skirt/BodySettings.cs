@@ -14,12 +14,12 @@ namespace Aroima.Plugins.Skirt
         BodyMode mode = BodyMode.Dynamic;
         BodyBoxKind boxKind = BodyBoxKind.Sphere;
         V3 boxSize = new V3();
-        float mass;
-        float positionDamping;
-        float rotationDamping;
-        float restriction;
-        float friction;
-        int group;
+        float mass = 2;
+        float positionDamping = 0.9999f;
+        float rotationDamping = 0.9999f;
+        float restriction = 0f;
+        float friction = 0.5f;
+        int group = 9;
         int[] passGroup = new int[16];
    
 

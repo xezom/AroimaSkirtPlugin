@@ -19,8 +19,10 @@ namespace Aroima.Plugins.Skirt
         CheckBox[] chkPassGroup = new CheckBox[16];
 
         List<Action<BodySettings>> validators = new List<Action<BodySettings>>();
+        List<BodySettings> bodySettingsList;
+        int current = -1;
 
-        public BodySettings Settings { get => settings; set => settings = value; }
+        public List<BodySettings> BodySettingsList { get => bodySettingsList; set => bodySettingsList = value; }
 
         public BodySettingsDialog()
         {
@@ -46,24 +48,63 @@ namespace Aroima.Plugins.Skirt
             validators.Add(validateMode);
             validators.Add(validateBoxKind);
             validators.Add(t =>
-                t.Mass = validateTextBoxFloat(textMass, "質量"));
+                t.Mass = Validators.GetFloatGTEZ(textMass, "質量"));
             validators.Add(t =>
-                t.PositionDamping = validateTextBoxFloat(textPositionDamping, "移動減衰"));
+                t.PositionDamping = Validators.GetFloatGTEZ(textPositionDamping, "移動減衰"));
             validators.Add(t =>
-                t.RotationDamping = validateTextBoxFloat(textRotationDamping, "回転減衰"));
+                t.RotationDamping = Validators.GetFloatGTEZ(textRotationDamping, "回転減衰"));
             validators.Add(t =>
-                t.Restriction = validateTextBoxFloat(textRestriction, "反発力"));
+                t.Restriction = Validators.GetFloatGTEZ(textRestriction, "反発力"));
             validators.Add(t =>
-                t.Friction = validateTextBoxFloat(textFriction, "摩擦力"));
+                t.Friction = Validators.GetFloatGTEZ(textFriction, "摩擦力"));
             validators.Add(validateGroup);
             validators.Add(validatePassGroup);
         }
 
         private void BodySettingsDialog_Load(object sender, EventArgs e)
         {
+            foreach ( var s in BodySettingsList )
+            {
+                listBodySettings.Items.Add(s);
+            }
+            listBodySettings.SelectedIndex = 0;
+
             UpdateView();
 
             modified = false;
+        }
+
+        private void listBodySettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selected = listBodySettings.SelectedIndex;
+            if ( selected == current )
+            {
+
+            }
+            else
+            {
+                if ( modified )
+                {
+                    if ( UpdateData() )
+                    {
+                        current = selected;
+                        settings = (BodySettings)listBodySettings.Items[selected];
+                        UpdateView();
+                        modified = false;
+                    }
+                    else
+                    {
+                        listBodySettings.SelectedIndex = current;
+                    }
+                }
+                else
+                {
+                    current = selected;
+                    settings = (BodySettings)listBodySettings.Items[selected];
+                    UpdateView();
+                    modified = false;
+                }
+            }
         }
 
         private void UpdateView()
@@ -118,7 +159,7 @@ namespace Aroima.Plugins.Skirt
             textPassGroup.Text = String.Join(",", list.ToArray());
         }
 
-        private void UpdateData()
+        private bool UpdateData()
         {
             var t = new BodySettings();
             try
@@ -134,7 +175,7 @@ namespace Aroima.Plugins.Skirt
                 {
                     // TODO
                 }
-                return;
+                return false;
             }
             settings.BoxKind = t.BoxKind;
             settings.Mode = t.Mode;
@@ -147,6 +188,11 @@ namespace Aroima.Plugins.Skirt
             settings.Restriction = t.Restriction;
             settings.Friction = t.Friction;
             settings.Group = t.Group;
+            for (int i = 0; i < 16; i++)
+                settings.PassGroup[i] = t.PassGroup[i];
+
+
+            return true;
         }
 
         private void validateMode(BodySettings temp)
@@ -163,20 +209,20 @@ namespace Aroima.Plugins.Skirt
             if (rbSphere.Checked)
             {
                 temp.BoxKind = BodyBoxKind.Sphere;
-                temp.BoxSize.X = validateTextBoxFloat(textSize1, labelSize1.Text);
+                temp.BoxSize.X = Validators.GetFloatGTEZ(textSize1, labelSize1.Text);
             }
             else if (rbBox.Checked)
             {
                 temp.BoxKind = BodyBoxKind.Box;
-                temp.BoxSize.X = validateTextBoxFloat(textSize1, labelSize1.Text);
-                temp.BoxSize.Y = validateTextBoxFloat(textSize2, labelSize2.Text);
-                temp.BoxSize.Z = validateTextBoxFloat(textSize3, labelSize3.Text);
+                temp.BoxSize.X = Validators.GetFloatGTEZ(textSize1, labelSize1.Text);
+                temp.BoxSize.Y = Validators.GetFloatGTEZ(textSize2, labelSize2.Text);
+                temp.BoxSize.Z = Validators.GetFloatGTEZ(textSize3, labelSize3.Text);
             }
             else
             {
                 temp.BoxKind = BodyBoxKind.Capsule;
-                temp.BoxSize.X = validateTextBoxFloat(textSize1, labelSize1.Text);
-                temp.BoxSize.Y = validateTextBoxFloat(textSize2, labelSize2.Text);
+                temp.BoxSize.X = Validators.GetFloatGTEZ(textSize1, labelSize1.Text);
+                temp.BoxSize.Y = Validators.GetFloatGTEZ(textSize2, labelSize2.Text);
             }
         }
         private void validateGroup(BodySettings t)
@@ -192,31 +238,10 @@ namespace Aroima.Plugins.Skirt
                 t.PassGroup[i] = chkPassGroup[i].Checked ? 1 : 0;
             }
         }
-        private float validateTextBoxFloat(TextBox textBox, string label)
-        {
-            float result = 0;
-            if (string.IsNullOrEmpty(textBox.Text))
-            {
-                textBox.Text = "0";
-            }
-            else
-            { 
-                try
-                {
-                    result = float.Parse(textMass.Text);
-                }
-                catch
-                {
-                    throw new ValidationException(label + "の入力が不正です", textBox);
-                }
-                if (result < 0)
-                    throw new ValidationException(label + "の入力が負です", textBox);
-            }
-            return result;
-        }
+        
 
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+            private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }
@@ -306,6 +331,8 @@ namespace Aroima.Plugins.Skirt
         {
             modified = true;
         }
+
+
     }
 
     public class ValidationException : Exception

@@ -85,8 +85,9 @@
             this.tsbCreateModel = new System.Windows.Forms.ToolStripButton();
             this.tsbRemoveAllComponent = new System.Windows.Forms.ToolStripButton();
             this.tsbCreateBodyAndJoint = new System.Windows.Forms.ToolStripButton();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tsbBodySettings = new System.Windows.Forms.ToolStripButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.tbJointSettingsV = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -622,10 +623,11 @@
             this.tsbCreateModel,
             this.tsbRemoveAllComponent,
             this.tsbCreateBodyAndJoint,
-            this.tsbBodySettings});
+            this.tsbBodySettings,
+            this.tbJointSettingsV});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(187, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(223, 39);
             this.toolStrip1.TabIndex = 0;
             // 
             // tsbCreateModel
@@ -658,12 +660,6 @@
             this.tsbCreateBodyAndJoint.Text = "剛体とジョイントの作成";
             this.tsbCreateBodyAndJoint.Click += new System.EventHandler(this.tsbCreateBodyAndJoint_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // tsbBodySettings
             // 
             this.tsbBodySettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -673,6 +669,22 @@
             this.tsbBodySettings.Size = new System.Drawing.Size(36, 36);
             this.tsbBodySettings.Text = "BodySettings";
             this.tsbBodySettings.Click += new System.EventHandler(this.tsbBodySettings_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // tbJointSettingsV
+            // 
+            this.tbJointSettingsV.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbJointSettingsV.Image = ((System.Drawing.Image)(resources.GetObject("tbJointSettingsV.Image")));
+            this.tbJointSettingsV.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbJointSettingsV.Name = "tbJointSettingsV";
+            this.tbJointSettingsV.Size = new System.Drawing.Size(36, 36);
+            this.tbJointSettingsV.Text = "Joint";
+            this.tbJointSettingsV.Click += new System.EventHandler(this.tbJointSettingsV_Click);
             // 
             // SkirtForm
             // 
@@ -768,5 +780,6 @@
         private System.Windows.Forms.Button btnCreateJoint;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripButton tsbBodySettings;
+        private System.Windows.Forms.ToolStripButton tbJointSettingsV;
     }
 }

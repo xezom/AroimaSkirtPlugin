@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SlimDX;
 using Aroima.Plugins.Skirt;
 using PEPlugin.SDX;
+using System.Collections.Generic;
 
 namespace Aroima.Plugins.SkirtTest
 {
@@ -60,6 +61,20 @@ namespace Aroima.Plugins.SkirtTest
             Console.WriteLine("r=" + r.ToString());
         }
 
+        [TestMethod]
+        public void Test2()
+        {
+            var list = new List<BodySettings>();
+            list.Add(new BodySettings());
+            list.Add(new BodySettings());
+            using (var dlg = new BodySettingsDialog()
+            {
+                BodySettingsList = list
+            })
+            {
+                dlg.ShowDialog();
+            }
+        }
 
     }
 }

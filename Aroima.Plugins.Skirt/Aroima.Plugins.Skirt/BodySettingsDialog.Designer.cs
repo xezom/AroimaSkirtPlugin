@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BodySettingsDialog));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.textSize1 = new System.Windows.Forms.TextBox();
             this.labelSize1 = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@
             this.rbDynamic = new System.Windows.Forms.RadioButton();
             this.rbStatic = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.listBodySettings = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.textPassGroup = new System.Windows.Forms.TextBox();
             this.checkBox16 = new System.Windows.Forms.CheckBox();
@@ -76,9 +78,14 @@
             this.labelSize3 = new System.Windows.Forms.Label();
             this.textSize2 = new System.Windows.Forms.TextBox();
             this.labelSize2 = new System.Windows.Forms.Label();
+            this.tsbCommit = new System.Windows.Forms.ToolStripButton();
+            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
+            this.tsbUpdate = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -89,6 +96,10 @@
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbCommit,
+            this.tsbCancel,
+            this.tsbUpdate});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(701, 25);
@@ -216,6 +227,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.listBodySettings);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(4);
             // 
             // splitContainer1.Panel2
@@ -231,6 +243,17 @@
             this.splitContainer1.Size = new System.Drawing.Size(701, 382);
             this.splitContainer1.SplitterDistance = 233;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // listBodySettings
+            // 
+            this.listBodySettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBodySettings.FormattingEnabled = true;
+            this.listBodySettings.ItemHeight = 12;
+            this.listBodySettings.Location = new System.Drawing.Point(4, 4);
+            this.listBodySettings.Name = "listBodySettings";
+            this.listBodySettings.Size = new System.Drawing.Size(225, 374);
+            this.listBodySettings.TabIndex = 0;
+            this.listBodySettings.SelectedIndexChanged += new System.EventHandler(this.listBodySettings_SelectedIndexChanged);
             // 
             // groupBox5
             // 
@@ -673,6 +696,33 @@
             this.labelSize2.Text = "label1";
             this.labelSize2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // tsbCommit
+            // 
+            this.tsbCommit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCommit.Image = ((System.Drawing.Image)(resources.GetObject("tsbCommit.Image")));
+            this.tsbCommit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCommit.Name = "tsbCommit";
+            this.tsbCommit.Size = new System.Drawing.Size(23, 22);
+            this.tsbCommit.Text = "確定";
+            // 
+            // tsbCancel
+            // 
+            this.tsbCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbCancel.Image = ((System.Drawing.Image)(resources.GetObject("tsbCancel.Image")));
+            this.tsbCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCancel.Name = "tsbCancel";
+            this.tsbCancel.Size = new System.Drawing.Size(23, 22);
+            this.tsbCancel.Text = "取り消し";
+            // 
+            // tsbUpdate
+            // 
+            this.tsbUpdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbUpdate.Image = ((System.Drawing.Image)(resources.GetObject("tsbUpdate.Image")));
+            this.tsbUpdate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbUpdate.Name = "tsbUpdate";
+            this.tsbUpdate.Size = new System.Drawing.Size(23, 22);
+            this.tsbUpdate.Text = "繁栄";
+            // 
             // BodySettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -680,14 +730,16 @@
             this.ClientSize = new System.Drawing.Size(701, 407);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "BodySettingsDialog";
             this.Text = "BodySettingsDialog";
             this.Load += new System.EventHandler(this.BodySettingsDialog_Load);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -753,5 +805,9 @@
         private System.Windows.Forms.CheckBox checkBox12;
         private System.Windows.Forms.CheckBox checkBox11;
         private System.Windows.Forms.TextBox textPassGroup;
+        private System.Windows.Forms.ListBox listBodySettings;
+        private System.Windows.Forms.ToolStripButton tsbCommit;
+        private System.Windows.Forms.ToolStripButton tsbCancel;
+        private System.Windows.Forms.ToolStripButton tsbUpdate;
     }
 }

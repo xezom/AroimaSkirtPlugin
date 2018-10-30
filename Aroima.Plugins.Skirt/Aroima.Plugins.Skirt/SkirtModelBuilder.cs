@@ -15,7 +15,13 @@ namespace Aroima.Plugins.Skirt
                 LayerCount = layerNum,
                 Plugin = plugin
             };
-
+            for (int j = 0; j < layerNum; j++)
+            {
+                model.BodySettingList.Add(new BodySettings());
+                model.H_jointSettingList.Add(new JointSettings());
+                if ( j < layerNum - 1)
+                    model.V_jointSettingList.Add(new JointSettings());
+            }
             for (int i = 0; i < colNum; i++)
             {
                 var col = new SkirtColumn()

@@ -19,6 +19,9 @@ namespace Aroima.Plugins.Skirt
     public class SkirtModel
     {
         List<SkirtColumn> columnList = new List<SkirtColumn>();
+        List<BodySettings> bodySettingList = new List<BodySettings>();
+        List<JointSettings> v_jointSettingList = new List<JointSettings>();
+        List<JointSettings> h_jointSettingList = new List<JointSettings>();
         string parentBoneName;
         IPXBone parentBone;
         int layerCount = 0;
@@ -29,6 +32,9 @@ namespace Aroima.Plugins.Skirt
         public IPXBone ParentBone { get => parentBone; set => parentBone = value; }
         public int LayerCount { get => layerCount; set => layerCount = value; }
         public SkirtPlugin Plugin { get => plugin; set => plugin = value; }
+        public List<BodySettings> BodySettingList { get => bodySettingList; set => bodySettingList = value; }
+        public List<JointSettings> V_jointSettingList { get => v_jointSettingList; set => v_jointSettingList = value; }
+        public List<JointSettings> H_jointSettingList { get => h_jointSettingList; set => h_jointSettingList = value; }
 
         public void CreatBody()
         {
@@ -93,6 +99,7 @@ namespace Aroima.Plugins.Skirt
         IPXBone bone;
         IPXVertex vertex;
         IPXBody body;
+        IPXJoint joint;
         SkirtColumn column;
         SkirtModel model;
         Matrix rotaionMatrix;
@@ -111,8 +118,7 @@ namespace Aroima.Plugins.Skirt
         public IPXVertex Vertex { get => vertex; set => vertex = value; }
         public IPXBone Bone { get => bone; set => bone = value; }
         public IPXBody Body { get => body; set => body = value; }
-
-
+        public IPXJoint Joint { get => joint; set => joint = value; }
 
         public void CreateBone(IPXVertex v)
         {
@@ -150,8 +156,8 @@ namespace Aroima.Plugins.Skirt
             Body.Group = 9;
             Body.BoxSize.X = 0.2f;
             Body.Position = bone.Position;
-           
-            
+
+
             return Body;
         }
         public void SetBodyAngle()
@@ -214,7 +220,7 @@ namespace Aroima.Plugins.Skirt
             if (nextBone.body == null)
                 return null;
 
-            var joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
+            joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
             joint.Name = bone.Name;
             joint.BodyA = body;
             joint.BodyB = nextBone.Body;
@@ -224,6 +230,41 @@ namespace Aroima.Plugins.Skirt
             return joint;
 
         }
+
+        public void UpdateBodySetting(BodySettings bs)
+        {
+            if (Body != null)
+            {
+                Body.Mode = bs.Mode;
+                Body.BoxKind = bs.BoxKind;
+                Body.BoxSize.X = bs.BoxSize.X;
+                Body.BoxSize.Y = bs.BoxSize.Y;
+                Body.BoxSize.Z = bs.BoxSize.Z;
+                Body.Mass = bs.Mass;
+                Body.PositionDamping = bs.PositionDamping;
+                Body.RotationDamping = bs.RotationDamping;
+                Body.Restitution = bs.Restriction;
+                Body.Friction = bs.Friction;
+                Body.Group = bs.Group;
+                for (int n = 0; n < 16; n++)
+                    Body.PassGroup[n] = bs.PassGroup[n] == 1;
+
+
+            }
+        }
+
+        public void UpdateJointSetting(JointSettings js)
+        {
+            if (joint == null)
+                return;
+            
+            joint.Limit_AngleLow = js.Limit_AngleLow.Clone();
+            joint.Limit_AngleHigh = js.Limit_AngleHigh.Clone();
+
+            joint.Limit_MoveLow = js.Limit_MoveLow.Clone();
+            joint.Limit_MoveHigh = js.Limit_MoveHigh.Clone();
+        }
+
     }
 
 

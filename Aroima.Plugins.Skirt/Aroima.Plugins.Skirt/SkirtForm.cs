@@ -383,10 +383,35 @@ namespace Aroima.Plugins.Skirt
         {
             using (var dlg = new BodySettingsDialog()
             {
-                Settings = new BodySettings()
+                BodySettingsList = model.BodySettingList
             })
             {
-                                dlg.ShowDialog();
+                dlg.ShowDialog();
+
+
+                foreach ( var col in model.ColumnList)
+                {
+                    for ( int i = 0; i < model.LayerCount; i++)
+                    {
+                        var bs = model.BodySettingList[i];
+
+                        var bone = col.BoneList[i];
+                        bone.UpdateBodySetting(bs);
+                    }
+                }
+                plugin.UpdateView();
+
+            }
+        }
+
+        private void tbJointSettingsV_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new JointSettingDialog()
+            {
+                SettingsList = model.V_jointSettingList
+            })
+            {
+                dlg.ShowDialog();
             }
         }
     }
