@@ -280,11 +280,8 @@ namespace Aroima.Plugins.Skirt
             if (bone == null)
                 return;
 
-            var body = bone.AddBody();
-            plugin.PMX.Body.Add(body);
-
+            bone.AddBody();
             ShowBone(bone);
-
             plugin.UpdateView();
         }
 
@@ -293,10 +290,8 @@ namespace Aroima.Plugins.Skirt
             if (bone == null)
                 return;
 
-            bone.SetBodyAngle();
-
+            bone.SetBodyRotation();
             ShowBone(bone);
-
             plugin.UpdateView();
         }
 
@@ -323,11 +318,7 @@ namespace Aroima.Plugins.Skirt
             if (bone == null)
                 return;
 
-            var joint = bone.AddJoint();
-            plugin.PMX.Joint.Add(joint);
-
-            //ShowBone(bone);
-
+            bone.AddVJoint();
             plugin.UpdateView();
         }
 
@@ -375,7 +366,7 @@ namespace Aroima.Plugins.Skirt
             if (column == null)
                 return;
 
-            column.CreatedJoint();
+            column.CreateVJoint();
             plugin.UpdateView();
         }
 
@@ -413,6 +404,37 @@ namespace Aroima.Plugins.Skirt
             {
                 dlg.ShowDialog();
             }
+        }
+
+        private void btnVJointSettings_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new JointSettingDialog()
+            {
+                SettingsList = model.V_jointSettingList
+            })
+            {
+                dlg.ShowDialog();
+
+
+                foreach (var col in model.ColumnList)
+                {
+                    for (int i = 0; i < model.LayerCount -1; i++)
+                    {
+                        var js = model.V_jointSettingList[i];
+
+                        var bone = col.BoneList[i];
+                        bone.UpdateVJointSetting(js);
+                    }
+                }
+                plugin.UpdateView();
+            }
+        }
+
+        private void btnCreateHJoint_Click(object sender, EventArgs e)
+        {
+            foreach (var col in model.ColumnList)
+                col.CreateHJoint();
+            plugin.UpdateView();
         }
     }
 }

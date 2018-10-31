@@ -70,6 +70,14 @@ namespace Aroima.Plugins.Skirt
             };
         }
 
+        /// <summary>
+        /// Y->X->Zの回転行列から、オイラー角を得る
+        /// R = R_z * R_x * R_y
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns>オイラー角</returns>
         public static Vector3 ToEuler_YXZ(Vector3 x, Vector3 y, Vector3 z)
         {
             if (z.Y < 1)

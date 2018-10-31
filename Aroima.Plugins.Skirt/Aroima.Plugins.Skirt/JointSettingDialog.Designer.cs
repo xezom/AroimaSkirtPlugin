@@ -99,7 +99,8 @@
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Text = "Rest";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripButton3
             // 
@@ -332,6 +333,7 @@
             this.textLimitMoveLZ.Name = "textLimitMoveLZ";
             this.textLimitMoveLZ.Size = new System.Drawing.Size(45, 19);
             this.textLimitMoveLZ.TabIndex = 8;
+            this.textLimitMoveLZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.textLimitMoveLZ.TextChanged += new System.EventHandler(this.textbox_TextChanged);
             // 
             // label4
@@ -415,6 +417,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "JointSettingDialog";
             this.Text = "JointSettingDialog";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.JointSettingDialog_FormClosing);
             this.Load += new System.EventHandler(this.JointSettingDialog_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

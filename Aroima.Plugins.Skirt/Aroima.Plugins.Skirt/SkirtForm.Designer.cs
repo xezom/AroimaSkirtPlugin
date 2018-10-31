@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("root");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("root");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkirtForm));
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
@@ -86,8 +86,10 @@
             this.tsbRemoveAllComponent = new System.Windows.Forms.ToolStripButton();
             this.tsbCreateBodyAndJoint = new System.Windows.Forms.ToolStripButton();
             this.tsbBodySettings = new System.Windows.Forms.ToolStripButton();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tbJointSettingsV = new System.Windows.Forms.ToolStripButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.btnVJointSettings = new System.Windows.Forms.Button();
+            this.btnCreateHJoint = new System.Windows.Forms.Button();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -169,10 +171,10 @@
             this.mainTreeView.HideSelection = false;
             this.mainTreeView.Location = new System.Drawing.Point(4, 4);
             this.mainTreeView.Name = "mainTreeView";
-            treeNode1.Name = "rootNode";
-            treeNode1.Text = "root";
+            treeNode3.Name = "rootNode";
+            treeNode3.Text = "root";
             this.mainTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode3});
             this.mainTreeView.Size = new System.Drawing.Size(257, 378);
             this.mainTreeView.TabIndex = 0;
             this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
@@ -545,6 +547,8 @@
             // 
             // tabPageModel
             // 
+            this.tabPageModel.Controls.Add(this.btnCreateHJoint);
+            this.tabPageModel.Controls.Add(this.btnVJointSettings);
             this.tabPageModel.Controls.Add(this.label2);
             this.tabPageModel.Controls.Add(this.cmbBoneList);
             this.tabPageModel.Location = new System.Drawing.Point(4, 22);
@@ -593,7 +597,7 @@
             this.btnCreateJoint.Name = "btnCreateJoint";
             this.btnCreateJoint.Size = new System.Drawing.Size(130, 23);
             this.btnCreateJoint.TabIndex = 2;
-            this.btnCreateJoint.Text = "Create Joint";
+            this.btnCreateJoint.Text = "Jointの生成";
             this.btnCreateJoint.UseVisualStyleBackColor = true;
             this.btnCreateJoint.Click += new System.EventHandler(this.btnCreateJoint_Click);
             // 
@@ -611,7 +615,7 @@
             this.btnCreateBody.Name = "btnCreateBody";
             this.btnCreateBody.Size = new System.Drawing.Size(130, 23);
             this.btnCreateBody.TabIndex = 0;
-            this.btnCreateBody.Text = "Create Body";
+            this.btnCreateBody.Text = "剛体の生成";
             this.btnCreateBody.UseVisualStyleBackColor = true;
             this.btnCreateBody.Click += new System.EventHandler(this.btnCreateBody_Click);
             // 
@@ -627,7 +631,7 @@
             this.tbJointSettingsV});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(223, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(192, 39);
             this.toolStrip1.TabIndex = 0;
             // 
             // tsbCreateModel
@@ -670,12 +674,6 @@
             this.tsbBodySettings.Text = "BodySettings";
             this.tsbBodySettings.Click += new System.EventHandler(this.tsbBodySettings_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // tbJointSettingsV
             // 
             this.tbJointSettingsV.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -685,6 +683,32 @@
             this.tbJointSettingsV.Size = new System.Drawing.Size(36, 36);
             this.tbJointSettingsV.Text = "Joint";
             this.tbJointSettingsV.Click += new System.EventHandler(this.tbJointSettingsV_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // btnVJointSettings
+            // 
+            this.btnVJointSettings.Location = new System.Drawing.Point(71, 123);
+            this.btnVJointSettings.Name = "btnVJointSettings";
+            this.btnVJointSettings.Size = new System.Drawing.Size(121, 23);
+            this.btnVJointSettings.TabIndex = 2;
+            this.btnVJointSettings.Text = "縦Joint設定";
+            this.btnVJointSettings.UseVisualStyleBackColor = true;
+            this.btnVJointSettings.Click += new System.EventHandler(this.btnVJointSettings_Click);
+            // 
+            // btnCreateHJoint
+            // 
+            this.btnCreateHJoint.Location = new System.Drawing.Point(71, 61);
+            this.btnCreateHJoint.Name = "btnCreateHJoint";
+            this.btnCreateHJoint.Size = new System.Drawing.Size(121, 23);
+            this.btnCreateHJoint.TabIndex = 3;
+            this.btnCreateHJoint.Text = "横Joint作成";
+            this.btnCreateHJoint.UseVisualStyleBackColor = true;
+            this.btnCreateHJoint.Click += new System.EventHandler(this.btnCreateHJoint_Click);
             // 
             // SkirtForm
             // 
@@ -781,5 +805,7 @@
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ToolStripButton tsbBodySettings;
         private System.Windows.Forms.ToolStripButton tbJointSettingsV;
+        private System.Windows.Forms.Button btnVJointSettings;
+        private System.Windows.Forms.Button btnCreateHJoint;
     }
 }

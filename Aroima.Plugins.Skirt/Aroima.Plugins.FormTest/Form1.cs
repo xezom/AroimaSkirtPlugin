@@ -30,5 +30,22 @@ namespace Aroima.Plugins.FormTest
                 dlg.ShowDialog();
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var list = new List<JointSettings>();
+            list.Add(new JointSettings());
+            list.Add(new JointSettings());
+            list.Add(new JointSettings());
+
+            using (var dlg = new JointSettingDialog()
+            {
+                SettingsList = list 
+            })
+            {
+                dlg.ShowDialog();
+
+            }
+        }
     }
 }
