@@ -126,7 +126,7 @@ namespace Aroima.Plugins.Skirt
 
         private bool UpdateData()
         {
-            var t = new JointSettings();
+            var t = new JointSettings("temp");
             try
             {
                 foreach (var v in validators)
@@ -198,6 +198,11 @@ namespace Aroima.Plugins.Skirt
                 UpdateView();
                 modified = false;
             }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+
         }
     }
     /*

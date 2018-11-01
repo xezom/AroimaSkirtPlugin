@@ -14,6 +14,7 @@ namespace Aroima.Plugins.Skirt
     /// </summary>
     public class JointSettings
     {
+        string name;
         V3 limit_AngleHigh = new V3(
             5 / 180f * (float)Math.PI,
             5 / 180f * (float)Math.PI,
@@ -57,5 +58,20 @@ namespace Aroima.Plugins.Skirt
         /// ばね定数回転
         /// </summary>
         public V3 SpringConst_Rotate { get => springConst_Rotate; set => springConst_Rotate = value; }
+
+        /// <summary>
+        /// 名前
+        /// </summary>
+        public string Name { get => name; set => name = value; }
+
+        public override string ToString()
+        {
+            return this.name;
+        }
+        
+        public JointSettings(string name)
+        {
+            this.name = name;
+        }
     }
 }

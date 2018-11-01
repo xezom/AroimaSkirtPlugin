@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 using PEPlugin;
 using PEPlugin.Form;
@@ -24,17 +25,34 @@ namespace Aroima.Plugins.Skirt
         List<BodySettings> bodySettingList = new List<BodySettings>();
         List<JointSettings> v_jointSettingList = new List<JointSettings>();
         List<JointSettings> h_jointSettingList = new List<JointSettings>();
-        string parentBoneName;
+        string parentBoneName = "<未設定>";
         IPXBone parentBone;
         int layerCount = 0;
         SkirtPlugin plugin;
 
+
+        /// <summary>
+        /// 列一覧
+        /// </summary>
         public List<SkirtColumn> ColumnList { get => columnList; }
+
+        /// <summary>
+        /// 親ボーン名
+        /// </summary>
         public string ParentBoneName { get => parentBoneName; set => parentBoneName = value; }
 
-
+        /// <summary>
+        /// 親ボーン
+        /// </summary>
+        [XmlIgnore]
         public IPXBone ParentBone { get => parentBone; set => parentBone = value; }
+
+        /// <summary>
+        /// 層数
+        /// </summary>
         public int LayerCount { get => layerCount; set => layerCount = value; }
+
+        [XmlIgnore]
         public SkirtPlugin Plugin { get => plugin; set => plugin = value; }
         public List<BodySettings> BodySettingList { get => bodySettingList; set => bodySettingList = value; }
         public List<JointSettings> V_jointSettingList { get => v_jointSettingList; set => v_jointSettingList = value; }
@@ -91,11 +109,13 @@ namespace Aroima.Plugins.Skirt
         /// <summary>
         /// ボーンリスト
         /// </summary>
+        [XmlArray("Bones")]
         public List<SkirtBone> BoneList { get => boneList; }
 
         /// <summary>
         /// モデル
         /// </summary>
+        [XmlIgnore]
         public SkirtModel Model { get => model; set => model = value; }
 
         /// <summary>
@@ -123,23 +143,40 @@ namespace Aroima.Plugins.Skirt
             boneList.ForEach(b => b.AddHJoint());
         }
     }
+
+    /// <summary>
+    /// スカートボーン
+    /// </summary>
     public class SkirtBone
     {
-        int pos;
+        int row;
         string name;
         IPXBone bone;
         IPXVertex vertex;
         IPXBody body;
-        IPXJoint joint;
+        IPXJoint v_joint;
         IPXJoint h_joint;
         SkirtColumn column;
         SkirtModel model;
         Matrix rotaionMatrix;
 
+        V3 normal;
+        V3 position;
+
 
         public string Name { get => name; set => name = value; }
-        public int Pos { get => pos; set => pos = value; }
+        public int Row { get => row; set => row = value; }
+
+        /// <summary>
+        /// 列
+        /// </summary>
+        [XmlIgnore]
         public SkirtColumn Column { get => column; set => column = value; }
+
+        /// <summary>
+        /// モデル
+        /// </summary>
+        [XmlIgnore]
         public SkirtModel Model { get => model; set => model = value; }
 
         /// <summary>
@@ -147,27 +184,81 @@ namespace Aroima.Plugins.Skirt
         /// </summary>
         public Matrix RotaionMatrix { get => rotaionMatrix; set => rotaionMatrix = value; }
 
-        public IPXVertex Vertex { get => vertex; set => vertex = value; }
-        public IPXBone Bone { get => bone; set => bone = value; }
-        public IPXBody Body { get => body; set => body = value; }
-        public IPXJoint Joint { get => joint; set => joint = value; }
+        /// <summary>
+        /// 頂点
+        /// </summary>
+        [XmlIgnore]
+        public IPXVertex Vertex
+        {
+            get => vertex;
+            set
+            {
+                vertex = value;
+                normal = vertex.Normal;
+                position = vertex.Position;
+                if (bone != null)
+                    bone.Position = vertex.Position;
+            }
+        }
 
+        /// <summary>
+        /// ボーン
+        /// </summary>
+        [XmlIgnore]
+        public IPXBone Bone { get => bone; set => bone = value; }
+
+        /// <summary>
+        /// 剛体
+        /// </summary>
+        [XmlIgnore]
+        public IPXBody Body { get => body; set => body = value; }
+
+        /// <summary>
+        /// 縦ジョイント
+        /// </summary>
+        [XmlIgnore]
+        public IPXJoint V_Joint { get => v_joint; set => v_joint = value; }
+
+        /// <summary>
+        /// 横ジョイント
+        /// </summary>
+        [XmlIgnore]
+        public IPXJoint H_joint { get => h_joint; set => h_joint = value; }
+
+        /// <summary>
+        /// 法線ベクトル
+        /// </summary>
+        public V3 Normal { get => normal; set => normal = value; }
+        public V3 Position { get => position; set => position = value; }
+
+        public SkirtBone()
+        {
+            normal = new V3();
+            position = new V3();
+        }
+
+        /// <summary>
+        /// ボーン生成
+        /// </summary>
+        /// <param name="v"></param>
         public void CreateBone(IPXVertex v)
         {
             bone = (IPXBone)PEStaticBuilder.Pmx.Bone();
             Vertex = v;
+            normal = v.Normal;
+            position = v.Position;
 
             bone.Name = name;
             bone.Position = v.Position;
-            if (Pos == 0)
+            if (Row == 0)
                 bone.Parent = Model.ParentBone;
             else
-                bone.Parent = Column.BoneList[Pos - 1].Bone;
+                bone.Parent = Column.BoneList[Row - 1].Bone;
 
-            if (Pos < Model.LayerCount - 1)
-                bone.ToBone = Column.BoneList[Pos + 1].Bone;
+            if (Row < Model.LayerCount - 1)
+                bone.ToBone = Column.BoneList[Row + 1].Bone;
 
-            bone.Visible = Pos != Model.LayerCount - 1;
+            bone.Visible = Row != Model.LayerCount - 1;
 
             if (bone.Parent != null)
                 bone.Parent.ToBone = bone;
@@ -179,7 +270,7 @@ namespace Aroima.Plugins.Skirt
         public void AddBody()
         {
             bool createNew = Body == null;
-
+            //MessageBox.Show("BodyNull:" + createNew.ToString());
             if (createNew)
                 Body = (IPXBody)PEStaticBuilder.Pmx.Body();
             Body.Name = bone.Name;
@@ -187,7 +278,7 @@ namespace Aroima.Plugins.Skirt
             Body.Position = bone.Position;
 
             // パラメータの適用
-            var bs = model.BodySettingList[Pos];
+            var bs = model.BodySettingList[Row];
             UpdateBodySetting(bs);
 
             if (createNew)
@@ -211,8 +302,8 @@ namespace Aroima.Plugins.Skirt
 
             // 相対ボーン方向の逆方向をY軸に
             Vector3 Y = Vector3.Zero;
-            if (Pos == Model.LayerCount - 1)
-                Y = column.BoneList[Pos - 1].bone.Position - bone.Position;
+            if (Row == Model.LayerCount - 1)
+                Y = column.BoneList[Row - 1].bone.Position - bone.Position;
             else
                 Y = bone.Position - bone.ToBone.Position;
             Y.Normalize();
@@ -242,26 +333,26 @@ namespace Aroima.Plugins.Skirt
                 return;
             if (Body == null)
                 return;
-            if (Pos == model.LayerCount - 1)
+            if (Row == model.LayerCount - 1)
                 return;
 
-            var nextBone = column.BoneList[Pos + 1];
+            var nextBone = column.BoneList[Row + 1];
             if (nextBone.body == null)
                 return;
-            bool createNew = joint == null;
+            bool createNew = v_joint == null;
 
             if (createNew)
-                joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
-            joint.Name = bone.Name;
-            joint.BodyA = body;
-            joint.BodyB = nextBone.Body;
-            joint.Position = 0.5f * (body.Position + nextBone.body.Position);
-            joint.Rotation = 0.5f * (body.Rotation + nextBone.body.Rotation);
+                v_joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
+            v_joint.Name = bone.Name;
+            v_joint.BodyA = body;
+            v_joint.BodyB = nextBone.Body;
+            v_joint.Position = 0.5f * (body.Position + nextBone.body.Position);
+            v_joint.Rotation = 0.5f * (body.Rotation + nextBone.body.Rotation);
 
-            var js = model.V_jointSettingList[Pos];
+            var js = model.V_jointSettingList[Row];
             UpdateVJointSetting(js);
             if (createNew)
-                model.Plugin.PMX.Joint.Add(joint);
+                model.Plugin.PMX.Joint.Add(v_joint);
         }
 
         /// <summary>
@@ -276,22 +367,22 @@ namespace Aroima.Plugins.Skirt
             var nextColumn = model.NextColumn(Column);
             if (nextColumn == null)
                 return;
-            var nextBone = nextColumn.BoneList[Pos];
+            var nextBone = nextColumn.BoneList[Row];
             if (nextBone.body == null)
                 return;
 
 
-            bool createNew = h_joint == null;
+            bool createNew = H_joint == null;
             if (createNew)
-                h_joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
-            h_joint.Name = "横" + bone.Name;
-            h_joint.BodyA = body;
-            h_joint.BodyB = nextBone.Body;
-            h_joint.Position = 0.5f * (body.Position + nextBone.body.Position);
-            h_joint.Rotation = 0.5f * (body.Rotation + nextBone.body.Rotation);
+                H_joint = (IPXJoint)PEStaticBuilder.Pmx.Joint();
+            H_joint.Name = "横" + bone.Name;
+            H_joint.BodyA = body;
+            H_joint.BodyB = nextBone.Body;
+            H_joint.Position = 0.5f * (body.Position + nextBone.body.Position);
+            H_joint.Rotation = 0.5f * (body.Rotation + nextBone.body.Rotation);
 
             if (createNew)
-                model.Plugin.PMX.Joint.Add(h_joint);
+                model.Plugin.PMX.Joint.Add(H_joint);
         }
         public void UpdateBodySetting(BodySettings bs)
         {
@@ -315,12 +406,12 @@ namespace Aroima.Plugins.Skirt
 
         public void UpdateVJointSetting(JointSettings js)
         {
-            UpdateJointSetting(joint, js);
+            UpdateJointSetting(v_joint, js);
         }
 
         public void UpdateHJointSetting(JointSettings js)
         {
-            UpdateJointSetting(h_joint, js);
+            UpdateJointSetting(H_joint, js);
         }
 
         public void UpdateJointSetting(IPXJoint j, JointSettings js)

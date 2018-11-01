@@ -18,9 +18,9 @@ namespace Aroima.Plugins.Skirt
             for (int j = 0; j < layerNum; j++)
             {
                 model.BodySettingList.Add(new BodySettings());
-                model.H_jointSettingList.Add(new JointSettings());
+                model.H_jointSettingList.Add(new JointSettings("横Joint_" + j.ToString()));
                 if ( j < layerNum - 1)
-                    model.V_jointSettingList.Add(new JointSettings());
+                    model.V_jointSettingList.Add(new JointSettings("縦Joint_" + j.ToString()));
             }
             for (int i = 0; i < colNum; i++)
             {
@@ -36,7 +36,7 @@ namespace Aroima.Plugins.Skirt
                     {
                         Name = $"スカート_{j}_{i}",
                         Model = model,
-                        Pos = j,
+                        Row = j,
                         Column = col
                     };
                     /*
