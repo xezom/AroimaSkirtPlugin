@@ -10,6 +10,7 @@ namespace Aroima.Plugins.Skirt
 
         public SkirtModel Build(SkirtPlugin plugin, int colNum, int layerNum)
         {
+            var bodySettingsBuilder = new BodySettingsBuilder();
             var model = new SkirtModel()
             {
                 LayerCount = layerNum,
@@ -17,7 +18,7 @@ namespace Aroima.Plugins.Skirt
             };
             for (int j = 0; j < layerNum; j++)
             {
-                model.BodySettingList.Add(new BodySettings());
+                model.BodySettingList.Add(bodySettingsBuilder.Build(j, layerNum));
                 model.H_jointSettingList.Add(new JointSettings("横Joint_" + j.ToString()));
                 if ( j < layerNum - 1)
                     model.V_jointSettingList.Add(new JointSettings("縦Joint_" + j.ToString()));

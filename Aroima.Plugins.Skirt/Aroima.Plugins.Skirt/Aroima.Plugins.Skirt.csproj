@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BodySettings.cs" />
+    <Compile Include="BodySettingsBuilder.cs" />
     <Compile Include="BodySettingsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,7 @@
     <Compile Include="VertexDialog.Designer.cs">
       <DependentUpon>VertexDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="VJointSettingsBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BodySettingsDialog.resx">

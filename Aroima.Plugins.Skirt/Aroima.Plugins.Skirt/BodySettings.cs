@@ -21,7 +21,7 @@ namespace Aroima.Plugins.Skirt
         float friction = 0.5f;
         int group = 9;
         int[] passGroup = new int[16];
-   
+
 
         public BodyMode Mode { get => mode; set => mode = value; }
         public BodyBoxKind BoxKind { get => boxKind; set => boxKind = value; }
@@ -40,7 +40,7 @@ namespace Aroima.Plugins.Skirt
         /// </summary>
         public float Friction { get => friction; set => friction = value; }
 
-        
+
         /// <summary>
         /// グループ
         /// </summary>
@@ -50,5 +50,20 @@ namespace Aroima.Plugins.Skirt
         /// 非衝突グループ
         /// </summary>
         public int[] PassGroup { get => passGroup; }
+
+        public void Assign(BodySettings src)
+        {
+            this.mode = src.mode;
+            this.boxKind = src.boxKind;
+            this.boxSize.Assign(src.boxSize);
+            this.mass = src.mass;
+            this.restriction = src.restriction;
+            this.friction = src.friction;
+
+        }
     }
+
+
+
+    
 }

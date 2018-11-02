@@ -22,6 +22,8 @@ namespace Aroima.Plugins.Skirt
         List<BodySettings> bodySettingsList;
         int current = -1;
 
+        ViewModel<BodySettings> vm = new ViewModel<BodySettings>();
+
         public List<BodySettings> BodySettingsList { get => bodySettingsList; set => bodySettingsList = value; }
 
         public BodySettingsDialog()
@@ -44,6 +46,9 @@ namespace Aroima.Plugins.Skirt
             chkPassGroup[13] = checkBox14;
             chkPassGroup[14] = checkBox15;
             chkPassGroup[15] = checkBox16;
+
+
+            
 
             validators.Add(validateMode);
             validators.Add(validateBoxKind);
@@ -76,6 +81,8 @@ namespace Aroima.Plugins.Skirt
 
         private void listBodySettings_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
+
             int selected = listBodySettings.SelectedIndex;
             if ( selected == current )
             {
@@ -204,6 +211,10 @@ namespace Aroima.Plugins.Skirt
             else
                 temp.Mode = BodyMode.DynamicWithBone;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="temp"></param>
         private void validateBoxKind(BodySettings temp)
         {
             if (rbSphere.Checked)
@@ -329,10 +340,119 @@ namespace Aroima.Plugins.Skirt
 
         private void cmbGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
+            vm.Modified = true;
             modified = true;
         }
 
+        private void tsbCommit_Click(object sender, EventArgs e)
+        {
+            
+        }
+    }
 
+    public class ModelUpdatedEventArgs<T> : EventArgs where T: class
+    {
+        T model;
+
+        public T Model { get => model;  }
+        public ModelUpdatedEventArgs(T model)
+        {
+            this.model = model;
+        }
+    }
+    //public delegate void ModelUpdatedEventHandler<T> 
+    //    (object sender,ModelUpdatedEvent<T> e) where T : class;
+
+    public class ViewModel<T> where T: class,new()
+    {
+        bool modified = false;
+        T seleced = null;
+        int currentIndex = -1;
+        List<Action<T>> validators = new List<Action<T>>();
+        List<T> dataList = new List<T>();
+
+        /// <summary>
+        /// UIにてモデルデータの変更が発生した
+        /// </summary>
+        public event EventHandler ModelModified;
+
+        /// <summary>
+        /// UIにてデータ選択の変更が発生した
+        /// </summary>
+        public event EventHandler SelectionChanged;
+        public event EventHandler<ModelUpdatedEventArgs<T>> ModelUpdated;
+
+        public bool Modified
+        {
+            get => modified;
+            set
+            {
+                if (modified != value)
+                {
+                    modified = value;
+                    OnModelModified(new EventArgs());
+                }
+            }
+        }
+
+        public T Seleced { get => seleced; }
+
+        private void OnModelModified(EventArgs e)
+        {
+            if (ModelModified != null)
+                ModelModified(this, e);
+        }
+        private void OnSelectionChanged(EventArgs e)
+        {
+            if (SelectionChanged != null)
+                SelectionChanged(this, e);
+        }
+        public int SelectionChanging(int newIndex, T newobj)
+        {
+            if (currentIndex == newIndex)
+                return -1;
+            if ( modified )
+            {
+                if (ValidateInput())
+                {
+                    currentIndex = newIndex;
+                    seleced = newobj;
+                    OnSelectionChanged(new EventArgs());
+                    Modified = false;
+                }
+            }
+            else
+            {
+                currentIndex = newIndex;
+                seleced = newobj;
+                OnSelectionChanged(new EventArgs());
+                Modified = false;
+            }
+            return currentIndex;
+        }
+
+        public void Add(Action<T> v)
+        {
+            validators.Add(v);
+        }
+
+        public bool ValidateInput()
+        {
+            var temp = new T();
+            try
+            {
+                foreach (var validator in validators)
+                    validator(temp);
+            }
+            catch ( ValidationException ve)
+            {
+                return false;
+            }
+            if (ModelUpdated != null)
+                ModelUpdated(this, new ModelUpdatedEventArgs<T>(temp));
+            return true;
+            // temp -> selected
+        }
     }
 
     public class ValidationException : Exception

@@ -783,7 +783,15 @@ namespace Aroima.Plugins.Skirt
             return new V3(V.X, V.Y, V.Z);
         }
     }
-
+    public static class V3Extentions
+    {
+        public static void Assign(this V3 dst, V3 src)
+        {
+            dst.X = src.X;
+            dst.Y = src.Y;
+            dst.Z = src.Z;
+        }
+    }
 
     public static class IPXBoneExtentions
     {
