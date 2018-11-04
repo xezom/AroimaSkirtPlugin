@@ -64,14 +64,18 @@ namespace Aroima.Plugins.Skirt
         /// </summary>
         public string Name { get => name; set => name = value; }
 
+        public JointSettings()
+        { }
+
+        public JointSettings(string name)
+        {
+            this.name = name;
+        }
+
         public override string ToString()
         {
             return this.name;
         }
         
-        public JointSettings(string name)
-        {
-            this.name = name;
-        }
     }
 }

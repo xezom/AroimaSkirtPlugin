@@ -11,6 +11,8 @@ namespace Aroima.Plugins.Skirt
         public SkirtModel Build(SkirtPlugin plugin, int colNum, int layerNum)
         {
             var bodySettingsBuilder = new BodySettingsBuilder();
+            var vJointSettingsBuilder = new VJointSettingsBuilder();
+            var hJointSettingsBuilder = new HJointSettingsBuilder();
             var model = new SkirtModel()
             {
                 LayerCount = layerNum,
@@ -19,9 +21,9 @@ namespace Aroima.Plugins.Skirt
             for (int j = 0; j < layerNum; j++)
             {
                 model.BodySettingList.Add(bodySettingsBuilder.Build(j, layerNum));
-                model.H_jointSettingList.Add(new JointSettings("横Joint_" + j.ToString()));
+                model.H_jointSettingList.Add(hJointSettingsBuilder.Build(j, layerNum));
                 if ( j < layerNum - 1)
-                    model.V_jointSettingList.Add(new JointSettings("縦Joint_" + j.ToString()));
+                    model.V_jointSettingList.Add(vJointSettingsBuilder.Build(j, layerNum));
             }
             for (int i = 0; i < colNum; i++)
             {
@@ -40,22 +42,15 @@ namespace Aroima.Plugins.Skirt
                         Row = j,
                         Column = col
                     };
-                    /*
-                    var b = plugin.PMX.Bone.Where(x => x.Name == bone.Name).FirstOrDefault();
-                    if ( b != null )
-                    {
-                        bone.Bone = b;
-                    }
-                    var bd = plugin.PMX.Body.Where(x => x.Name == bone.Name).FirstOrDefault();
-                    if (bd != null)
-                    {
-                        bone.Body = bd;
-                    }*/
+                    
+
                     col.BoneList.Add(bone);
                 }
             }
 
             return model;
         }
+
+
     }
 }

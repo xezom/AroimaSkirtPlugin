@@ -19,24 +19,26 @@ namespace Aroima.Plugins.FormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
+            var bb = new BodySettingsBuilder();
             var list = new List<BodySettings>();
-            list.Add(new BodySettings());
-            list.Add(new BodySettings());
-            using (var dlg = new BodySettingsDialog()
+            for (int i = 0; i < 4; i++)
+                list.Add(bb.Build(i, 4));
+            
+
+            using (var dlg = new BodySettingsDialog())
             {
-                BodySettingsList = list
-            })
-            {
+                dlg.Vm.DataSource = list;
                 dlg.ShowDialog();
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+            var builder = new VJointSettingsBuilder();
             var list = new List<JointSettings>();
-            list.Add(new JointSettings());
-            list.Add(new JointSettings());
-            list.Add(new JointSettings());
+            for (int i = 0; i < 4; i++)
+                list.Add(builder.Build(i, 4));
 
             using (var dlg = new JointSettingDialog()
             {

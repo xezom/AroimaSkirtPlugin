@@ -11,197 +11,197 @@ using PEPlugin.Pmx;
 
 namespace Aroima.Plugins.Skirt
 {
+    /// <summary>
+    /// 剛体設定画面
+    /// </summary>
     public partial class BodySettingsDialog : Form
     {
-        BodySettings settings;
-        bool modified = false;
-
-        CheckBox[] chkPassGroup = new CheckBox[16];
-
-        List<Action<BodySettings>> validators = new List<Action<BodySettings>>();
-        List<BodySettings> bodySettingsList;
-        int current = -1;
+        CheckBox[] chkPassGroup;
 
         ViewModel<BodySettings> vm = new ViewModel<BodySettings>();
+        
 
-        public List<BodySettings> BodySettingsList { get => bodySettingsList; set => bodySettingsList = value; }
+        /// <summary>
+        /// ViewModel
+        /// </summary>
+        public ViewModel<BodySettings> Vm { get => vm; set => vm = value; }
+        
 
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         public BodySettingsDialog()
         {
             InitializeComponent();
 
-            chkPassGroup[0] = checkBox1;
-            chkPassGroup[1] = checkBox2;
-            chkPassGroup[2] = checkBox3;
-            chkPassGroup[3] = checkBox4;
-            chkPassGroup[4] = checkBox5;
-            chkPassGroup[5] = checkBox6;
-            chkPassGroup[6] = checkBox7;
-            chkPassGroup[7] = checkBox8;
-            chkPassGroup[8] = checkBox9;
-            chkPassGroup[9] = checkBox10;
-            chkPassGroup[10] = checkBox11;
-            chkPassGroup[11] = checkBox12;
-            chkPassGroup[12] = checkBox13;
-            chkPassGroup[13] = checkBox14;
-            chkPassGroup[14] = checkBox15;
-            chkPassGroup[15] = checkBox16;
+            chkPassGroup = new CheckBox[]
+            {
+                checkBox1,
+                checkBox2,
+                checkBox3,
+                checkBox4,
+                checkBox5,
+                checkBox6,
+                checkBox7,
+                checkBox8,
+                checkBox9,
+                checkBox10,
+                checkBox11,
+                checkBox12,
+                checkBox13,
+                checkBox14,
+                checkBox15,
+                checkBox16
+            };
 
 
-            
 
-            validators.Add(validateMode);
-            validators.Add(validateBoxKind);
-            validators.Add(t =>
-                t.Mass = Validators.GetFloatGTEZ(textMass, "質量"));
-            validators.Add(t =>
-                t.PositionDamping = Validators.GetFloatGTEZ(textPositionDamping, "移動減衰"));
-            validators.Add(t =>
-                t.RotationDamping = Validators.GetFloatGTEZ(textRotationDamping, "回転減衰"));
-            validators.Add(t =>
-                t.Restriction = Validators.GetFloatGTEZ(textRestriction, "反発力"));
-            validators.Add(t =>
-                t.Friction = Validators.GetFloatGTEZ(textFriction, "摩擦力"));
-            validators.Add(validateGroup);
-            validators.Add(validatePassGroup);
+
+            vm.SelectionChanged += Vm_SelectionChanged;
+            vm.ModelUpdated += Vm_ModelUpdated;
+            vm.ModelModified += Vm_ModelModified;
+
+            vm.Add(validateMode);
+            vm.Add(validateBoxKind);
+            vm.Add(t => t.Mass = Validators.GetFloatGTEZ(textMass, "質量"));
+            vm.Add(t => t.PositionDamping = Validators.GetFloatGTEZ(textPositionDamping, "移動減衰"));
+            vm.Add(t => t.RotationDamping = Validators.GetFloatGTEZ(textRotationDamping, "回転減衰"));
+            vm.Add(t => t.Restriction = Validators.GetFloatGTEZ(textRestriction, "反発力"));
+            vm.Add(t => t.Friction = Validators.GetFloatGTEZ(textFriction, "摩擦力"));
+            vm.Add(validateGroup);
+            vm.Add(validatePassGroup);
+           
         }
 
+        /// <summary>
+        /// 状態の変化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Vm_ModelModified(object sender, EventArgs e)
+        {
+            tbCommit.Enabled = vm.Modified;
+            tbCancel.Enabled = vm.Modified;
+        }
+
+        /// <summary>
+        /// 画面初期表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BodySettingsDialog_Load(object sender, EventArgs e)
         {
-            foreach ( var s in BodySettingsList )
-            {
-                listBodySettings.Items.Add(s);
-            }
-            listBodySettings.SelectedIndex = 0;
+            
+                listBodySettings.Items.Clear();
+                if (vm.DataSource == null)
+                    return;
 
-            UpdateView();
-
-            modified = false;
+                foreach (var s in vm.DataSource)
+                {
+                    listBodySettings.Items.Add(s);
+                }
+                listBodySettings.SelectedIndex = 0;
+            
         }
 
+        /// <summary>
+        /// 一覧から選択
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBodySettings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-
             int selected = listBodySettings.SelectedIndex;
-            if ( selected == current )
-            {
+            BodySettings obj = (BodySettings)listBodySettings.SelectedItem;
 
-            }
-            else
-            {
-                if ( modified )
-                {
-                    if ( UpdateData() )
-                    {
-                        current = selected;
-                        settings = (BodySettings)listBodySettings.Items[selected];
-                        UpdateView();
-                        modified = false;
-                    }
-                    else
-                    {
-                        listBodySettings.SelectedIndex = current;
-                    }
-                }
-                else
-                {
-                    current = selected;
-                    settings = (BodySettings)listBodySettings.Items[selected];
-                    UpdateView();
-                    modified = false;
-                }
-            }
+            int r = vm.SelectionChanging(selected, obj);
+            if (r != selected)
+                listBodySettings.SelectedIndex = r;
         }
 
-        private void UpdateView()
+        /// <summary>
+        /// 選択されたのを表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Vm_SelectionChanged(object sender, EventArgs e)
         {
-            switch (settings.Mode)
-            {
-                case BodyMode.Static:
-                    rbStatic.Checked = true;
-                    break;
-                case BodyMode.Dynamic:
-                    rbDynamic.Checked = true;
-                    break;
-                case BodyMode.DynamicWithBone:
-                    rbDynamicWithBone.Checked = true;
-                    break;
-            }
-            switch (settings.BoxKind)
-            {
-                case BodyBoxKind.Sphere:
-                    rbSphere.Checked = true;
-                    textSize1.Text = settings.BoxSize.X.ToString();
-
-                    break;
-                case BodyBoxKind.Box:
-                    rbBox.Checked = true;
-                    textSize1.Text = settings.BoxSize.X.ToString();
-                    textSize2.Text = settings.BoxSize.Y.ToString();
-                    textSize3.Text = settings.BoxSize.Z.ToString();
-                    break;
-                case BodyBoxKind.Capsule:
-                    rbCapsule.Checked = true;
-                    textSize1.Text = settings.BoxSize.X.ToString();
-                    textSize2.Text = settings.BoxSize.Y.ToString();
-
-                    break;
-            }
-            textMass.Text = settings.Mass.ToString();
-            textPositionDamping.Text = settings.PositionDamping.ToString();
-            textRotationDamping.Text = settings.RotationDamping.ToString();
-            textRestriction.Text = settings.Restriction.ToString();
-            textFriction.Text = settings.Friction.ToString();
-
-            cmbGroup.SelectedIndex = settings.Group;
-
-            var list = new List<string>();
-            for (int i = 0; i < 16; i++)
-            {
-                chkPassGroup[i].Checked = settings.PassGroup[i] == 1;
-                if (chkPassGroup[i].Checked)
-                    list.Add((i + 1).ToString());
-            }
-            textPassGroup.Text = String.Join(",", list.ToArray());
-        }
-
-        private bool UpdateData()
-        {
-            var t = new BodySettings();
             try
             {
-                foreach (var validator in validators)
-                    validator(t);
-            }
-            catch (ValidationException e)
-            {
-                MessageBox.Show(e.Message);
-                e.TargetControl.Focus();
-                if ( e.TargetControl is TextBox)
+                vm.Setup = true;
+                var settings = vm.Seleced;
+                switch (settings.Mode)
                 {
-                    // TODO
+                    case BodyMode.Static:
+                        rbStatic.Checked = true;
+                        break;
+                    case BodyMode.Dynamic:
+                        rbDynamic.Checked = true;
+                        break;
+                    case BodyMode.DynamicWithBone:
+                        rbDynamicWithBone.Checked = true;
+                        break;
                 }
-                return false;
+                switch (settings.BoxKind)
+                {
+                    case BodyBoxKind.Sphere:
+                        rbSphere.Checked = true;
+                        textSize1.Text = settings.BoxSize.X.ToString();
+
+                        break;
+                    case BodyBoxKind.Box:
+                        rbBox.Checked = true;
+                        textSize1.Text = settings.BoxSize.X.ToString();
+                        textSize2.Text = settings.BoxSize.Y.ToString();
+                        textSize3.Text = settings.BoxSize.Z.ToString();
+                        break;
+                    case BodyBoxKind.Capsule:
+                        rbCapsule.Checked = true;
+                        textSize1.Text = settings.BoxSize.X.ToString();
+                        textSize2.Text = settings.BoxSize.Y.ToString();
+
+                        break;
+                }
+                textMass.Text = settings.Mass.ToString();
+                textPositionDamping.Text = settings.PositionDamping.ToString();
+                textRotationDamping.Text = settings.RotationDamping.ToString();
+                textRestriction.Text = settings.Restriction.ToString();
+                textFriction.Text = settings.Friction.ToString();
+
+                cmbGroup.SelectedIndex = settings.Group;
+
+                var list = new List<string>();
+                for (int i = 0; i < BodySettings.GROUP_SIZE; i++)
+                {
+                    chkPassGroup[i].Checked = settings.PassGroup[i] == 1;
+                    if (chkPassGroup[i].Checked)
+                        list.Add((i + 1).ToString());
+                }
+                textPassGroup.Text = String.Join(",", list.ToArray());
             }
-            settings.BoxKind = t.BoxKind;
-            settings.Mode = t.Mode;
-            settings.BoxSize.X = t.BoxSize.X;
-            settings.BoxSize.Y = t.BoxSize.Y;
-            settings.BoxSize.Z = t.BoxSize.Z;
-            settings.Mass = t.Mass;
-            settings.PositionDamping = t.PositionDamping;
-            settings.RotationDamping = t.RotationDamping;
-            settings.Restriction = t.Restriction;
-            settings.Friction = t.Friction;
-            settings.Group = t.Group;
-            for (int i = 0; i < 16; i++)
-                settings.PassGroup[i] = t.PassGroup[i];
-
-
-            return true;
+            finally
+            {
+                vm.Setup = false;
+            }
         }
 
+        /// <summary>
+        /// 画面の変更結果を反映する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Vm_ModelUpdated(object sender, ModelUpdatedEventArgs<BodySettings> e)
+        {
+            vm.Seleced.Assign(e.Src);
+
+        }
+
+        #region 入力検証
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="temp"></param>
         private void validateMode(BodySettings temp)
         {
             if (rbStatic.Checked)
@@ -244,18 +244,15 @@ namespace Aroima.Plugins.Skirt
         }
         private void validatePassGroup(BodySettings t)
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < BodySettings.GROUP_SIZE; i++)
             {
                 t.PassGroup[i] = chkPassGroup[i].Checked ? 1 : 0;
             }
         }
-        
 
+        #endregion
 
-            private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
+        #region 画面変更
 
         private void rbSphere_CheckedChanged(object sender, EventArgs e)
         {
@@ -313,159 +310,89 @@ namespace Aroima.Plugins.Skirt
                 textSize3.Visible = false;
             }
 
-            modified = true;
+            vm.Modified = true;
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// 非衝突グループ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             var list = new List<string>();
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < BodySettings.GROUP_SIZE; i++)
             {
                 if (chkPassGroup[i].Checked)
                     list.Add((i + 1).ToString());
             }
             textPassGroup.Text = String.Join(",", list.ToArray());
-            modified = true;
+            vm.Modified = true;
         }
 
         private void textbox_TextChanged(object sender, EventArgs e)
         {
-            modified = true;
+            Vm.Modified = true;
         }
 
         private void cmbGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vm.Modified = true;
-            modified = true;
+            Vm.Modified = true;
         }
 
+        private void rbStatic_CheckedChanged(object sender, EventArgs e)
+        {
+            Vm.Modified = true;
+        }
+
+        #endregion
+
+        #region ツールボタン
+
+        /// <summary>
+        /// 確定ボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tsbCommit_Click(object sender, EventArgs e)
         {
-            
+            vm.Commit();
         }
-    }
-
-    public class ModelUpdatedEventArgs<T> : EventArgs where T: class
-    {
-        T model;
-
-        public T Model { get => model;  }
-        public ModelUpdatedEventArgs(T model)
-        {
-            this.model = model;
-        }
-    }
-    //public delegate void ModelUpdatedEventHandler<T> 
-    //    (object sender,ModelUpdatedEvent<T> e) where T : class;
-
-    public class ViewModel<T> where T: class,new()
-    {
-        bool modified = false;
-        T seleced = null;
-        int currentIndex = -1;
-        List<Action<T>> validators = new List<Action<T>>();
-        List<T> dataList = new List<T>();
 
         /// <summary>
-        /// UIにてモデルデータの変更が発生した
+        /// キャンセルボタン
         /// </summary>
-        public event EventHandler ModelModified;
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbCancel_Click(object sender, EventArgs e)
+        {
+            vm.Cancel();
+        }
 
         /// <summary>
-        /// UIにてデータ選択の変更が発生した
+        /// 閉じるボタン
         /// </summary>
-        public event EventHandler SelectionChanged;
-        public event EventHandler<ModelUpdatedEventArgs<T>> ModelUpdated;
-
-        public bool Modified
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbClose_Click(object sender, EventArgs e)
         {
-            get => modified;
-            set
-            {
-                if (modified != value)
-                {
-                    modified = value;
-                    OnModelModified(new EventArgs());
-                }
-            }
+            Close();
         }
 
-        public T Seleced { get => seleced; }
+        #endregion
 
-        private void OnModelModified(EventArgs e)
+        /// <summary>
+        /// 画面を閉じる
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BodySettingsDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (ModelModified != null)
-                ModelModified(this, e);
-        }
-        private void OnSelectionChanged(EventArgs e)
-        {
-            if (SelectionChanged != null)
-                SelectionChanged(this, e);
-        }
-        public int SelectionChanging(int newIndex, T newobj)
-        {
-            if (currentIndex == newIndex)
-                return -1;
-            if ( modified )
-            {
-                if (ValidateInput())
-                {
-                    currentIndex = newIndex;
-                    seleced = newobj;
-                    OnSelectionChanged(new EventArgs());
-                    Modified = false;
-                }
-            }
-            else
-            {
-                currentIndex = newIndex;
-                seleced = newobj;
-                OnSelectionChanged(new EventArgs());
-                Modified = false;
-            }
-            return currentIndex;
-        }
+            if (vm.Modified &&
+                MessageBox.Show("変更されているけど閉じていい?", "確認",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                e.Cancel = true;
 
-        public void Add(Action<T> v)
-        {
-            validators.Add(v);
-        }
-
-        public bool ValidateInput()
-        {
-            var temp = new T();
-            try
-            {
-                foreach (var validator in validators)
-                    validator(temp);
-            }
-            catch ( ValidationException ve)
-            {
-                return false;
-            }
-            if (ModelUpdated != null)
-                ModelUpdated(this, new ModelUpdatedEventArgs<T>(temp));
-            return true;
-            // temp -> selected
         }
     }
-
-    public class ValidationException : Exception
-    {
-        Control control_;
-
-        public ValidationException(string message, Control control):base(message)
-        {
-            this.control_ = control;
-        }
-
-        public Control TargetControl { get => control_; set => control_ = value; }
-    }
-
-     
 }

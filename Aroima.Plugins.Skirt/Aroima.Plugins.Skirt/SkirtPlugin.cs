@@ -84,6 +84,12 @@ namespace Aroima.Plugins.Skirt
             this.connect.View.PMDView.UpdateView();
         }
 
+        public void UpdatePMX()
+        {
+            this.pmx = null;
+            this.pmx = connect.Pmx.GetCurrentState();
+        }
+
         public void RemoveAllSkirtJoint()
         {
             var jointList = pmx.Joint.Where(j => j.Name.StartsWith("スカート")).ToList();

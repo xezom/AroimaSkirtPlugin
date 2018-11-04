@@ -59,7 +59,10 @@
     <Compile Include="BodySettingsDialog.Designer.cs">
       <DependentUpon>BodySettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="BuilderBase.cs" />
+    <Compile Include="FuncUtil.cs" />
     <Compile Include="Geom.cs" />
+    <Compile Include="HJointSettingsBuilder.cs" />
     <Compile Include="JointSettingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +82,7 @@
     <Compile Include="RemoveDialog.Designer.cs">
       <DependentUpon>RemoveDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkirtBone.cs" />
     <Compile Include="SkirtForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +92,7 @@
     <Compile Include="SkirtModel.cs" />
     <Compile Include="SkirtModelBuilder.cs" />
     <Compile Include="SkirtPlugin.cs" />
+    <Compile Include="V3Extentions.cs" />
     <Compile Include="Validators.cs" />
     <Compile Include="VertexDialog.cs">
       <SubType>Form</SubType>
@@ -95,6 +100,7 @@
     <Compile Include="VertexDialog.Designer.cs">
       <DependentUpon>VertexDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel.cs" />
     <Compile Include="VJointSettingsBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,18 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\BodySettings.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Yes.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Yes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Close.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
