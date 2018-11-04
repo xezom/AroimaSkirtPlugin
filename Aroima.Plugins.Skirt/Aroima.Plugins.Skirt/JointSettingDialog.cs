@@ -11,17 +11,11 @@ namespace Aroima.Plugins.Skirt
 {
     public partial class JointSettingDialog : Form
     {
-        bool commited = false;
         ViewModel<JointSettings> vm = new ViewModel<JointSettings>();
 
         #region プロパティ
 
         public ViewModel<JointSettings> Vm { get => vm; set => vm = value; }
-
-        /// <summary>
-        /// 変更の有無
-        /// </summary>
-        public bool Commited { get => commited; set => commited = value; }
 
         #endregion
 
@@ -85,8 +79,8 @@ namespace Aroima.Plugins.Skirt
         /// <param name="e"></param>
         private void Vm_SelectionChanged(object sender, EventArgs e)
         {
-            Func<float, float> toAngle = x => x / (float)Math.PI * 180;
             var settings = vm.Seleced;
+
 
             textLimitMoveHX.Text = settings.Limit_MoveHigh.X.ToString();
             textLimitMoveHY.Text = settings.Limit_MoveHigh.Y.ToString();
@@ -96,13 +90,13 @@ namespace Aroima.Plugins.Skirt
             textLimitMoveLY.Text = settings.Limit_MoveLow.Y.ToString();
             textLimitMoveLZ.Text = settings.Limit_MoveLow.Z.ToString();
 
-            textLimitAngLX.Text = toAngle(settings.Limit_AngleLow.X).ToString();
-            textLimitAngLY.Text = toAngle(settings.Limit_AngleLow.Y).ToString();
-            textLimitAngLZ.Text = toAngle(settings.Limit_AngleLow.Z).ToString();
+            textLimitAngLX.Text = settings.Limit_AngleLow.X.ToAngle().ToString();
+            textLimitAngLY.Text = settings.Limit_AngleLow.Y.ToAngle().ToString();
+            textLimitAngLZ.Text = settings.Limit_AngleLow.Z.ToAngle().ToString();
 
-            textLimitAngHX.Text = toAngle(settings.Limit_AngleHigh.X).ToString();
-            textLimitAngHY.Text = toAngle(settings.Limit_AngleHigh.Y).ToString();
-            textLimitAngHZ.Text = toAngle(settings.Limit_AngleHigh.Z).ToString();
+            textLimitAngHX.Text = settings.Limit_AngleHigh.X.ToAngle().ToString();
+            textLimitAngHY.Text = settings.Limit_AngleHigh.Y.ToAngle().ToString();
+            textLimitAngHZ.Text = settings.Limit_AngleHigh.Z.ToAngle().ToString();
 
 
             textSpringConstMoveX.Text = settings.SpringConst_Move.X.ToString();
@@ -160,8 +154,6 @@ namespace Aroima.Plugins.Skirt
             settings.SpringConst_Rotate.X = t.SpringConst_Rotate.X;
             settings.SpringConst_Rotate.Y = t.SpringConst_Rotate.Y;
             settings.SpringConst_Rotate.Z = t.SpringConst_Rotate.Z;
-
-            commited = true;
         }
 
         /// <summary>

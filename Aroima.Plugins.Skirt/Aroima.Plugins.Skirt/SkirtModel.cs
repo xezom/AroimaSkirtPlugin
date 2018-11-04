@@ -29,6 +29,7 @@ namespace Aroima.Plugins.Skirt
         IPXBone parentBone;
         int layerCount = 0;
         SkirtPlugin plugin;
+        List<int> selectedVertex;
 
 
         /// <summary>
@@ -57,6 +58,9 @@ namespace Aroima.Plugins.Skirt
         public List<BodySettings> BodySettingList { get => bodySettingList; set => bodySettingList = value; }
         public List<JointSettings> V_jointSettingList { get => v_jointSettingList; set => v_jointSettingList = value; }
         public List<JointSettings> H_jointSettingList { get => h_jointSettingList; set => h_jointSettingList = value; }
+
+
+        public List<int> SelectedVertex { get => selectedVertex; set => selectedVertex = value; }
 
         public void CreatBody()
         {

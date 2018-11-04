@@ -111,7 +111,17 @@ namespace Aroima.Plugins.Skirt
         {
 
             if (SelectionChanged != null)
-                SelectionChanged(this, e);
+            {
+                try
+                {
+                    setup = true;
+                    SelectionChanged(this, e);
+                }
+                finally
+                {
+                    setup = false;
+                }
+            }
         }
         
 

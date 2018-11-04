@@ -391,11 +391,6 @@ namespace Aroima.Plugins.Skirt
             plugin.UpdateView();
         }
 
-        private void tsbBodySettings_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void tbJointSettingsV_Click(object sender, EventArgs e)
         {
             using (var dlg = new JointSettingDialog())
@@ -405,26 +400,22 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
-        private void btnVJointSettings_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnCreateHJoint_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// モデルの新規作成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void miCreateModel_Click(object sender, EventArgs e)
         {
-            var builder = new SkirtModelBuilder();
-            model = builder.Build(plugin, 16, 4);
+            using (var dlg = new NewModelDialog() { StartPosition = FormStartPosition.CenterParent })
+            {
+                var builder = new SkirtModelBuilder();
+                model = builder.Build(plugin, dlg.ColumnNum, dlg.ColumnNum);
 
-            ShowSkirtModel();
+                //plugin.FormConnector.SelectedBoneIndex =
+
+                ShowSkirtModel();
+            }
         }
 
         /// <summary>
@@ -502,11 +493,6 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
-        private void miCreateVJoint_Click(object sender, EventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// 横Joint作成
         /// </summary>
@@ -530,19 +516,21 @@ namespace Aroima.Plugins.Skirt
             {
                 dlg.Vm.DataSource = model.V_jointSettingList;
                 dlg.ShowDialog();
-                if (dlg.Commited)
+
+                foreach (var col in model.ColumnList)
                 {
-                    foreach (var col in model.ColumnList)
+                    for (int i = 0; i < model.LayerCount - 1; i++)
                     {
-                        for (int i = 0; i < model.LayerCount - 1; i++)
+                        if (dlg.Vm.ModifedList[i])
                         {
                             var js = model.V_jointSettingList[i];
                             var bone = col.BoneList[i];
                             bone.UpdateVJointSetting(js);
                         }
                     }
-                    plugin.UpdateView();
                 }
+                plugin.UpdateView();
+                System.GC.Collect();               
             }
         }
 
@@ -622,8 +610,8 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
-        int[] targets = null;
 
+     
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -632,7 +620,7 @@ namespace Aroima.Plugins.Skirt
             float wt1 = float.Parse(textWt1.Text);
             float wt2 = float.Parse(textWt2.Text);
 
-            foreach (var i in targets)
+            foreach (var i in model.SelectedVertex)
             {
                 var v1 = plugin.PMX.Vertex[i];
 
@@ -698,7 +686,32 @@ namespace Aroima.Plugins.Skirt
 
         private void btnGetVertex_Click(object sender, EventArgs e)
         {
-            targets = plugin.PmxView.GetSelectedVertexIndices();
+            model.SelectedVertex = plugin.PmxView.GetSelectedVertexIndices().ToList();
+
+            textVertexNum.Text = model.SelectedVertex.Count.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            List<int> bones = new List<int>();
+            foreach ( var col in model.ColumnList )
+                foreach ( var b in col.BoneList )
+                    if ( b.Bone != null )
+                    {
+                        for (int i = 0; i < plugin.PMX.Bone.Count; i++)
+                            if ( plugin.PMX.Bone[i] == b.Bone)
+                            {
+                                bones.Add(i);
+                                break;
+                            }
+                    }
+
+            plugin.PmxView.SetSelectedBoneIndices(bones.ToArray());
+        }
+
+        private void btnSelectVertex_Click(object sender, EventArgs e)
+        {
+            plugin.PmxView.SetSelectedVertexIndices(model.SelectedVertex.ToArray());
         }
     }
 }

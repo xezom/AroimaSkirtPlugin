@@ -28,6 +28,8 @@ namespace Aroima.Plugins.Skirt
         {
             return angle / 180f * (float)Math.PI;
         }
+
+        
     }
 
     public static class FloatExtentions
@@ -35,6 +37,11 @@ namespace Aroima.Plugins.Skirt
         public static float toRad(this float angle)
         {
             return angle / 180f * (float)Math.PI;
+        }
+
+        public static float ToAngle(this float radian)
+        {
+            return radian / (float)Math.PI * 180f;
         }
     }
 }

@@ -70,6 +70,12 @@
       <DependentUpon>JointSettingDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="JointSettings.cs" />
+    <Compile Include="NewModelDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewModelDialog.Designer.cs">
+      <DependentUpon>NewModelDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,8 +98,15 @@
     <Compile Include="SkirtModel.cs" />
     <Compile Include="SkirtModelBuilder.cs" />
     <Compile Include="SkirtPlugin.cs" />
+    <Compile Include="SkirtVertexForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkirtVertexForm.Designer.cs">
+      <DependentUpon>SkirtVertexForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="V3Extentions.cs" />
     <Compile Include="Validators.cs" />
+    <Compile Include="Vertex.cs" />
     <Compile Include="VertexDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +123,9 @@
     <EmbeddedResource Include="JointSettingDialog.resx">
       <DependentUpon>JointSettingDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="NewModelDialog.resx">
+      <DependentUpon>NewModelDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -120,6 +136,9 @@
     <EmbeddedResource Include="SkirtForm.resx">
       <DependentUpon>SkirtForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SkirtVertexForm.resx">
+      <DependentUpon>SkirtVertexForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VertexDialog.resx">
       <DependentUpon>VertexDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -129,6 +148,7 @@
     <None Include="Properties\DataSources\BodySettings.datasource" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\DataSources\Vertex.datasource" />
     <None Include="Resources\Yes.bmp" />
   </ItemGroup>
   <ItemGroup>

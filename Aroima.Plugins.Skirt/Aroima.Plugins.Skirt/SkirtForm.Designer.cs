@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("root");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("root");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkirtForm));
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
@@ -38,6 +38,9 @@
             this.mainTreeView = new System.Windows.Forms.TreeView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageBone = new System.Windows.Forms.TabPage();
+            this.textHJoint = new System.Windows.Forms.TextBox();
+            this.textVJoint = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.textM33 = new System.Windows.Forms.TextBox();
             this.textM32 = new System.Windows.Forms.TextBox();
             this.textM31 = new System.Windows.Forms.TextBox();
@@ -72,6 +75,12 @@
             this.btnGetPosition = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageModel = new System.Windows.Forms.TabPage();
+            this.btnSelectBones = new System.Windows.Forms.Button();
+            this.btnGetVertex = new System.Windows.Forms.Button();
+            this.textP = new System.Windows.Forms.TextBox();
+            this.textWt2 = new System.Windows.Forms.TextBox();
+            this.textWt1 = new System.Windows.Forms.TextBox();
+            this.btnPaintWeight = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBoneList = new System.Windows.Forms.ComboBox();
             this.tabPageColumn = new System.Windows.Forms.TabPage();
@@ -92,14 +101,10 @@
             this.miVJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.miHJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.label5 = new System.Windows.Forms.Label();
-            this.textVJoint = new System.Windows.Forms.TextBox();
-            this.textHJoint = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textWt1 = new System.Windows.Forms.TextBox();
-            this.textWt2 = new System.Windows.Forms.TextBox();
-            this.textP = new System.Windows.Forms.TextBox();
-            this.btnGetVertex = new System.Windows.Forms.Button();
+            this.btnSelectVertex = new System.Windows.Forms.Button();
+            this.textVertexNum = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -115,6 +120,7 @@
             this.tabPageModel.SuspendLayout();
             this.tabPageColumn.SuspendLayout();
             this.msModel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -165,14 +171,14 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.mainTreeView);
-            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(4);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Panel2.Padding = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Size = new System.Drawing.Size(800, 401);
-            this.splitContainer1.SplitterDistance = 264;
+            this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 0;
             // 
             // mainTreeView
@@ -181,11 +187,11 @@
             this.mainTreeView.HideSelection = false;
             this.mainTreeView.Location = new System.Drawing.Point(4, 4);
             this.mainTreeView.Name = "mainTreeView";
-            treeNode1.Name = "rootNode";
-            treeNode1.Text = "root";
+            treeNode2.Name = "rootNode";
+            treeNode2.Text = "root";
             this.mainTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.mainTreeView.Size = new System.Drawing.Size(256, 393);
+            treeNode2});
+            this.mainTreeView.Size = new System.Drawing.Size(192, 393);
             this.mainTreeView.TabIndex = 0;
             this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
             // 
@@ -198,7 +204,7 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(524, 393);
+            this.tabControl1.Size = new System.Drawing.Size(588, 393);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPageBone
@@ -238,11 +244,34 @@
             this.tabPageBone.Controls.Add(this.label1);
             this.tabPageBone.Location = new System.Drawing.Point(4, 22);
             this.tabPageBone.Name = "tabPageBone";
-            this.tabPageBone.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageBone.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageBone.Size = new System.Drawing.Size(516, 367);
             this.tabPageBone.TabIndex = 0;
             this.tabPageBone.Text = "ボーン";
             this.tabPageBone.UseVisualStyleBackColor = true;
+            // 
+            // textHJoint
+            // 
+            this.textHJoint.Location = new System.Drawing.Point(78, 257);
+            this.textHJoint.Name = "textHJoint";
+            this.textHJoint.Size = new System.Drawing.Size(100, 19);
+            this.textHJoint.TabIndex = 34;
+            // 
+            // textVJoint
+            // 
+            this.textVJoint.Location = new System.Drawing.Point(78, 232);
+            this.textVJoint.Name = "textVJoint";
+            this.textVJoint.Size = new System.Drawing.Size(100, 19);
+            this.textVJoint.TabIndex = 33;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(258, 233);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.TabIndex = 32;
+            this.label5.Text = "回転行列";
             // 
             // textM33
             // 
@@ -538,20 +567,74 @@
             // 
             // tabPageModel
             // 
-            this.tabPageModel.Controls.Add(this.btnGetVertex);
-            this.tabPageModel.Controls.Add(this.textP);
-            this.tabPageModel.Controls.Add(this.textWt2);
-            this.tabPageModel.Controls.Add(this.textWt1);
-            this.tabPageModel.Controls.Add(this.button1);
+            this.tabPageModel.Controls.Add(this.groupBox1);
+            this.tabPageModel.Controls.Add(this.btnSelectBones);
             this.tabPageModel.Controls.Add(this.label2);
             this.tabPageModel.Controls.Add(this.cmbBoneList);
             this.tabPageModel.Location = new System.Drawing.Point(4, 22);
             this.tabPageModel.Name = "tabPageModel";
-            this.tabPageModel.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageModel.Size = new System.Drawing.Size(516, 367);
+            this.tabPageModel.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageModel.Size = new System.Drawing.Size(580, 367);
             this.tabPageModel.TabIndex = 1;
             this.tabPageModel.Text = "モデル";
             this.tabPageModel.UseVisualStyleBackColor = true;
+            // 
+            // btnSelectBones
+            // 
+            this.btnSelectBones.Location = new System.Drawing.Point(21, 172);
+            this.btnSelectBones.Name = "btnSelectBones";
+            this.btnSelectBones.Size = new System.Drawing.Size(113, 23);
+            this.btnSelectBones.TabIndex = 8;
+            this.btnSelectBones.Text = "ボーン選択";
+            this.btnSelectBones.UseVisualStyleBackColor = true;
+            this.btnSelectBones.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnGetVertex
+            // 
+            this.btnGetVertex.Location = new System.Drawing.Point(15, 18);
+            this.btnGetVertex.Name = "btnGetVertex";
+            this.btnGetVertex.Size = new System.Drawing.Size(113, 23);
+            this.btnGetVertex.TabIndex = 6;
+            this.btnGetVertex.Text = "対象頂点の設定";
+            this.btnGetVertex.UseVisualStyleBackColor = true;
+            this.btnGetVertex.Click += new System.EventHandler(this.btnGetVertex_Click);
+            // 
+            // textP
+            // 
+            this.textP.Location = new System.Drawing.Point(374, 70);
+            this.textP.Name = "textP";
+            this.textP.Size = new System.Drawing.Size(51, 19);
+            this.textP.TabIndex = 5;
+            this.textP.Text = "0.01";
+            this.textP.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textWt2
+            // 
+            this.textWt2.Location = new System.Drawing.Point(374, 45);
+            this.textWt2.Name = "textWt2";
+            this.textWt2.Size = new System.Drawing.Size(51, 19);
+            this.textWt2.TabIndex = 4;
+            this.textWt2.Text = "0.2";
+            this.textWt2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textWt1
+            // 
+            this.textWt1.Location = new System.Drawing.Point(374, 20);
+            this.textWt1.Name = "textWt1";
+            this.textWt1.Size = new System.Drawing.Size(51, 19);
+            this.textWt1.TabIndex = 3;
+            this.textWt1.Text = "0.2";
+            this.textWt1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // btnPaintWeight
+            // 
+            this.btnPaintWeight.Location = new System.Drawing.Point(15, 47);
+            this.btnPaintWeight.Name = "btnPaintWeight";
+            this.btnPaintWeight.Size = new System.Drawing.Size(113, 23);
+            this.btnPaintWeight.TabIndex = 2;
+            this.btnPaintWeight.Text = "ウエィト塗り";
+            this.btnPaintWeight.UseVisualStyleBackColor = true;
+            this.btnPaintWeight.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -579,8 +662,8 @@
             this.tabPageColumn.Controls.Add(this.btnCreateBody);
             this.tabPageColumn.Location = new System.Drawing.Point(4, 22);
             this.tabPageColumn.Name = "tabPageColumn";
-            this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPageColumn.Size = new System.Drawing.Size(514, 392);
+            this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageColumn.Size = new System.Drawing.Size(516, 367);
             this.tabPageColumn.TabIndex = 2;
             this.tabPageColumn.Text = "列";
             this.tabPageColumn.UseVisualStyleBackColor = true;
@@ -640,21 +723,21 @@
             // miCreateModel
             // 
             this.miCreateModel.Name = "miCreateModel";
-            this.miCreateModel.Size = new System.Drawing.Size(180, 22);
+            this.miCreateModel.Size = new System.Drawing.Size(120, 22);
             this.miCreateModel.Text = "作成";
             this.miCreateModel.Click += new System.EventHandler(this.miCreateModel_Click);
             // 
             // miSave
             // 
             this.miSave.Name = "miSave";
-            this.miSave.Size = new System.Drawing.Size(180, 22);
+            this.miSave.Size = new System.Drawing.Size(120, 22);
             this.miSave.Text = "保存";
             this.miSave.Click += new System.EventHandler(this.miSave_Click);
             // 
             // miLoad
             // 
             this.miLoad.Name = "miLoad";
-            this.miLoad.Size = new System.Drawing.Size(180, 22);
+            this.miLoad.Size = new System.Drawing.Size(120, 22);
             this.miLoad.Text = "読み込み";
             this.miLoad.Click += new System.EventHandler(this.miLoad_Click);
             // 
@@ -671,22 +754,21 @@
             // miRemoveComponents
             // 
             this.miRemoveComponents.Name = "miRemoveComponents";
-            this.miRemoveComponents.Size = new System.Drawing.Size(180, 22);
+            this.miRemoveComponents.Size = new System.Drawing.Size(135, 22);
             this.miRemoveComponents.Text = "削除";
             // 
             // miCreateHJoint
             // 
             this.miCreateHJoint.Name = "miCreateHJoint";
-            this.miCreateHJoint.Size = new System.Drawing.Size(180, 22);
+            this.miCreateHJoint.Size = new System.Drawing.Size(135, 22);
             this.miCreateHJoint.Text = "横Joint作成";
             this.miCreateHJoint.Click += new System.EventHandler(this.miCreateHJoint_Click);
             // 
             // miCreateVJoint
             // 
             this.miCreateVJoint.Name = "miCreateVJoint";
-            this.miCreateVJoint.Size = new System.Drawing.Size(180, 22);
+            this.miCreateVJoint.Size = new System.Drawing.Size(135, 22);
             this.miCreateVJoint.Text = "縦Joint作成";
-            this.miCreateVJoint.Click += new System.EventHandler(this.miCreateVJoint_Click);
             // 
             // 設定ToolStripMenuItem
             // 
@@ -725,72 +807,51 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "Save.png");
             // 
-            // label5
+            // btnSelectVertex
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(258, 233);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 12);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "回転行列";
+            this.btnSelectVertex.Location = new System.Drawing.Point(244, 18);
+            this.btnSelectVertex.Name = "btnSelectVertex";
+            this.btnSelectVertex.Size = new System.Drawing.Size(61, 23);
+            this.btnSelectVertex.TabIndex = 9;
+            this.btnSelectVertex.Text = "→選択";
+            this.btnSelectVertex.UseVisualStyleBackColor = true;
+            this.btnSelectVertex.Click += new System.EventHandler(this.btnSelectVertex_Click);
             // 
-            // textVJoint
+            // textVertexNum
             // 
-            this.textVJoint.Location = new System.Drawing.Point(78, 232);
-            this.textVJoint.Name = "textVJoint";
-            this.textVJoint.Size = new System.Drawing.Size(100, 19);
-            this.textVJoint.TabIndex = 33;
+            this.textVertexNum.Location = new System.Drawing.Point(181, 20);
+            this.textVertexNum.Name = "textVertexNum";
+            this.textVertexNum.ReadOnly = true;
+            this.textVertexNum.Size = new System.Drawing.Size(48, 19);
+            this.textVertexNum.TabIndex = 10;
+            this.textVertexNum.Text = "0";
+            this.textVertexNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // textHJoint
+            // label6
             // 
-            this.textHJoint.Location = new System.Drawing.Point(78, 257);
-            this.textHJoint.Name = "textHJoint";
-            this.textHJoint.Size = new System.Drawing.Size(100, 19);
-            this.textHJoint.TabIndex = 34;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(134, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "頂点数";
             // 
-            // button1
+            // groupBox1
             // 
-            this.button1.Location = new System.Drawing.Point(71, 99);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(113, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // textWt1
-            // 
-            this.textWt1.Location = new System.Drawing.Point(200, 133);
-            this.textWt1.Name = "textWt1";
-            this.textWt1.Size = new System.Drawing.Size(100, 19);
-            this.textWt1.TabIndex = 3;
-            this.textWt1.Text = "0.2";
-            // 
-            // textWt2
-            // 
-            this.textWt2.Location = new System.Drawing.Point(200, 158);
-            this.textWt2.Name = "textWt2";
-            this.textWt2.Size = new System.Drawing.Size(100, 19);
-            this.textWt2.TabIndex = 4;
-            this.textWt2.Text = "0.2";
-            // 
-            // textP
-            // 
-            this.textP.Location = new System.Drawing.Point(201, 193);
-            this.textP.Name = "textP";
-            this.textP.Size = new System.Drawing.Size(100, 19);
-            this.textP.TabIndex = 5;
-            this.textP.Text = "0.01";
-            // 
-            // btnGetVertex
-            // 
-            this.btnGetVertex.Location = new System.Drawing.Point(71, 70);
-            this.btnGetVertex.Name = "btnGetVertex";
-            this.btnGetVertex.Size = new System.Drawing.Size(113, 23);
-            this.btnGetVertex.TabIndex = 6;
-            this.btnGetVertex.Text = "Get Vertex";
-            this.btnGetVertex.UseVisualStyleBackColor = true;
-            this.btnGetVertex.Click += new System.EventHandler(this.btnGetVertex_Click);
+            this.groupBox1.Controls.Add(this.btnGetVertex);
+            this.groupBox1.Controls.Add(this.btnSelectVertex);
+            this.groupBox1.Controls.Add(this.textP);
+            this.groupBox1.Controls.Add(this.textVertexNum);
+            this.groupBox1.Controls.Add(this.textWt2);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.textWt1);
+            this.groupBox1.Controls.Add(this.btnPaintWeight);
+            this.groupBox1.Location = new System.Drawing.Point(6, 55);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(461, 100);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "ウェイト";
             // 
             // SkirtForm
             // 
@@ -825,6 +886,8 @@
             this.tabPageColumn.PerformLayout();
             this.msModel.ResumeLayout(false);
             this.msModel.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -895,10 +958,15 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textHJoint;
         private System.Windows.Forms.TextBox textVJoint;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPaintWeight;
         private System.Windows.Forms.TextBox textWt2;
         private System.Windows.Forms.TextBox textWt1;
         private System.Windows.Forms.Button btnGetVertex;
         private System.Windows.Forms.TextBox textP;
+        private System.Windows.Forms.Button btnSelectBones;
+        private System.Windows.Forms.Button btnSelectVertex;
+        private System.Windows.Forms.TextBox textVertexNum;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
