@@ -26,11 +26,18 @@ namespace Aroima.Plugins.Skirt
         SkirtColumn column = null;
         SkirtBone bone = null;
         SkirtPlugin plugin = null;
+        SkirtModelBuilder builder;
 
-        
 
-        public SkirtPlugin Plugin { get => plugin; set => plugin = value; }
-
+        public SkirtPlugin Plugin
+        {
+            get => plugin;
+            set
+            {
+                plugin = value;
+                builder = new SkirtModelBuilder(value); 
+            }
+        }
         public SkirtForm()
         {
             InitializeComponent();
@@ -79,67 +86,8 @@ namespace Aroima.Plugins.Skirt
             rootNode.Expand();
         }
 
-        private void tsbCreateModel_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void btnGetPosition_Click(object sender, EventArgs e)
-        {
-            var idx = plugin.PmxView.GetSelectedVertexIndices();
-            if (idx == null || idx.Length == 0)
-            {
-                MessageBox.Show("頂点を選択してください");
-                return;
-            }
-            if (bone == null)
-            {
-                MessageBox.Show("ボーンを選択してください");
-                return;
-            }
-            if (bone.Row == 0 && model.ParentBone == null)
-            {
-                MessageBox.Show("親ボーンを選択してください");
-                return;
-            }
-            List<IPXVertex> vertexList = new List<IPXVertex>();
-            foreach (var ind in idx)
-                vertexList.Add(plugin.PMX.Vertex[ind]);
-
-            using (var dlg = new VertexDialog()
-            {
-                VertexList = vertexList
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.Cancel)
-                    return;
-
-
-
-                var v = dlg.SelectedVertex;
-                if (bone.Bone == null)
-                {
-                    bone.CreateBone(v);
-                    
-                    plugin.PMX.Bone.Add(bone.Bone);
-                }
-                else
-                {
-                    bone.Vertex = v;
-                    bone.Bone.Position = v.Position;
-                    bone.Position = v.Position;
-                    if (bone.Body != null)
-                        bone.Body.Position = v.Position;
-                }
-                ShowBone(bone);
-
-
-                plugin.UpdateView();
-
-
-                //mainTreeView.SelectedNode = mainTreeView.SelectedNode.NextNode;
-            }
-        }
+        
 
         private void mainTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -162,6 +110,7 @@ namespace Aroima.Plugins.Skirt
                     tabControl1.SelectedTab = tabPageBone;
                     bone = (SkirtBone)e.Node.Tag;
                     column = bone.Column;
+                    ShowColumn(column);
                     ShowBone(bone);
                     break;
             }
@@ -174,7 +123,6 @@ namespace Aroima.Plugins.Skirt
         }
         private void ShowBone(SkirtBone bone)
         {
-            tabControl1.SelectedTab = tabPageBone;
             
             if (bone == null)
                 return;
@@ -264,6 +212,60 @@ namespace Aroima.Plugins.Skirt
                 textHJoint.Text = "";
         }
 
+        private void btnGetPosition_Click(object sender, EventArgs e)
+        {
+            var idx = plugin.PmxView.GetSelectedVertexIndices();
+            if (idx == null || idx.Length == 0)
+            {
+                MessageBox.Show("頂点を選択してください");
+                return;
+            }
+            if (bone == null)
+            {
+                MessageBox.Show("ボーンを選択してください");
+                return;
+            }
+            if (bone.Row == 0 && model.ParentBone == null)
+            {
+                MessageBox.Show("親ボーンを選択してください");
+                return;
+            }
+            List<IPXVertex> vertexList = new List<IPXVertex>();
+            foreach (var ind in idx)
+                vertexList.Add(plugin.PMX.Vertex[ind]);
+
+            using (var dlg = new VertexDialog()
+            {
+                VertexList = vertexList
+            })
+            {
+                if (dlg.ShowDialog() == DialogResult.Cancel)
+                    return;
+
+
+
+                var v = dlg.SelectedVertex;
+                if (bone.Bone == null)
+                {
+                    bone.CreateBone(v);
+
+                    plugin.PMX.Bone.Add(bone.Bone);
+                }
+                else
+                {
+                    bone.Vertex = v;
+                    bone.Bone.Position = v.Position;
+                    bone.Position = v.Position;
+                    if (bone.Body != null)
+                        bone.Body.Position = v.Position;
+                }
+                ShowBone(bone);
+
+
+                plugin.UpdateView();
+            }
+        }
+
         /// <summary>
         /// 親ボーン設定
         /// </summary>
@@ -284,30 +286,6 @@ namespace Aroima.Plugins.Skirt
 
         }
 
-        /// <summary>
-        /// 剛体を新規生成してボーンの追加する
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnAddBody_Click(object sender, EventArgs e)
-        {
-            if (bone == null)
-                return;
-
-            bone.AddBody();
-            ShowBone(bone);
-            plugin.UpdateView();
-        }
-
-        private void btnSetBodyAngle_Click(object sender, EventArgs e)
-        {
-            if (bone == null)
-                return;
-
-            bone.SetBodyRotation();
-            ShowBone(bone);
-            plugin.UpdateView();
-        }
 
         private void linkBonePos_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -327,16 +305,106 @@ namespace Aroima.Plugins.Skirt
             Clipboard.SetText(text);
         }
 
-        private void btnAddJoint_Click(object sender, EventArgs e)
-        {
-            if (bone == null)
-                return;
 
-            bone.AddVJoint();
+        /// <summary>
+        /// 列方向に剛体を生成する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateBody_Click(object sender, EventArgs e)
+        {
+            if (column == null)
+            {
+                MessageBox.Show("no column selected.");
+                return;
+            }      
+            column.CreatedBody();
             plugin.UpdateView();
         }
 
-        private void tsbRemoveAllComponent_Click(object sender, EventArgs e)
+        private void btnCreateJoint_Click(object sender, EventArgs e)
+        {
+            if (column == null)
+            {
+                MessageBox.Show("no column selected.");
+                return;
+            }
+
+            column.CreateVJoint();
+            plugin.UpdateView();
+        }
+
+
+
+        #region メニュー
+
+        /// <summary>
+        /// モデルの新規作成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miCreateModel_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new NewModelDialog() { StartPosition = FormStartPosition.CenterParent })
+            {
+                model = builder.Build(dlg.ColumnNum, dlg.ColumnNum);
+
+                //plugin.FormConnector.SelectedBoneIndex =
+
+                ShowSkirtModel();
+            }
+        }
+
+        /// <summary>
+        /// モデルをファイルに保存する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miSave_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new SaveFileDialog()
+            {
+                DefaultExt = "xml",
+                Filter = "XML(*.xml)|*.xml"
+            })
+            {
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+
+                model.SaveToFile(dlg.FileName);
+            }
+        }
+
+        /// <summary>
+        /// ファイルからモデルを読み込む
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miLoad_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new OpenFileDialog()
+            {
+                DefaultExt = "xml",
+                Filter = "XML(*.xml)|*.xml"
+            })
+            {
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+                // 読み込み
+                model = builder.LoadFromFile(dlg.FileName);
+                // 表示
+                ShowSkirtModel();
+            }
+        }
+
+        
+
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miRemoveComponents_Click(object sender, EventArgs e)
         {
             using (var dlg = new RemoveDialog())
             {
@@ -360,139 +428,6 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
-        private void tsbCreateBodyAndJoint_Click(object sender, EventArgs e)
-        {
-            model.CreatBody();
-            plugin.UpdateView();
-        }
-
-        /// <summary>
-        /// 列方向に剛体を生成する
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnCreateBody_Click(object sender, EventArgs e)
-        {
-            if (column == null)
-            {
-                MessageBox.Show("no column selected.");
-                return;
-            }
-            column.CreatedBody();
-            plugin.UpdateView();
-        }
-
-        private void btnCreateJoint_Click(object sender, EventArgs e)
-        {
-            if (column == null)
-                return;
-
-            column.CreateVJoint();
-            plugin.UpdateView();
-        }
-
-        private void tbJointSettingsV_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new JointSettingDialog())
-            {
-                dlg.Vm.DataSource = model.V_jointSettingList;
-                dlg.ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// モデルの新規作成
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void miCreateModel_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new NewModelDialog() { StartPosition = FormStartPosition.CenterParent })
-            {
-                var builder = new SkirtModelBuilder();
-                model = builder.Build(plugin, dlg.ColumnNum, dlg.ColumnNum);
-
-                //plugin.FormConnector.SelectedBoneIndex =
-
-                ShowSkirtModel();
-            }
-        }
-
-        /// <summary>
-        /// モデルをファイルに保存する
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void miSave_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new SaveFileDialog()
-            {
-                DefaultExt = "xml",
-                Filter = "XML(*.xml)|*.xml"
-            })
-            {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    var serializer = new XmlSerializer(typeof(SkirtModel));
-                    using (var stream = new StreamWriter(dlg.FileName, false, System.Text.Encoding.UTF8))
-                    {
-                        serializer.Serialize(stream, model);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// ファイルからモデルを読み込む
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void miLoad_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new OpenFileDialog()
-            {
-                DefaultExt = "xml",
-                Filter = "XML(*.xml)|*.xml"
-            })
-            {
-                if (dlg.ShowDialog() != DialogResult.OK)
-                    return;
-                // 読み込み
-                loadFromToFile(dlg.FileName);
-                // 表示
-                ShowSkirtModel();
-            }
-        }
-
-        /// <summary>
-        /// ファイルからモデルを読み込む
-        /// </summary>
-        /// <param name="fileName">ファイル名</param>
-        private void loadFromToFile(string fileName)
-        {
-            var serializer = new XmlSerializer(typeof(SkirtModel));
-            using (var stream = new StreamReader(fileName, System.Text.Encoding.UTF8))
-            {
-                model = (SkirtModel)serializer.Deserialize(stream);
-            }
-            // 関連付ける
-            model.Plugin = plugin;
-            model.ParentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == model.ParentBoneName);
-            foreach (var col in model.ColumnList)
-            {
-                col.Model = model;
-                foreach (var b in col.BoneList)
-                {
-                    b.Column = col;
-                    b.Model = model;
-                    b.Bone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == b.Name);
-                    b.Body = plugin.PMX.Body.FirstOrDefault(x => x.Name == b.Name);
-                    b.V_Joint = plugin.PMX.Joint.FirstOrDefault(x => x.Name == b.Name);
-                    b.H_joint = plugin.PMX.Joint.FirstOrDefault(x => x.Name == "横" +  b.Name);
-                }
-            }
-        }
-
         /// <summary>
         /// 横Joint作成
         /// </summary>
@@ -500,58 +435,45 @@ namespace Aroima.Plugins.Skirt
         /// <param name="e"></param>
         private void miCreateHJoint_Click(object sender, EventArgs e)
         {
+            var q = plugin.PMX.Joint.Where(x => x.Name.StartsWith("横スカート_"));
+            var count = q.Count();
+            if (count > 0)
+            {
+                if (MessageBox.Show("横Jointが既に存在しています。削除しますか?", "確認",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                // 削除
+                foreach ( var joint in q)
+                {
+                    plugin.PMX.Joint.Remove(joint);
+
+                    foreach (var col in model.ColumnList)
+                        foreach (var node in col.BoneList)
+                            if (node.H_joint == joint)
+                                node.H_joint = null;
+                }
+                plugin.UpdateView();
+            }
             foreach (var col in model.ColumnList)
                 col.CreateHJoint();
             plugin.UpdateView();
         }
 
         /// <summary>
-        /// 縦Joint設定
+        /// 縦Joint作成
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void miVJointSettings_Click(object sender, EventArgs e)
+        private void miCreateVJoint_Click(object sender, EventArgs e)
         {
-            using (var dlg = new JointSettingDialog())
-            {
-                dlg.Vm.DataSource = model.V_jointSettingList;
-                dlg.ShowDialog();
+            foreach (var col in model.ColumnList)
+                col.CreateVJoint();
+            plugin.UpdateView();
 
-                foreach (var col in model.ColumnList)
-                {
-                    for (int i = 0; i < model.LayerCount - 1; i++)
-                    {
-                        if (dlg.Vm.ModifedList[i])
-                        {
-                            var js = model.V_jointSettingList[i];
-                            var bone = col.BoneList[i];
-                            bone.UpdateVJointSetting(js);
-                        }
-                    }
-                }
-                plugin.UpdateView();
-                System.GC.Collect();               
-            }
         }
 
-        private void miHJointSettings_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new JointSettingDialog())
-            {
-                dlg.Vm.DataSource = model.H_jointSettingList;
-                dlg.ShowDialog();
-                foreach (var col in model.ColumnList)
-                {
-                    for (int i = 0; i < model.LayerCount; i++)
-                    {
-                        var js = model.H_jointSettingList[i];
-                        var bone = col.BoneList[i];
-                        bone.UpdateVJointSetting(js);
-                    }
-                }
-                plugin.UpdateView();
-            }
-        }
 
         /// <summary>
         /// 剛体設定画面の表示
@@ -593,11 +515,62 @@ namespace Aroima.Plugins.Skirt
 
                     System.GC.Collect();
                 }
-
-
-               // model.Clear();
             }
         }
+
+        /// <summary>
+        /// 縦Joint設定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miVJointSettings_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new JointSettingDialog())
+            {
+                dlg.Vm.DataSource = model.V_jointSettingList;
+                dlg.ShowDialog();
+
+                foreach (var col in model.ColumnList)
+                {
+                    for (int i = 0; i < model.LayerCount - 1; i++)
+                    {
+                        if (dlg.Vm.ModifedList[i])
+                        {
+                            var js = model.V_jointSettingList[i];
+                            var bone = col.BoneList[i];
+                            bone.UpdateVJointSetting(js);
+                        }
+                    }
+                }
+                plugin.UpdateView();
+                System.GC.Collect();               
+            }
+        }
+        /// <summary>
+        /// 横Joint設定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miHJointSettings_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new JointSettingDialog())
+            {
+                dlg.Vm.DataSource = model.H_jointSettingList;
+                dlg.ShowDialog();
+                foreach (var col in model.ColumnList)
+                {
+                    for (int i = 0; i < model.LayerCount; i++)
+                    {
+                        var js = model.H_jointSettingList[i];
+                        var bone = col.BoneList[i];
+                        bone.UpdateVJointSetting(js);
+                    }
+                }
+                plugin.UpdateView();
+            }
+        }
+
+        #endregion
 
         class Distance : IComparable<Distance>
         {
@@ -613,7 +586,7 @@ namespace Aroima.Plugins.Skirt
 
      
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnPaintWeight_Click(object sender, EventArgs e)
         {
 
             float p = float.Parse(textP.Text);
@@ -639,7 +612,7 @@ namespace Aroima.Plugins.Skirt
                 }
                 list.Sort();
 
-                Func<float, float> f = x => (float)Math.Pow(0.01, x);
+                Func<float, float> f = x => (float)Math.Pow(p, x);
                 float w1 = f(list[0].Length);
                 float w2 = f(list[1].Length);
                 float w3 = f(list[2].Length);
@@ -649,34 +622,57 @@ namespace Aroima.Plugins.Skirt
                 float a3 = list[2].Length / list[0].Length;
                 float a4 = list[3].Length / list[0].Length;
 
-                if (w3 / w1 > wt1)
+
+                if (w4 / w1 > wt1)
                 {
                     // BDEF3
-
-                    
                     v1.Bone1 = list[0].Bone.Bone;
                     v1.Bone2 = list[1].Bone.Bone;
                     v1.Bone3 = list[2].Bone.Bone;
+                    v1.Bone4 = list[3].Bone.Bone;
+
+                    v1.Weight1 = w1 / (w1 + w2 + w3 + w4);
+                    v1.Weight2 = w2 / (w1 + w2 + w3 + w4);
+                    v1.Weight3 = w3 / (w1 + w2 + w3 + w4);
+                    v1.Weight4 = w4 / (w1 + w2 + w3 + w4);
+                }
+                if (w3 / w1 > wt1)
+                {
+                    // BDEF3
+                    v1.Bone1 = list[0].Bone.Bone;
+                    v1.Bone2 = list[1].Bone.Bone;
+                    v1.Bone3 = list[2].Bone.Bone;
+                    v1.Bone4 = null;
 
                     v1.Weight1 = w1 / (w1 + w2 + w3);
                     v1.Weight2 = w2 / (w1 + w2 + w3);
                     v1.Weight3 = w3 / (w1 + w2 + w3);
+                    v1.Weight4 = 0;
                 }
                 else if ( w2 / w1 > wt2)
                 {
                     // BDEF2
                     v1.Bone1 = list[0].Bone.Bone;
-
                     v1.Bone2 = list[1].Bone.Bone;
+                    v1.Bone3 = null;
+                    v1.Bone4 = null;
 
                     v1.Weight1 = w1 / (w1 + w2);
                     v1.Weight2 = w2 / (w1 + w2);
+                    v1.Weight3 = 0;
+                    v1.Weight4 = 0;
                 }
                 else
                 { 
                     // BDEF1
                     v1.Bone1 = list[0].Bone.Bone;
+                    v1.Bone2 = null;
+                    v1.Bone3 = null;
+                    v1.Bone4 = null;
                     v1.Weight1 = 1f;
+                    v1.Weight2 = 0;
+                    v1.Weight3 = 0;
+                    v1.Weight4 = 0;
                 }
 
             }
@@ -713,5 +709,42 @@ namespace Aroima.Plugins.Skirt
         {
             plugin.PmxView.SetSelectedVertexIndices(model.SelectedVertex.ToArray());
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            List<Vertex> vList = new List<Vertex>();
+
+            foreach ( int idx in model.SelectedVertex)
+            {
+
+                var v = plugin.PMX.Vertex[idx];
+
+                vList.Add(new Vertex()
+                {
+                    Id = idx,
+                    X = v.Position.X,
+                    Y = v.Position.Y,
+                    Z = v.Position.Z,
+                    Bone1 = v.Bone1 != null ? v.Bone1.Name : "",
+                    Weight1 = v.Weight1,
+                    Bone2 = v.Bone2 != null ? v.Bone2.Name : "",
+                    Weight2 = v.Weight2,
+                    Bone3 = v.Bone3 != null ? v.Bone3.Name : "",
+                    Weight3 = v.Weight3,
+                    Bone4 = v.Bone4 != null ? v.Bone4.Name : "",
+                    Weight4 = v.Weight4
+
+                });
+            }
+            using (var form = new SkirtVertexForm())
+            {
+                form.Vm.DataSource = vList;
+                form.ShowDialog();
+            }
+        }
+
+
     }
+
+    
 }

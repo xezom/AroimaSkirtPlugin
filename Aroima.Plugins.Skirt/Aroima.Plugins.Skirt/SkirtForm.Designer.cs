@@ -75,12 +75,17 @@
             this.btnGetPosition = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPageModel = new System.Windows.Forms.TabPage();
-            this.btnSelectBones = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnGetVertex = new System.Windows.Forms.Button();
+            this.btnSelectVertex = new System.Windows.Forms.Button();
             this.textP = new System.Windows.Forms.TextBox();
+            this.textVertexNum = new System.Windows.Forms.TextBox();
             this.textWt2 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.textWt1 = new System.Windows.Forms.TextBox();
             this.btnPaintWeight = new System.Windows.Forms.Button();
+            this.btnSelectBones = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBoneList = new System.Windows.Forms.ComboBox();
             this.tabPageColumn = new System.Windows.Forms.TabPage();
@@ -101,10 +106,6 @@
             this.miVJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.miHJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.btnSelectVertex = new System.Windows.Forms.Button();
-            this.textVertexNum = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -118,9 +119,9 @@
             this.tabPageBone.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPageModel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPageColumn.SuspendLayout();
             this.msModel.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -245,7 +246,7 @@
             this.tabPageBone.Location = new System.Drawing.Point(4, 22);
             this.tabPageBone.Name = "tabPageBone";
             this.tabPageBone.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageBone.Size = new System.Drawing.Size(516, 367);
+            this.tabPageBone.Size = new System.Drawing.Size(580, 367);
             this.tabPageBone.TabIndex = 0;
             this.tabPageBone.Text = "ボーン";
             this.tabPageBone.UseVisualStyleBackColor = true;
@@ -579,15 +580,33 @@
             this.tabPageModel.Text = "モデル";
             this.tabPageModel.UseVisualStyleBackColor = true;
             // 
-            // btnSelectBones
+            // groupBox1
             // 
-            this.btnSelectBones.Location = new System.Drawing.Point(21, 172);
-            this.btnSelectBones.Name = "btnSelectBones";
-            this.btnSelectBones.Size = new System.Drawing.Size(113, 23);
-            this.btnSelectBones.TabIndex = 8;
-            this.btnSelectBones.Text = "ボーン選択";
-            this.btnSelectBones.UseVisualStyleBackColor = true;
-            this.btnSelectBones.Click += new System.EventHandler(this.button2_Click);
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnGetVertex);
+            this.groupBox1.Controls.Add(this.btnSelectVertex);
+            this.groupBox1.Controls.Add(this.textP);
+            this.groupBox1.Controls.Add(this.textVertexNum);
+            this.groupBox1.Controls.Add(this.textWt2);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.textWt1);
+            this.groupBox1.Controls.Add(this.btnPaintWeight);
+            this.groupBox1.Location = new System.Drawing.Point(6, 55);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(461, 100);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "ウェイト";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(244, 47);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(61, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // btnGetVertex
             // 
@@ -599,6 +618,16 @@
             this.btnGetVertex.UseVisualStyleBackColor = true;
             this.btnGetVertex.Click += new System.EventHandler(this.btnGetVertex_Click);
             // 
+            // btnSelectVertex
+            // 
+            this.btnSelectVertex.Location = new System.Drawing.Point(244, 18);
+            this.btnSelectVertex.Name = "btnSelectVertex";
+            this.btnSelectVertex.Size = new System.Drawing.Size(61, 23);
+            this.btnSelectVertex.TabIndex = 9;
+            this.btnSelectVertex.Text = "→選択";
+            this.btnSelectVertex.UseVisualStyleBackColor = true;
+            this.btnSelectVertex.Click += new System.EventHandler(this.btnSelectVertex_Click);
+            // 
             // textP
             // 
             this.textP.Location = new System.Drawing.Point(374, 70);
@@ -608,6 +637,16 @@
             this.textP.Text = "0.01";
             this.textP.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // textVertexNum
+            // 
+            this.textVertexNum.Location = new System.Drawing.Point(181, 20);
+            this.textVertexNum.Name = "textVertexNum";
+            this.textVertexNum.ReadOnly = true;
+            this.textVertexNum.Size = new System.Drawing.Size(48, 19);
+            this.textVertexNum.TabIndex = 10;
+            this.textVertexNum.Text = "0";
+            this.textVertexNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // textWt2
             // 
             this.textWt2.Location = new System.Drawing.Point(374, 45);
@@ -616,6 +655,15 @@
             this.textWt2.TabIndex = 4;
             this.textWt2.Text = "0.2";
             this.textWt2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(134, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 12);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "頂点数";
             // 
             // textWt1
             // 
@@ -634,7 +682,17 @@
             this.btnPaintWeight.TabIndex = 2;
             this.btnPaintWeight.Text = "ウエィト塗り";
             this.btnPaintWeight.UseVisualStyleBackColor = true;
-            this.btnPaintWeight.Click += new System.EventHandler(this.button1_Click);
+            this.btnPaintWeight.Click += new System.EventHandler(this.btnPaintWeight_Click);
+            // 
+            // btnSelectBones
+            // 
+            this.btnSelectBones.Location = new System.Drawing.Point(21, 172);
+            this.btnSelectBones.Name = "btnSelectBones";
+            this.btnSelectBones.Size = new System.Drawing.Size(113, 23);
+            this.btnSelectBones.TabIndex = 8;
+            this.btnSelectBones.Text = "ボーン選択";
+            this.btnSelectBones.UseVisualStyleBackColor = true;
+            this.btnSelectBones.Click += new System.EventHandler(this.button2_Click);
             // 
             // label2
             // 
@@ -663,7 +721,7 @@
             this.tabPageColumn.Location = new System.Drawing.Point(4, 22);
             this.tabPageColumn.Name = "tabPageColumn";
             this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageColumn.Size = new System.Drawing.Size(516, 367);
+            this.tabPageColumn.Size = new System.Drawing.Size(580, 367);
             this.tabPageColumn.TabIndex = 2;
             this.tabPageColumn.Text = "列";
             this.tabPageColumn.UseVisualStyleBackColor = true;
@@ -754,21 +812,23 @@
             // miRemoveComponents
             // 
             this.miRemoveComponents.Name = "miRemoveComponents";
-            this.miRemoveComponents.Size = new System.Drawing.Size(135, 22);
+            this.miRemoveComponents.Size = new System.Drawing.Size(180, 22);
             this.miRemoveComponents.Text = "削除";
+            this.miRemoveComponents.Click += new System.EventHandler(this.miRemoveComponents_Click);
             // 
             // miCreateHJoint
             // 
             this.miCreateHJoint.Name = "miCreateHJoint";
-            this.miCreateHJoint.Size = new System.Drawing.Size(135, 22);
+            this.miCreateHJoint.Size = new System.Drawing.Size(180, 22);
             this.miCreateHJoint.Text = "横Joint作成";
             this.miCreateHJoint.Click += new System.EventHandler(this.miCreateHJoint_Click);
             // 
             // miCreateVJoint
             // 
             this.miCreateVJoint.Name = "miCreateVJoint";
-            this.miCreateVJoint.Size = new System.Drawing.Size(135, 22);
+            this.miCreateVJoint.Size = new System.Drawing.Size(180, 22);
             this.miCreateVJoint.Text = "縦Joint作成";
+            this.miCreateVJoint.Click += new System.EventHandler(this.miCreateVJoint_Click);
             // 
             // 設定ToolStripMenuItem
             // 
@@ -807,52 +867,6 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "Save.png");
             // 
-            // btnSelectVertex
-            // 
-            this.btnSelectVertex.Location = new System.Drawing.Point(244, 18);
-            this.btnSelectVertex.Name = "btnSelectVertex";
-            this.btnSelectVertex.Size = new System.Drawing.Size(61, 23);
-            this.btnSelectVertex.TabIndex = 9;
-            this.btnSelectVertex.Text = "→選択";
-            this.btnSelectVertex.UseVisualStyleBackColor = true;
-            this.btnSelectVertex.Click += new System.EventHandler(this.btnSelectVertex_Click);
-            // 
-            // textVertexNum
-            // 
-            this.textVertexNum.Location = new System.Drawing.Point(181, 20);
-            this.textVertexNum.Name = "textVertexNum";
-            this.textVertexNum.ReadOnly = true;
-            this.textVertexNum.Size = new System.Drawing.Size(48, 19);
-            this.textVertexNum.TabIndex = 10;
-            this.textVertexNum.Text = "0";
-            this.textVertexNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(134, 23);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 12);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "頂点数";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnGetVertex);
-            this.groupBox1.Controls.Add(this.btnSelectVertex);
-            this.groupBox1.Controls.Add(this.textP);
-            this.groupBox1.Controls.Add(this.textVertexNum);
-            this.groupBox1.Controls.Add(this.textWt2);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.textWt1);
-            this.groupBox1.Controls.Add(this.btnPaintWeight);
-            this.groupBox1.Location = new System.Drawing.Point(6, 55);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(461, 100);
-            this.groupBox1.TabIndex = 12;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "ウェイト";
-            // 
             // SkirtForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -882,12 +896,12 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabPageModel.ResumeLayout(false);
             this.tabPageModel.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPageColumn.ResumeLayout(false);
             this.tabPageColumn.PerformLayout();
             this.msModel.ResumeLayout(false);
             this.msModel.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -968,5 +982,6 @@
         private System.Windows.Forms.TextBox textVertexNum;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

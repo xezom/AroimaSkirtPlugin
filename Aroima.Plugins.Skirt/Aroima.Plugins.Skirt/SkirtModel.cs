@@ -15,6 +15,7 @@ using PEPlugin.View;
 using PEPlugin.Vmd;
 using PEPlugin.Vme;
 using SlimDX;
+using System.IO;
 
 namespace Aroima.Plugins.Skirt
 {
@@ -104,6 +105,15 @@ namespace Aroima.Plugins.Skirt
         {
             parentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == parentBoneName);
             columnList.ForEach(c => c.UpdatePlugin());
+        }
+
+        public void SaveToFile(string fileName)
+        {
+            var serializer = new XmlSerializer(typeof(SkirtModel));
+            using (var stream = new StreamWriter(fileName, false, System.Text.Encoding.UTF8))
+            {
+                serializer.Serialize(stream, this);
+            }
         }
 
     }
