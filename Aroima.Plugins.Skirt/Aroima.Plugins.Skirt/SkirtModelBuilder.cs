@@ -55,7 +55,7 @@ namespace Aroima.Plugins.Skirt
                     col.BoneList.Add(bone);
                 }
             }
-
+            AssociateWith(model);
             return model;
         }
 
@@ -69,6 +69,12 @@ namespace Aroima.Plugins.Skirt
             }
             // 関連付ける
             model.Plugin = plugin;
+            AssociateWith(model);
+            return model;
+        }
+
+        private void AssociateWith(SkirtModel model)
+        {
             model.ParentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == model.ParentBoneName);
             foreach (var col in model.ColumnList)
             {
@@ -78,12 +84,17 @@ namespace Aroima.Plugins.Skirt
                     b.Column = col;
                     b.Model = model;
                     b.Bone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == b.Name);
+                    if ( b.Bone != null)
+                    {
+                        b.Position = b.Bone.Position;
+                    }
+
+
                     b.Body = plugin.PMX.Body.FirstOrDefault(x => x.Name == b.Name);
                     b.V_Joint = plugin.PMX.Joint.FirstOrDefault(x => x.Name == b.Name);
                     b.H_joint = plugin.PMX.Joint.FirstOrDefault(x => x.Name == "横" + b.Name);
                 }
             }
-            return model;
         }
     }
 }

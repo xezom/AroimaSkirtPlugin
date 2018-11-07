@@ -10,7 +10,7 @@ namespace Aroima.Plugins.Skirt
     /// <summary>
     /// 剛体設定生成
     /// </summary>
-    public class BodySettingsBuilder
+    public class BodySettingsBuilder : BuilderBase
     {
         private float toRate(int layer, int layerNum)
         {
@@ -36,8 +36,8 @@ namespace Aroima.Plugins.Skirt
                 Name = "剛体_階層" + layer.ToString(),
                 Mode = layer == 0 ? BodyMode.Static : BodyMode.Dynamic,
                 BoxSize = new V3(0.1f + 0.05f * layer, 0, 0),
-                Mass = 2f + (-0.25f) * layer,
-                Friction = 0.5f + 0.5f * layer,
+                Mass = Liner(layer, layerNum, 2f, 3f),
+                Friction = Liner(layer, layerNum, 0.5f, 1.0f),
                 Restriction = 0,
                 RotationDamping = toRate(layer, layerNum),
                 PositionDamping = toRate(layer, layerNum)

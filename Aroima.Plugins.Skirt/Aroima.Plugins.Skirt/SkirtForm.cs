@@ -114,7 +114,26 @@ namespace Aroima.Plugins.Skirt
                     ShowBone(bone);
                     break;
             }
-           
+            setToolButtons();
+
+
+            if (plugin != null && bone != null &&  bone.Bone != null)
+            {
+                int id = -1;
+                for (int i = 0; i < plugin.PMX.Bone.Count; i++)
+                {
+                    if (plugin.PMX.Bone[i] == bone.Bone)
+                    {
+                        id = i;
+                        break;
+                    }
+                }
+                if (id != -1)
+                {
+                    plugin.FormConnector.SelectedBoneIndex = id;
+                    plugin.Connect.View.PMDView.UpdateView();
+                }
+            }
         }
 
         private void ShowColumn(SkirtColumn column)
@@ -139,7 +158,7 @@ namespace Aroima.Plugins.Skirt
             textNormalY.Text = bone.Normal.Y.ToString();
             textNormalZ.Text = bone.Normal.Z.ToString();
 
-            chkBone.Checked = bone.Bone != null;
+
 
 
 
@@ -210,6 +229,7 @@ namespace Aroima.Plugins.Skirt
                 textHJoint.Text = bone.H_joint.Name;
             else
                 textHJoint.Text = "";
+
         }
 
         private void btnGetPosition_Click(object sender, EventArgs e)
@@ -236,7 +256,8 @@ namespace Aroima.Plugins.Skirt
 
             using (var dlg = new VertexDialog()
             {
-                VertexList = vertexList
+                VertexList = vertexList,
+                StartPosition = FormStartPosition.CenterParent
             })
             {
                 if (dlg.ShowDialog() == DialogResult.Cancel)
@@ -262,7 +283,36 @@ namespace Aroima.Plugins.Skirt
                 ShowBone(bone);
 
 
+                int id = -1;
+                for ( int i = 0; i < plugin.PMX.Vertex.Count; i++)
+                    if ( plugin.PMX.Vertex[i] == v)
+                    {
+                        id = i;
+                        break;
+                    }
+                if (id != -1)
+                {
+                    plugin.FormConnector.SelectedVertexIndex = id;
+                }
+                
                 plugin.UpdateView();
+
+
+                id = -1;
+                for (int i = 0; i < plugin.PMX.Bone.Count; i++)
+                    if (plugin.PMX.Bone[i] == bone)
+                    {
+                        id = i;
+                        break;
+                    }
+                if (id != -1)
+                {
+                    plugin.FormConnector.SelectedBoneIndex = id;
+                    //plugin.Connect.View.PMDView.UpdateView();
+                    plugin.Connect.View.PMDView.UpdateView();
+                }
+                
+                
             }
         }
 
@@ -345,10 +395,20 @@ namespace Aroima.Plugins.Skirt
         /// <param name="e"></param>
         private void miCreateModel_Click(object sender, EventArgs e)
         {
-            using (var dlg = new NewModelDialog() { StartPosition = FormStartPosition.CenterParent })
+            var boneNameList = new List<string>();
+            foreach (var item in cmbBoneList.Items)
+                boneNameList.Add(item.ToString());
+            using (var dlg = new NewModelDialog() {
+                StartPosition = FormStartPosition.CenterParent,
+                BoneNameList = boneNameList
+            })
             {
-                model = builder.Build(dlg.ColumnNum, dlg.ColumnNum);
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
 
+                model = builder.Build(dlg.ColumnNum, dlg.LayerNum);
+                model.ParentBoneName = dlg.ParentBoneName;
+                model.ParentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == dlg.ParentBoneName);
                 //plugin.FormConnector.SelectedBoneIndex =
 
                 ShowSkirtModel();
@@ -418,12 +478,35 @@ namespace Aroima.Plugins.Skirt
                     return;
 
                 if (dlg.RemoveJoint)
+                {
                     plugin.RemoveAllSkirtJoint();
-                if (dlg.RemoveBody)
-                    plugin.RemoveAllSkirtBody();
-                if (dlg.RemoveBone)
-                    plugin.RemoveAllSkirtBone();
 
+                    foreach (var col in model.ColumnList)
+                        foreach (var node in col.BoneList)
+                            if (node.Bone != null)
+                                node.Bone = null;
+                }
+                if (dlg.RemoveBody)
+                {
+                    plugin.RemoveAllSkirtBody();
+                    foreach(var col in model.ColumnList)
+                        foreach (var node in col.BoneList)
+                        if (node.Body != null)
+                            node.Body = null;
+
+                }
+                if (dlg.RemoveBone)
+                {
+                    plugin.RemoveAllSkirtBone();
+                    foreach (var col in model.ColumnList)
+                        foreach (var node in col.BoneList)
+                        {
+                            if (node.H_joint != null)
+                                node.H_joint = null;
+                            if (node.V_Joint != null)
+                                node.V_Joint = null;
+                        }
+                }
                 plugin.UpdateView();
             }
         }
@@ -703,6 +786,8 @@ namespace Aroima.Plugins.Skirt
                     }
 
             plugin.PmxView.SetSelectedBoneIndices(bones.ToArray());
+            //plugin.Connect.View.PMDView.UpdateView();
+            plugin.Connect.View.PmxView.UpdateView();
         }
 
         private void btnSelectVertex_Click(object sender, EventArgs e)
@@ -743,7 +828,94 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
+        private void mainTreeView_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            if (e.Node == null) return;
 
+            // if treeview's HideSelection property is "True", 
+            // this will always returns "False" on unfocused treeview
+            var selected = (e.State & TreeNodeStates.Selected) == TreeNodeStates.Selected;
+            var unfocused = !e.Node.TreeView.Focused;
+
+            // we need to do owner drawing only on a selected node
+            // and when the treeview is unfocused, else let the OS do it for us
+            if (selected && unfocused)
+            {
+                var font = e.Node.NodeFont ?? e.Node.TreeView.Font;
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Bounds);
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, SystemColors.HighlightText, TextFormatFlags.GlyphOverhangPadding);
+            }
+            else
+            {
+                e.DrawDefault = true;
+            }
+        }
+
+        private void setToolButtons()
+        {
+
+        }
+        private void tbPrev_Click(object sender, EventArgs e)
+        {
+            var node = mainTreeView.SelectedNode;
+            if (node == null)
+                return;
+            if (node.Level == 2)
+            {
+                if ( node.PrevNode != null )
+                {
+                    mainTreeView.SelectedNode = node.PrevNode;
+                }
+                else if ( node.Parent.PrevNode != null && node.Parent.PrevNode.Nodes.Count > 0)
+                {
+                    mainTreeView.SelectedNode = node.Parent.PrevNode.Nodes[node.Parent.PrevNode.Nodes.Count - 1];
+                    node.Parent.Collapse();
+                }
+            }
+        }
+        private void tbNext_Click(object sender, EventArgs e)
+        {
+            var node = mainTreeView.SelectedNode;
+            if (node == null)
+                return;
+            if (node.Level == 2)
+            {
+                if (node.NextNode != null)
+                    mainTreeView.SelectedNode = node.NextNode;
+                else
+                {
+                    if (node.Parent.NextNode != null && node.Parent.NextNode.Nodes.Count > 0)
+                    {
+                        mainTreeView.SelectedNode = node.Parent.NextNode.Nodes[0];
+                        node.Parent.Collapse();
+                    }
+                }
+            }
+
+
+    
+        }
+
+        private void tbUp_Click(object sender, EventArgs e)
+        {
+            var node = mainTreeView.SelectedNode;
+            if (node == null)
+                return;
+            if (node.Parent != null)
+                mainTreeView.SelectedNode = node.Parent;
+        }
+
+        private void tbDown_Click(object sender, EventArgs e)
+        {
+            var node = mainTreeView.SelectedNode;
+            if (node == null)
+                return;
+            if (node.Nodes.Count > 0)
+            {
+                node.Expand();
+                mainTreeView.SelectedNode = node.Nodes[0];
+            }
+        }
     }
 
     

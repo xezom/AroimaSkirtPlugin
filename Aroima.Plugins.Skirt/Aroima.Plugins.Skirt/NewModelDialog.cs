@@ -13,6 +13,8 @@ namespace Aroima.Plugins.Skirt
     {
         int layerNum = 4;
         int columnNum = 16;
+        List<string> boneNameList = new List<string>();
+        string parentBoneName;
 
         public NewModelDialog()
         {
@@ -28,11 +30,27 @@ namespace Aroima.Plugins.Skirt
         /// 列数
         /// </summary>
         public int ColumnNum { get => columnNum; set => columnNum = value; }
+        public List<string> BoneNameList { get => boneNameList; set => boneNameList = value; }
+        public string ParentBoneName { get => parentBoneName; set => parentBoneName = value; }
 
-        private void ndLayerNum_ValueChanged(object sender, EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
             layerNum = (int)ndLayerNum.Value;
             columnNum = (int)ndColumnNum.Value;
+            parentBoneName = (string)CmbParentName.SelectedItem;
+            
+        }
+
+        private void NewModelDialog_Load(object sender, EventArgs e)
+        {
+            CmbParentName.Items.AddRange(boneNameList.ToArray());
+            CmbParentName.SelectedIndex = 0;
+            for ( int i = 0; i < boneNameList.Count; i++)
+                if ( boneNameList[i] == "下半身")
+                {
+                    CmbParentName.SelectedIndex = i;
+                    break;
+                }
         }
     }
 }

@@ -195,7 +195,7 @@ namespace Aroima.Plugins.Skirt
                 return;
 
             // 法線の逆方向をZ軸に
-            var Z = -vertex.Normal;
+            var Z = -normal;
             Z.Normalize();
 
             // 相対ボーン方向の逆方向をY軸に
