@@ -29,50 +29,56 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("root");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("root");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkirtForm));
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.mainTreeView = new System.Windows.Forms.TreeView();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageBone = new System.Windows.Forms.TabPage();
-            this.textHJoint = new System.Windows.Forms.TextBox();
-            this.textVJoint = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textM33 = new System.Windows.Forms.TextBox();
-            this.textM32 = new System.Windows.Forms.TextBox();
-            this.textM31 = new System.Windows.Forms.TextBox();
-            this.textM23 = new System.Windows.Forms.TextBox();
-            this.textM22 = new System.Windows.Forms.TextBox();
-            this.textM21 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.textM13 = new System.Windows.Forms.TextBox();
+            this.textM23 = new System.Windows.Forms.TextBox();
             this.textM12 = new System.Windows.Forms.TextBox();
+            this.textM33 = new System.Windows.Forms.TextBox();
             this.textM11 = new System.Windows.Forms.TextBox();
+            this.textM22 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textM21 = new System.Windows.Forms.TextBox();
+            this.textM32 = new System.Windows.Forms.TextBox();
+            this.textBoneName = new System.Windows.Forms.TextBox();
+            this.textM31 = new System.Windows.Forms.TextBox();
+            this.textHJoint = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textVJoint = new System.Windows.Forms.TextBox();
+            this.btnGetPosition = new System.Windows.Forms.Button();
+            this.textParentName = new System.Windows.Forms.TextBox();
+            this.textToBone = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.linkToBonePos = new System.Windows.Forms.LinkLabel();
-            this.textToBonePosZ = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.linkNormal = new System.Windows.Forms.LinkLabel();
+            this.textToBonePosZ = new System.Windows.Forms.TextBox();
+            this.textBody = new System.Windows.Forms.TextBox();
+            this.textPosX = new System.Windows.Forms.TextBox();
             this.textToBonePosY = new System.Windows.Forms.TextBox();
+            this.textPosY = new System.Windows.Forms.TextBox();
             this.textToBonePosX = new System.Windows.Forms.TextBox();
+            this.textPosZ = new System.Windows.Forms.TextBox();
             this.textNormalZ = new System.Windows.Forms.TextBox();
-            this.textNormalY = new System.Windows.Forms.TextBox();
-            this.textNormalX = new System.Windows.Forms.TextBox();
             this.linkBonePos = new System.Windows.Forms.LinkLabel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.textPosZ = new System.Windows.Forms.TextBox();
-            this.textPosY = new System.Windows.Forms.TextBox();
-            this.textPosX = new System.Windows.Forms.TextBox();
-            this.textBody = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textToBone = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textParentName = new System.Windows.Forms.TextBox();
-            this.textBoneName = new System.Windows.Forms.TextBox();
-            this.btnGetPosition = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.textNormalY = new System.Windows.Forms.TextBox();
+            this.textNormalX = new System.Windows.Forms.TextBox();
             this.tabPageModel = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -91,6 +97,11 @@
             this.btnCreateJoint = new System.Windows.Forms.Button();
             this.textColumnName = new System.Windows.Forms.TextBox();
             this.btnCreateBody = new System.Windows.Forms.Button();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tbPrev = new System.Windows.Forms.ToolStripButton();
+            this.tbNext = new System.Windows.Forms.ToolStripButton();
+            this.tbUp = new System.Windows.Forms.ToolStripButton();
+            this.tbDown = new System.Windows.Forms.ToolStripButton();
             this.msModel = new System.Windows.Forms.MenuStrip();
             this.miModel = new System.Windows.Forms.ToolStripMenuItem();
             this.miCreateModel = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,17 +116,8 @@
             this.miVJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.miHJointSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.tbPrev = new System.Windows.Forms.ToolStripButton();
-            this.tbNext = new System.Windows.Forms.ToolStripButton();
-            this.tbUp = new System.Windows.Forms.ToolStripButton();
-            this.tbDown = new System.Windows.Forms.ToolStripButton();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnSort = new System.Windows.Forms.Button();
+            this.miImport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -125,16 +127,16 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageBone.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.tabPageModel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPageColumn.SuspendLayout();
-            this.msModel.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.msModel.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -203,14 +205,24 @@
             this.mainTreeView.HideSelection = false;
             this.mainTreeView.Location = new System.Drawing.Point(4, 4);
             this.mainTreeView.Name = "mainTreeView";
-            treeNode3.Name = "rootNode";
-            treeNode3.Text = "root";
+            treeNode2.Name = "rootNode";
+            treeNode2.Text = "root";
             this.mainTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            treeNode2});
             this.mainTreeView.Size = new System.Drawing.Size(142, 393);
             this.mainTreeView.TabIndex = 0;
             this.mainTreeView.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.mainTreeView_DrawNode);
             this.mainTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.mainTreeView_AfterSelect);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.tabControl1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(4, 29);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(4);
+            this.panel2.Size = new System.Drawing.Size(638, 368);
+            this.panel2.TabIndex = 37;
             // 
             // tabControl1
             // 
@@ -236,21 +248,67 @@
             this.tabPageBone.Text = "ボーン";
             this.tabPageBone.UseVisualStyleBackColor = true;
             // 
-            // textHJoint
+            // panel1
             // 
-            this.textHJoint.Location = new System.Drawing.Point(74, 151);
-            this.textHJoint.Name = "textHJoint";
-            this.textHJoint.ReadOnly = true;
-            this.textHJoint.Size = new System.Drawing.Size(100, 19);
-            this.textHJoint.TabIndex = 34;
+            this.panel1.Controls.Add(this.label10);
+            this.panel1.Controls.Add(this.label9);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.label8);
+            this.panel1.Controls.Add(this.textM13);
+            this.panel1.Controls.Add(this.textM23);
+            this.panel1.Controls.Add(this.textM12);
+            this.panel1.Controls.Add(this.textM33);
+            this.panel1.Controls.Add(this.textM11);
+            this.panel1.Controls.Add(this.textM22);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.textM21);
+            this.panel1.Controls.Add(this.textM32);
+            this.panel1.Controls.Add(this.textBoneName);
+            this.panel1.Controls.Add(this.textM31);
+            this.panel1.Controls.Add(this.textHJoint);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.textVJoint);
+            this.panel1.Controls.Add(this.btnGetPosition);
+            this.panel1.Controls.Add(this.textParentName);
+            this.panel1.Controls.Add(this.textToBone);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.linkToBonePos);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.linkNormal);
+            this.panel1.Controls.Add(this.textToBonePosZ);
+            this.panel1.Controls.Add(this.textBody);
+            this.panel1.Controls.Add(this.textPosX);
+            this.panel1.Controls.Add(this.textToBonePosY);
+            this.panel1.Controls.Add(this.textPosY);
+            this.panel1.Controls.Add(this.textToBonePosX);
+            this.panel1.Controls.Add(this.textPosZ);
+            this.panel1.Controls.Add(this.textNormalZ);
+            this.panel1.Controls.Add(this.linkBonePos);
+            this.panel1.Controls.Add(this.textNormalY);
+            this.panel1.Controls.Add(this.textNormalX);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(616, 326);
+            this.panel1.TabIndex = 36;
             // 
-            // textVJoint
+            // label10
             // 
-            this.textVJoint.Location = new System.Drawing.Point(74, 126);
-            this.textVJoint.Name = "textVJoint";
-            this.textVJoint.ReadOnly = true;
-            this.textVJoint.Size = new System.Drawing.Size(100, 19);
-            this.textVJoint.TabIndex = 33;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(25, 154);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(43, 12);
+            this.label10.TabIndex = 37;
+            this.label10.Text = "横Joint";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(22, 129);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(43, 12);
+            this.label9.TabIndex = 36;
+            this.label9.Text = "縦Joint";
             // 
             // label5
             // 
@@ -261,53 +319,14 @@
             this.label5.TabIndex = 32;
             this.label5.Text = "回転行列";
             // 
-            // textM33
+            // label8
             // 
-            this.textM33.Location = new System.Drawing.Point(428, 172);
-            this.textM33.Name = "textM33";
-            this.textM33.Size = new System.Drawing.Size(73, 19);
-            this.textM33.TabIndex = 31;
-            this.textM33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM32
-            // 
-            this.textM32.Location = new System.Drawing.Point(349, 172);
-            this.textM32.Name = "textM32";
-            this.textM32.Size = new System.Drawing.Size(73, 19);
-            this.textM32.TabIndex = 30;
-            this.textM32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM31
-            // 
-            this.textM31.Location = new System.Drawing.Point(274, 172);
-            this.textM31.Name = "textM31";
-            this.textM31.Size = new System.Drawing.Size(73, 19);
-            this.textM31.TabIndex = 29;
-            this.textM31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM23
-            // 
-            this.textM23.Location = new System.Drawing.Point(428, 151);
-            this.textM23.Name = "textM23";
-            this.textM23.Size = new System.Drawing.Size(73, 19);
-            this.textM23.TabIndex = 28;
-            this.textM23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM22
-            // 
-            this.textM22.Location = new System.Drawing.Point(349, 151);
-            this.textM22.Name = "textM22";
-            this.textM22.Size = new System.Drawing.Size(73, 19);
-            this.textM22.TabIndex = 27;
-            this.textM22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textM21
-            // 
-            this.textM21.Location = new System.Drawing.Point(274, 151);
-            this.textM21.Name = "textM21";
-            this.textM21.Size = new System.Drawing.Size(73, 19);
-            this.textM21.TabIndex = 26;
-            this.textM21.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(39, 104);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 12);
+            this.label8.TabIndex = 35;
+            this.label8.Text = "剛体";
             // 
             // textM13
             // 
@@ -317,6 +336,14 @@
             this.textM13.TabIndex = 25;
             this.textM13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // textM23
+            // 
+            this.textM23.Location = new System.Drawing.Point(428, 151);
+            this.textM23.Name = "textM23";
+            this.textM23.Size = new System.Drawing.Size(73, 19);
+            this.textM23.TabIndex = 28;
+            this.textM23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // textM12
             // 
             this.textM12.Location = new System.Drawing.Point(349, 126);
@@ -325,6 +352,14 @@
             this.textM12.TabIndex = 24;
             this.textM12.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // textM33
+            // 
+            this.textM33.Location = new System.Drawing.Point(428, 172);
+            this.textM33.Name = "textM33";
+            this.textM33.Size = new System.Drawing.Size(73, 19);
+            this.textM33.TabIndex = 31;
+            this.textM33.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // textM11
             // 
             this.textM11.Location = new System.Drawing.Point(274, 126);
@@ -332,6 +367,115 @@
             this.textM11.Size = new System.Drawing.Size(73, 19);
             this.textM11.TabIndex = 23;
             this.textM11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM22
+            // 
+            this.textM22.Location = new System.Drawing.Point(349, 151);
+            this.textM22.Name = "textM22";
+            this.textM22.Size = new System.Drawing.Size(73, 19);
+            this.textM22.TabIndex = 27;
+            this.textM22.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(78, 8);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(35, 12);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "label7";
+            // 
+            // textM21
+            // 
+            this.textM21.Location = new System.Drawing.Point(274, 151);
+            this.textM21.Name = "textM21";
+            this.textM21.Size = new System.Drawing.Size(73, 19);
+            this.textM21.TabIndex = 26;
+            this.textM21.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textM32
+            // 
+            this.textM32.Location = new System.Drawing.Point(349, 172);
+            this.textM32.Name = "textM32";
+            this.textM32.Size = new System.Drawing.Size(73, 19);
+            this.textM32.TabIndex = 30;
+            this.textM32.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBoneName
+            // 
+            this.textBoneName.Location = new System.Drawing.Point(75, 26);
+            this.textBoneName.Name = "textBoneName";
+            this.textBoneName.ReadOnly = true;
+            this.textBoneName.Size = new System.Drawing.Size(100, 19);
+            this.textBoneName.TabIndex = 1;
+            // 
+            // textM31
+            // 
+            this.textM31.Location = new System.Drawing.Point(274, 172);
+            this.textM31.Name = "textM31";
+            this.textM31.Size = new System.Drawing.Size(73, 19);
+            this.textM31.TabIndex = 29;
+            this.textM31.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textHJoint
+            // 
+            this.textHJoint.Location = new System.Drawing.Point(74, 151);
+            this.textHJoint.Name = "textHJoint";
+            this.textHJoint.ReadOnly = true;
+            this.textHJoint.Size = new System.Drawing.Size(100, 19);
+            this.textHJoint.TabIndex = 34;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(34, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "ボーン";
+            // 
+            // textVJoint
+            // 
+            this.textVJoint.Location = new System.Drawing.Point(74, 126);
+            this.textVJoint.Name = "textVJoint";
+            this.textVJoint.ReadOnly = true;
+            this.textVJoint.Size = new System.Drawing.Size(100, 19);
+            this.textVJoint.TabIndex = 33;
+            // 
+            // btnGetPosition
+            // 
+            this.btnGetPosition.Location = new System.Drawing.Point(181, 24);
+            this.btnGetPosition.Name = "btnGetPosition";
+            this.btnGetPosition.Size = new System.Drawing.Size(75, 23);
+            this.btnGetPosition.TabIndex = 2;
+            this.btnGetPosition.Text = "Get Vertex";
+            this.btnGetPosition.UseVisualStyleBackColor = true;
+            this.btnGetPosition.Click += new System.EventHandler(this.btnGetPosition_Click);
+            // 
+            // textParentName
+            // 
+            this.textParentName.Location = new System.Drawing.Point(74, 51);
+            this.textParentName.Name = "textParentName";
+            this.textParentName.ReadOnly = true;
+            this.textParentName.Size = new System.Drawing.Size(100, 19);
+            this.textParentName.TabIndex = 4;
+            // 
+            // textToBone
+            // 
+            this.textToBone.Location = new System.Drawing.Point(74, 76);
+            this.textToBone.Name = "textToBone";
+            this.textToBone.ReadOnly = true;
+            this.textToBone.Size = new System.Drawing.Size(100, 19);
+            this.textToBone.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(22, 54);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "親ボーン";
             // 
             // linkToBonePos
             // 
@@ -344,14 +488,14 @@
             this.linkToBonePos.Text = "位置";
             this.linkToBonePos.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkToBonePos_LinkClicked);
             // 
-            // textToBonePosZ
+            // label4
             // 
-            this.textToBonePosZ.Location = new System.Drawing.Point(452, 74);
-            this.textToBonePosZ.Name = "textToBonePosZ";
-            this.textToBonePosZ.ReadOnly = true;
-            this.textToBonePosZ.Size = new System.Drawing.Size(74, 19);
-            this.textToBonePosZ.TabIndex = 21;
-            this.textToBonePosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(58, 12);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "相対ボーン";
             // 
             // linkNormal
             // 
@@ -364,6 +508,33 @@
             this.linkNormal.Text = "法線";
             this.linkNormal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkNormal_LinkClicked);
             // 
+            // textToBonePosZ
+            // 
+            this.textToBonePosZ.Location = new System.Drawing.Point(452, 74);
+            this.textToBonePosZ.Name = "textToBonePosZ";
+            this.textToBonePosZ.ReadOnly = true;
+            this.textToBonePosZ.Size = new System.Drawing.Size(74, 19);
+            this.textToBonePosZ.TabIndex = 21;
+            this.textToBonePosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textBody
+            // 
+            this.textBody.Location = new System.Drawing.Point(74, 101);
+            this.textBody.Name = "textBody";
+            this.textBody.ReadOnly = true;
+            this.textBody.Size = new System.Drawing.Size(100, 19);
+            this.textBody.TabIndex = 9;
+            // 
+            // textPosX
+            // 
+            this.textPosX.Location = new System.Drawing.Point(302, 26);
+            this.textPosX.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.textPosX.Name = "textPosX";
+            this.textPosX.ReadOnly = true;
+            this.textPosX.Size = new System.Drawing.Size(73, 19);
+            this.textPosX.TabIndex = 11;
+            this.textPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // textToBonePosY
             // 
             this.textToBonePosY.Location = new System.Drawing.Point(377, 74);
@@ -372,6 +543,16 @@
             this.textToBonePosY.Size = new System.Drawing.Size(73, 19);
             this.textToBonePosY.TabIndex = 19;
             this.textToBonePosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // textPosY
+            // 
+            this.textPosY.Location = new System.Drawing.Point(377, 26);
+            this.textPosY.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.textPosY.Name = "textPosY";
+            this.textPosY.ReadOnly = true;
+            this.textPosY.Size = new System.Drawing.Size(73, 19);
+            this.textPosY.TabIndex = 12;
+            this.textPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // textToBonePosX
             // 
@@ -382,6 +563,16 @@
             this.textToBonePosX.TabIndex = 18;
             this.textToBonePosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // textPosZ
+            // 
+            this.textPosZ.Location = new System.Drawing.Point(452, 26);
+            this.textPosZ.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.textPosZ.Name = "textPosZ";
+            this.textPosZ.ReadOnly = true;
+            this.textPosZ.Size = new System.Drawing.Size(73, 19);
+            this.textPosZ.TabIndex = 13;
+            this.textPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // textNormalZ
             // 
             this.textNormalZ.Location = new System.Drawing.Point(452, 51);
@@ -390,24 +581,6 @@
             this.textNormalZ.Size = new System.Drawing.Size(73, 19);
             this.textNormalZ.TabIndex = 17;
             this.textNormalZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textNormalY
-            // 
-            this.textNormalY.Location = new System.Drawing.Point(377, 51);
-            this.textNormalY.Name = "textNormalY";
-            this.textNormalY.ReadOnly = true;
-            this.textNormalY.Size = new System.Drawing.Size(73, 19);
-            this.textNormalY.TabIndex = 16;
-            this.textNormalY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textNormalX
-            // 
-            this.textNormalX.Location = new System.Drawing.Point(302, 50);
-            this.textNormalX.Name = "textNormalX";
-            this.textNormalX.ReadOnly = true;
-            this.textNormalX.Size = new System.Drawing.Size(73, 19);
-            this.textNormalX.TabIndex = 15;
-            this.textNormalX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // linkBonePos
             // 
@@ -444,107 +617,27 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(179, 22);
             this.toolStripMenuItem2.Text = "toolStripMenuItem2";
             // 
-            // textPosZ
+            // textNormalY
             // 
-            this.textPosZ.Location = new System.Drawing.Point(452, 26);
-            this.textPosZ.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textPosZ.Name = "textPosZ";
-            this.textPosZ.ReadOnly = true;
-            this.textPosZ.Size = new System.Drawing.Size(73, 19);
-            this.textPosZ.TabIndex = 13;
-            this.textPosZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textNormalY.Location = new System.Drawing.Point(377, 51);
+            this.textNormalY.Name = "textNormalY";
+            this.textNormalY.ReadOnly = true;
+            this.textNormalY.Size = new System.Drawing.Size(73, 19);
+            this.textNormalY.TabIndex = 16;
+            this.textNormalY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // textPosY
+            // textNormalX
             // 
-            this.textPosY.Location = new System.Drawing.Point(377, 26);
-            this.textPosY.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textPosY.Name = "textPosY";
-            this.textPosY.ReadOnly = true;
-            this.textPosY.Size = new System.Drawing.Size(73, 19);
-            this.textPosY.TabIndex = 12;
-            this.textPosY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textPosX
-            // 
-            this.textPosX.Location = new System.Drawing.Point(302, 26);
-            this.textPosX.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-            this.textPosX.Name = "textPosX";
-            this.textPosX.ReadOnly = true;
-            this.textPosX.Size = new System.Drawing.Size(73, 19);
-            this.textPosX.TabIndex = 11;
-            this.textPosX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // textBody
-            // 
-            this.textBody.Location = new System.Drawing.Point(74, 101);
-            this.textBody.Name = "textBody";
-            this.textBody.ReadOnly = true;
-            this.textBody.Size = new System.Drawing.Size(100, 19);
-            this.textBody.TabIndex = 9;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 79);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(58, 12);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "相対ボーン";
-            // 
-            // textToBone
-            // 
-            this.textToBone.Location = new System.Drawing.Point(74, 76);
-            this.textToBone.Name = "textToBone";
-            this.textToBone.ReadOnly = true;
-            this.textToBone.Size = new System.Drawing.Size(100, 19);
-            this.textToBone.TabIndex = 6;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 54);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "親ボーン";
-            // 
-            // textParentName
-            // 
-            this.textParentName.Location = new System.Drawing.Point(74, 51);
-            this.textParentName.Name = "textParentName";
-            this.textParentName.ReadOnly = true;
-            this.textParentName.Size = new System.Drawing.Size(100, 19);
-            this.textParentName.TabIndex = 4;
-            // 
-            // textBoneName
-            // 
-            this.textBoneName.Location = new System.Drawing.Point(75, 26);
-            this.textBoneName.Name = "textBoneName";
-            this.textBoneName.ReadOnly = true;
-            this.textBoneName.Size = new System.Drawing.Size(100, 19);
-            this.textBoneName.TabIndex = 1;
-            // 
-            // btnGetPosition
-            // 
-            this.btnGetPosition.Location = new System.Drawing.Point(181, 24);
-            this.btnGetPosition.Name = "btnGetPosition";
-            this.btnGetPosition.Size = new System.Drawing.Size(75, 23);
-            this.btnGetPosition.TabIndex = 2;
-            this.btnGetPosition.Text = "Get Vertex";
-            this.btnGetPosition.UseVisualStyleBackColor = true;
-            this.btnGetPosition.Click += new System.EventHandler(this.btnGetPosition_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 29);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 12);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "ボーン";
+            this.textNormalX.Location = new System.Drawing.Point(302, 50);
+            this.textNormalX.Name = "textNormalX";
+            this.textNormalX.ReadOnly = true;
+            this.textNormalX.Size = new System.Drawing.Size(73, 19);
+            this.textNormalX.TabIndex = 15;
+            this.textNormalX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tabPageModel
             // 
+            this.tabPageModel.Controls.Add(this.btnSort);
             this.tabPageModel.Controls.Add(this.groupBox1);
             this.tabPageModel.Controls.Add(this.btnSelectBones);
             this.tabPageModel.Controls.Add(this.label2);
@@ -552,7 +645,7 @@
             this.tabPageModel.Location = new System.Drawing.Point(4, 24);
             this.tabPageModel.Name = "tabPageModel";
             this.tabPageModel.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageModel.Size = new System.Drawing.Size(630, 340);
+            this.tabPageModel.Size = new System.Drawing.Size(622, 332);
             this.tabPageModel.TabIndex = 1;
             this.tabPageModel.Text = "モデル";
             this.tabPageModel.UseVisualStyleBackColor = true;
@@ -698,7 +791,7 @@
             this.tabPageColumn.Location = new System.Drawing.Point(4, 24);
             this.tabPageColumn.Name = "tabPageColumn";
             this.tabPageColumn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageColumn.Size = new System.Drawing.Size(630, 340);
+            this.tabPageColumn.Size = new System.Drawing.Size(622, 332);
             this.tabPageColumn.TabIndex = 2;
             this.tabPageColumn.Text = "列";
             this.tabPageColumn.UseVisualStyleBackColor = true;
@@ -731,6 +824,62 @@
             this.btnCreateBody.UseVisualStyleBackColor = true;
             this.btnCreateBody.Click += new System.EventHandler(this.btnCreateBody_Click);
             // 
+            // toolStrip1
+            // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tbPrev,
+            this.tbNext,
+            this.tbUp,
+            this.tbDown});
+            this.toolStrip1.Location = new System.Drawing.Point(4, 4);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip1.Size = new System.Drawing.Size(638, 25);
+            this.toolStrip1.TabIndex = 36;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // tbPrev
+            // 
+            this.tbPrev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbPrev.Image = ((System.Drawing.Image)(resources.GetObject("tbPrev.Image")));
+            this.tbPrev.ImageTransparentColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.tbPrev.Name = "tbPrev";
+            this.tbPrev.Size = new System.Drawing.Size(23, 22);
+            this.tbPrev.Text = "前に";
+            this.tbPrev.Click += new System.EventHandler(this.tbPrev_Click);
+            // 
+            // tbNext
+            // 
+            this.tbNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbNext.Image = ((System.Drawing.Image)(resources.GetObject("tbNext.Image")));
+            this.tbNext.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbNext.Name = "tbNext";
+            this.tbNext.Size = new System.Drawing.Size(23, 22);
+            this.tbNext.Text = "次に";
+            this.tbNext.Click += new System.EventHandler(this.tbNext_Click);
+            // 
+            // tbUp
+            // 
+            this.tbUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbUp.Image = ((System.Drawing.Image)(resources.GetObject("tbUp.Image")));
+            this.tbUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbUp.Name = "tbUp";
+            this.tbUp.Size = new System.Drawing.Size(23, 22);
+            this.tbUp.Text = "上へ";
+            this.tbUp.Click += new System.EventHandler(this.tbUp_Click);
+            // 
+            // tbDown
+            // 
+            this.tbDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbDown.Image = ((System.Drawing.Image)(resources.GetObject("tbDown.Image")));
+            this.tbDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbDown.Name = "tbDown";
+            this.tbDown.Size = new System.Drawing.Size(23, 22);
+            this.tbDown.Text = "下に";
+            this.tbDown.Click += new System.EventHandler(this.tbDown_Click);
+            // 
             // msModel
             // 
             this.msModel.Dock = System.Windows.Forms.DockStyle.None;
@@ -749,6 +898,7 @@
             // 
             this.miModel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miCreateModel,
+            this.miImport,
             this.miSave,
             this.miLoad});
             this.miModel.Name = "miModel";
@@ -758,22 +908,22 @@
             // miCreateModel
             // 
             this.miCreateModel.Name = "miCreateModel";
-            this.miCreateModel.Size = new System.Drawing.Size(120, 22);
-            this.miCreateModel.Text = "作成";
+            this.miCreateModel.Size = new System.Drawing.Size(180, 22);
+            this.miCreateModel.Text = "新規作成";
             this.miCreateModel.Click += new System.EventHandler(this.miCreateModel_Click);
             // 
             // miSave
             // 
             this.miSave.Name = "miSave";
-            this.miSave.Size = new System.Drawing.Size(120, 22);
-            this.miSave.Text = "保存";
+            this.miSave.Size = new System.Drawing.Size(180, 22);
+            this.miSave.Text = "ファイルに保存";
             this.miSave.Click += new System.EventHandler(this.miSave_Click);
             // 
             // miLoad
             // 
             this.miLoad.Name = "miLoad";
-            this.miLoad.Size = new System.Drawing.Size(120, 22);
-            this.miLoad.Text = "読み込み";
+            this.miLoad.Size = new System.Drawing.Size(180, 22);
+            this.miLoad.Text = "ファイルを開く";
             this.miLoad.Click += new System.EventHandler(this.miLoad_Click);
             // 
             // 要素ToolStripMenuItem
@@ -844,151 +994,22 @@
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList1.Images.SetKeyName(0, "Save.png");
             // 
-            // panel1
+            // btnSort
             // 
-            this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.textM13);
-            this.panel1.Controls.Add(this.textM23);
-            this.panel1.Controls.Add(this.textM12);
-            this.panel1.Controls.Add(this.textM33);
-            this.panel1.Controls.Add(this.textM11);
-            this.panel1.Controls.Add(this.textM22);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.textM21);
-            this.panel1.Controls.Add(this.textM32);
-            this.panel1.Controls.Add(this.textBoneName);
-            this.panel1.Controls.Add(this.textM31);
-            this.panel1.Controls.Add(this.textHJoint);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.textVJoint);
-            this.panel1.Controls.Add(this.btnGetPosition);
-            this.panel1.Controls.Add(this.textParentName);
-            this.panel1.Controls.Add(this.textToBone);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.linkToBonePos);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.linkNormal);
-            this.panel1.Controls.Add(this.textToBonePosZ);
-            this.panel1.Controls.Add(this.textBody);
-            this.panel1.Controls.Add(this.textPosX);
-            this.panel1.Controls.Add(this.textToBonePosY);
-            this.panel1.Controls.Add(this.textPosY);
-            this.panel1.Controls.Add(this.textToBonePosX);
-            this.panel1.Controls.Add(this.textPosZ);
-            this.panel1.Controls.Add(this.textNormalZ);
-            this.panel1.Controls.Add(this.linkBonePos);
-            this.panel1.Controls.Add(this.textNormalY);
-            this.panel1.Controls.Add(this.textNormalX);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(616, 326);
-            this.panel1.TabIndex = 36;
+            this.btnSort.Location = new System.Drawing.Point(21, 201);
+            this.btnSort.Name = "btnSort";
+            this.btnSort.Size = new System.Drawing.Size(113, 23);
+            this.btnSort.TabIndex = 13;
+            this.btnSort.Text = "ソート";
+            this.btnSort.UseVisualStyleBackColor = true;
+            this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
             // 
-            // label7
+            // miImport
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(78, 8);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 12);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "label7";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(39, 104);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(29, 12);
-            this.label8.TabIndex = 35;
-            this.label8.Text = "剛体";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(22, 129);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(43, 12);
-            this.label9.TabIndex = 36;
-            this.label9.Text = "縦Joint";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(25, 154);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(43, 12);
-            this.label10.TabIndex = 37;
-            this.label10.Text = "横Joint";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tbPrev,
-            this.tbNext,
-            this.tbUp,
-            this.tbDown});
-            this.toolStrip1.Location = new System.Drawing.Point(4, 4);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 4, 0);
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(638, 25);
-            this.toolStrip1.TabIndex = 36;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // tbPrev
-            // 
-            this.tbPrev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbPrev.Image = ((System.Drawing.Image)(resources.GetObject("tbPrev.Image")));
-            this.tbPrev.ImageTransparentColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.tbPrev.Name = "tbPrev";
-            this.tbPrev.Size = new System.Drawing.Size(23, 22);
-            this.tbPrev.Text = "前に";
-            this.tbPrev.Click += new System.EventHandler(this.tbPrev_Click);
-            // 
-            // tbNext
-            // 
-            this.tbNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbNext.Image = ((System.Drawing.Image)(resources.GetObject("tbNext.Image")));
-            this.tbNext.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbNext.Name = "tbNext";
-            this.tbNext.Size = new System.Drawing.Size(23, 22);
-            this.tbNext.Text = "次に";
-            this.tbNext.Click += new System.EventHandler(this.tbNext_Click);
-            // 
-            // tbUp
-            // 
-            this.tbUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbUp.Image = ((System.Drawing.Image)(resources.GetObject("tbUp.Image")));
-            this.tbUp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbUp.Name = "tbUp";
-            this.tbUp.Size = new System.Drawing.Size(23, 22);
-            this.tbUp.Text = "上へ";
-            this.tbUp.Click += new System.EventHandler(this.tbUp_Click);
-            // 
-            // tbDown
-            // 
-            this.tbDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbDown.Image = ((System.Drawing.Image)(resources.GetObject("tbDown.Image")));
-            this.tbDown.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbDown.Name = "tbDown";
-            this.tbDown.Size = new System.Drawing.Size(23, 22);
-            this.tbDown.Text = "下に";
-            this.tbDown.Click += new System.EventHandler(this.tbDown_Click);
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.tabControl1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(4, 29);
-            this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(4);
-            this.panel2.Size = new System.Drawing.Size(638, 368);
-            this.panel2.TabIndex = 37;
+            this.miImport.Name = "miImport";
+            this.miImport.Size = new System.Drawing.Size(180, 22);
+            this.miImport.Text = "取り込み";
+            this.miImport.Click += new System.EventHandler(this.miImport_Click);
             // 
             // SkirtForm
             // 
@@ -1014,8 +1035,11 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPageBone.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabPageModel.ResumeLayout(false);
             this.tabPageModel.PerformLayout();
@@ -1023,13 +1047,10 @@
             this.groupBox1.PerformLayout();
             this.tabPageColumn.ResumeLayout(false);
             this.tabPageColumn.PerformLayout();
-            this.msModel.ResumeLayout(false);
-            this.msModel.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.msModel.ResumeLayout(false);
+            this.msModel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1121,5 +1142,7 @@
         private System.Windows.Forms.ToolStripButton tbUp;
         private System.Windows.Forms.ToolStripButton tbDown;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnSort;
+        private System.Windows.Forms.ToolStripMenuItem miImport;
     }
 }

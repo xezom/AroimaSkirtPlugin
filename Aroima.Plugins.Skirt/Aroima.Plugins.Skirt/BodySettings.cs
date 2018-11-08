@@ -9,10 +9,11 @@ using PEPlugin.SDX;
 
 namespace Aroima.Plugins.Skirt
 {
+
     /// <summary>
     /// 剛体設定
     /// </summary>
-    public class BodySettings
+    public class BodySettings : ICloneable
     {
         public const int GROUP_SIZE = 16;
 
@@ -26,7 +27,7 @@ namespace Aroima.Plugins.Skirt
         float restriction = 0f;
         float friction = 0.5f;
         int group = 9;
-        int[] passGroup = new int[GROUP_SIZE];
+        bool[] passGroup = new bool[GROUP_SIZE];
 
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace Aroima.Plugins.Skirt
         /// <summary>
         /// 非衝突グループ
         /// </summary>
-        public int[] PassGroup { get => passGroup; }
+        public bool[] PassGroup { get => passGroup; }
 
         /// <summary>
         /// 名前
@@ -94,6 +95,14 @@ namespace Aroima.Plugins.Skirt
             this.restriction = src.restriction;
             for (int i = 0; i < GROUP_SIZE; i++)
                 this.passGroup[i] = src.passGroup[i];
+        }
+
+        public object Clone()
+        {
+            BodySettings clone =  (BodySettings)this.MemberwiseClone();
+            clone.boxSize = this.boxSize.Clone();
+
+            return clone;
         }
 
         public override string ToString()

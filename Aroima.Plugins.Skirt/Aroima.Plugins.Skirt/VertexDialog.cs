@@ -14,6 +14,7 @@ namespace Aroima.Plugins.Skirt
     {
         List<IPXVertex> vertexList = null;
         IPXVertex selectedVertex;
+        bool vertexOnly = false;
 
         public VertexDialog()
         {
@@ -22,6 +23,7 @@ namespace Aroima.Plugins.Skirt
 
         public List<IPXVertex> VertexList { get => vertexList; set => vertexList = value; }
         public IPXVertex SelectedVertex { get => selectedVertex; set => selectedVertex = value; }
+        public bool VertexOnly { get => vertexOnly; set => vertexOnly = value; }
 
         private void VertexDialog_Load(object sender, EventArgs e)
         {
@@ -64,6 +66,11 @@ namespace Aroima.Plugins.Skirt
                 textNormalY.Text = selectedVertex.Normal.Y.ToString();
                 textNormalZ.Text = selectedVertex.Normal.Z.ToString();
             }
+        }
+
+        private void chkVertexOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            vertexOnly = chkVertexOnly.Checked;
         }
     }
 }

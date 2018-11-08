@@ -42,6 +42,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.listVertex = new System.Windows.Forms.ListBox();
+            this.chkVertexOnly = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -49,6 +50,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkVertexOnly);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.textNormalZ);
@@ -60,7 +62,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(334, 67);
+            this.panel1.Size = new System.Drawing.Size(334, 89);
             this.panel1.TabIndex = 0;
             // 
             // label2
@@ -165,10 +167,10 @@
             // 
             this.panel3.Controls.Add(this.listVertex);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(0, 67);
+            this.panel3.Location = new System.Drawing.Point(0, 89);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(4);
-            this.panel3.Size = new System.Drawing.Size(334, 150);
+            this.panel3.Size = new System.Drawing.Size(334, 128);
             this.panel3.TabIndex = 2;
             // 
             // listVertex
@@ -178,9 +180,20 @@
             this.listVertex.ItemHeight = 12;
             this.listVertex.Location = new System.Drawing.Point(4, 4);
             this.listVertex.Name = "listVertex";
-            this.listVertex.Size = new System.Drawing.Size(326, 142);
+            this.listVertex.Size = new System.Drawing.Size(326, 120);
             this.listVertex.TabIndex = 0;
             this.listVertex.SelectedIndexChanged += new System.EventHandler(this.listVertex_SelectedIndexChanged);
+            // 
+            // chkVertexOnly
+            // 
+            this.chkVertexOnly.AutoSize = true;
+            this.chkVertexOnly.Location = new System.Drawing.Point(68, 64);
+            this.chkVertexOnly.Name = "chkVertexOnly";
+            this.chkVertexOnly.Size = new System.Drawing.Size(69, 16);
+            this.chkVertexOnly.TabIndex = 8;
+            this.chkVertexOnly.Text = "法線のみ";
+            this.chkVertexOnly.UseVisualStyleBackColor = true;
+            this.chkVertexOnly.CheckedChanged += new System.EventHandler(this.chkVertexOnly_CheckedChanged);
             // 
             // VertexDialog
             // 
@@ -221,5 +234,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ListBox listVertex;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.CheckBox chkVertexOnly;
     }
 }

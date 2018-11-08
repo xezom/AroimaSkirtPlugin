@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Aroima.Plugins.Skirt
 {
-    public class Vertex
+    public class Vertex :ICloneable
     {
         int id;
         float x;
@@ -32,5 +32,10 @@ namespace Aroima.Plugins.Skirt
         public float Weight3 { get => weight3; set => weight3 = value; }
         public string Bone4 { get => bone4; set => bone4 = value; }
         public float Weight4 { get => weight4; set => weight4 = value; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

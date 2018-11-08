@@ -30,7 +30,7 @@ namespace Aroima.Plugins.Skirt
             {
                 model.BodySettingList.Add(bodySettingsBuilder.Build(j, layerNum));
                 model.H_jointSettingList.Add(hJointSettingsBuilder.Build(j, layerNum));
-                if ( j < layerNum - 1)
+                if (j < layerNum - 1)
                     model.V_jointSettingList.Add(vJointSettingsBuilder.Build(j, layerNum));
             }
             for (int i = 0; i < colNum; i++)
@@ -50,13 +50,60 @@ namespace Aroima.Plugins.Skirt
                         Row = j,
                         Column = col
                     };
-                    
+
 
                     col.BoneList.Add(bone);
                 }
             }
             AssociateWith(model);
+
+            UpdateSettings(model);
+
             return model;
+        }
+
+        private static void UpdateSettings(SkirtModel model)
+        {
+            var col = model.ColumnList[0];
+            for (int i = 0; i < col.BoneList.Count; i++)
+            {
+                var b = col.BoneList[i];
+                if (b.Body != null)
+                {
+                    var bs = model.BodySettingList[i];
+
+                    bs.BoxKind = b.Body.BoxKind;
+                    bs.BoxSize = b.Body.BoxSize.Clone();
+                    bs.Friction = b.Body.Friction;
+                    bs.Group = b.Body.Group;
+                    bs.Mass = b.Body.Mass;
+                    bs.Mode = b.Body.Mode;
+                    bs.PositionDamping = b.Body.PositionDamping;
+                    bs.Restriction = b.Body.Restitution;
+                    bs.RotationDamping = b.Body.RotationDamping;
+                    //bs.PassGroup = (int[])b.Body.PassGroup;
+                }
+                if (b.V_Joint != null)
+                {
+                    var js = model.H_jointSettingList[i];
+                    js.Limit_AngleHigh = b.V_Joint.Limit_AngleHigh.Clone();
+                    js.Limit_AngleLow = b.V_Joint.Limit_AngleLow.Clone();
+                    js.Limit_MoveHigh = b.V_Joint.Limit_MoveHigh.Clone();
+                    js.Limit_MoveLow = b.V_Joint.Limit_MoveLow.Clone();
+                    js.SpringConst_Move = b.V_Joint.SpringConst_Move.Clone();
+                    js.SpringConst_Rotate = b.V_Joint.SpringConst_Rotate.Clone();
+                }
+                if (b.H_joint != null)
+                {
+                    var js = model.H_jointSettingList[i];
+                    js.Limit_AngleHigh = b.H_joint.Limit_AngleHigh.Clone();
+                    js.Limit_AngleLow = b.H_joint.Limit_AngleLow.Clone();
+                    js.Limit_MoveHigh = b.H_joint.Limit_MoveHigh.Clone();
+                    js.Limit_MoveLow = b.H_joint.Limit_MoveLow.Clone();
+                    js.SpringConst_Move = b.H_joint.SpringConst_Move.Clone();
+                    js.SpringConst_Rotate = b.H_joint.SpringConst_Rotate.Clone();
+                }
+            }
         }
 
         public SkirtModel LoadFromFile(string fileName)

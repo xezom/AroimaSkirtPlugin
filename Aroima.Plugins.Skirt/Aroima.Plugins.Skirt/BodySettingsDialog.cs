@@ -173,7 +173,7 @@ namespace Aroima.Plugins.Skirt
                 var list = new List<string>();
                 for (int i = 0; i < BodySettings.GROUP_SIZE; i++)
                 {
-                    chkPassGroup[i].Checked = settings.PassGroup[i] == 1;
+                    chkPassGroup[i].Checked = settings.PassGroup[i];
                     if (chkPassGroup[i].Checked)
                         list.Add((i + 1).ToString());
                 }
@@ -246,7 +246,7 @@ namespace Aroima.Plugins.Skirt
         {
             for (int i = 0; i < BodySettings.GROUP_SIZE; i++)
             {
-                t.PassGroup[i] = chkPassGroup[i].Checked ? 1 : 0;
+                t.PassGroup[i] = chkPassGroup[i].Checked ;
             }
         }
 

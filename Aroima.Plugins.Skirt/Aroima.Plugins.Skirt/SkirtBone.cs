@@ -301,8 +301,10 @@ namespace Aroima.Plugins.Skirt
             Body.Restitution = bs.Restriction;
             Body.Friction = bs.Friction;
             Body.Group = bs.Group;
-            for (int n = 0; n < 16; n++)
-                Body.PassGroup[n] = bs.PassGroup[n] == 1;
+
+            
+            for (int n = 0; n < BodySettings.GROUP_SIZE; n++)
+                Body.PassGroup[n] = bs.PassGroup[n];
         }
 
         public void UpdateVJointSetting(JointSettings js)

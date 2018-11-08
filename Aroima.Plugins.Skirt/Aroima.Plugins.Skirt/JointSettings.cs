@@ -12,7 +12,7 @@ namespace Aroima.Plugins.Skirt
     /// <summary>
     /// Joint設定
     /// </summary>
-    public class JointSettings
+    public class JointSettings :ICloneable
     {
         string name;
         V3 limit_AngleHigh = new V3(
@@ -76,6 +76,18 @@ namespace Aroima.Plugins.Skirt
         {
             return this.name;
         }
-        
+
+        public object Clone()
+        {
+            JointSettings clone = (JointSettings)this.MemberwiseClone();
+            clone.limit_AngleLow = this.limit_AngleLow.Clone();
+            clone.limit_AngleHigh = this.limit_AngleHigh.Clone();
+            clone.limit_MoveLow = this.limit_MoveLow.Clone();
+            clone.limit_MoveHigh = this.limit_MoveHigh.Clone();
+            clone.springConst_Move = this.springConst_Move.Clone();
+            clone.springConst_Rotate = this.springConst_Rotate.Clone();
+
+            return clone;
+        }
     }
 }

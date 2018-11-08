@@ -24,7 +24,7 @@ namespace Aroima.Plugins.Skirt
     /// ViewModel
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ViewModel<T> where T : class, new()
+    public class ViewModel<T> where T : class, ICloneable,  new()
     {
         bool modified = false;
         bool setup = true;
@@ -185,7 +185,8 @@ namespace Aroima.Plugins.Skirt
         /// <returns>問題なければtrue、そうでなければfalse</returns>
         public bool ValidateInput()
         {
-            var temp = new T();
+            var temp = (T)seleced.Clone();
+            //var temp = new T();
             try
             {
                 foreach (var validator in validators)

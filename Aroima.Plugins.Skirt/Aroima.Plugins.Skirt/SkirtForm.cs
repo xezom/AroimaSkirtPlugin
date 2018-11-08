@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -263,7 +264,7 @@ namespace Aroima.Plugins.Skirt
                 if (dlg.ShowDialog() == DialogResult.Cancel)
                     return;
 
-
+                bool vertexOnly = dlg.VertexOnly;
 
                 var v = dlg.SelectedVertex;
                 if (bone.Bone == null)
@@ -275,10 +276,13 @@ namespace Aroima.Plugins.Skirt
                 else
                 {
                     bone.Vertex = v;
-                    bone.Bone.Position = v.Position;
-                    bone.Position = v.Position;
-                    if (bone.Body != null)
-                        bone.Body.Position = v.Position;
+                    if (!vertexOnly)
+                    {
+                        bone.Bone.Position = v.Position;
+                        bone.Position = v.Position;
+                        if (bone.Body != null)
+                            bone.Body.Position = v.Position;
+                    }
                 }
                 ShowBone(bone);
 
@@ -409,6 +413,37 @@ namespace Aroima.Plugins.Skirt
                 model = builder.Build(dlg.ColumnNum, dlg.LayerNum);
                 model.ParentBoneName = dlg.ParentBoneName;
                 model.ParentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == dlg.ParentBoneName);
+                //plugin.FormConnector.SelectedBoneIndex =
+
+                ShowSkirtModel();
+            }
+        }
+
+        private void miImport_Click(object sender, EventArgs e)
+        {
+            int imax = 0;
+            int jmax = 0;
+            var r = new Regex(@"スカート_(?<j>\d+)_(?<i>\d+)");
+            foreach (var b in plugin.PMX.Bone)
+            {
+                var m = r.Match(b.Name);
+                if (m.Success)
+                {
+                    var j = int.Parse(m.Groups["j"].Value);
+                    var i = int.Parse(m.Groups["i"].Value);
+                    if (i + 1> imax)
+                        imax = i + 1;
+                    if (j + 1 > jmax)
+                        jmax = j + 1;
+                }
+            }
+
+            var p = plugin.PMX.Bone.FirstOrDefault(b => b.Name == "スカート_0_0");
+            if (imax > 0 && jmax > 0 && p != null)
+            {
+                model = builder.Build(imax, jmax);
+                model.ParentBoneName = p.Name;
+                model.ParentBone = p; 
                 //plugin.FormConnector.SelectedBoneIndex =
 
                 ShowSkirtModel();
@@ -916,6 +951,45 @@ namespace Aroima.Plugins.Skirt
                 mainTreeView.SelectedNode = node.Nodes[0];
             }
         }
+
+
+        private void btnSort_Click(object sender, EventArgs e)
+        {
+            SortBones();
+            SortBodies();
+            SortJoints();
+            plugin.UpdateView();
+
+        }
+
+        private void SortBones()
+        {
+            var temp = plugin.PMX.Bone.Where(b => b.Name.StartsWith("スカート_")).ToList();
+
+            temp.ForEach(b => plugin.PMX.Bone.Remove(b));
+            temp.Sort((a, b) => a.Name.CompareTo(b.Name));
+            temp.ForEach(b => plugin.PMX.Bone.Add(b));
+        }
+
+        private void SortBodies()
+        {
+            var temp = plugin.PMX.Body.Where(b => b.Name.StartsWith("スカート_")).ToList();
+            temp.ForEach(b => plugin.PMX.Body.Remove(b));
+            temp.Sort((a, b) => a.Name.CompareTo(b.Name));
+            temp.ForEach(b => plugin.PMX.Body.Add(b));
+        }
+
+        private void SortJoints()
+        {
+            var temp = plugin.PMX.Joint.Where(
+                b => b.Name.StartsWith("スカート_") || b.Name.StartsWith("横スカート_")
+                ).ToList();
+            temp.ForEach(b => plugin.PMX.Joint.Remove(b));
+            temp.Sort((a, b) => a.Name.CompareTo(b.Name));
+            temp.ForEach(b => plugin.PMX.Joint.Add(b));
+        }
+
+        
     }
 
     
