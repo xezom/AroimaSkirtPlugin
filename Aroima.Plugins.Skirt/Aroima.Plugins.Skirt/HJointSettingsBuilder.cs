@@ -7,8 +7,17 @@ using System.Text;
 namespace Aroima.Plugins.Skirt
 {
 
+    /// <summary>
+    /// 縦Joint設定の生成
+    /// </summary>
     public class HJointSettingsBuilder : BuilderBase
     {
+        /// <summary>
+        /// 縦Joint設定の生成
+        /// </summary>
+        /// <param name="layer">階層数</param>
+        /// <param name="layerNum">階層総数</param>
+        /// <returns></returns>
         public JointSettings Build(int layer, int layerNum)
         {
             return new JointSettings()

@@ -40,13 +40,10 @@ namespace Aroima.Plugins.FormTest
             for (int i = 0; i < 4; i++)
                 list.Add(builder.Build(i, 4));
 
-            using (var dlg = new JointSettingDialog()
+            using (var dlg = new JointSettingDialog())
             {
-                SettingsList = list 
-            })
-            {
+                dlg.Vm.DataSource = list;
                 dlg.ShowDialog();
-
             }
         }
     }

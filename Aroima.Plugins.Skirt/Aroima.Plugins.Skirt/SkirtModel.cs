@@ -19,7 +19,9 @@ using System.IO;
 
 namespace Aroima.Plugins.Skirt
 {
-    
+    /// <summary>
+    /// スカートモデル
+    /// </summary>
     public class SkirtModel
     {
         List<SkirtColumn> columnList = new List<SkirtColumn>();
@@ -56,54 +58,72 @@ namespace Aroima.Plugins.Skirt
 
         [XmlIgnore]
         public SkirtPlugin Plugin { get => plugin; set => plugin = value; }
+
+        /// <summary>
+        /// 剛体設定
+        /// </summary>
         public List<BodySettings> BodySettingList { get => bodySettingList; set => bodySettingList = value; }
+
+        /// <summary>
+        /// 縦Joint設定
+        /// </summary>
         public List<JointSettings> V_jointSettingList { get => v_jointSettingList; set => v_jointSettingList = value; }
+
+        /// <summary>
+        /// 横Joint設定
+        /// </summary>
         public List<JointSettings> H_jointSettingList { get => h_jointSettingList; set => h_jointSettingList = value; }
 
-
+        /// <summary>
+        /// ウェイト割り当て対象頂点
+        /// </summary>
         public List<int> SelectedVertex { get => selectedVertex; set => selectedVertex = value; }
 
+        /// <summary>
+        /// 剛体の生成
+        /// </summary>
         public void CreatBody()
         {
             foreach (var col in columnList)
                 col.CreatedBody();
         }
 
+        /// <summary>
+        /// 剛体をモデルから削除する
+        /// PMX本体からは削除しない
+        /// </summary>
         public void RemoveAllBody()
         {
             foreach ( var col in columnList)
             {
-                col.BoneList.ForEach(b => b.Body = null);
+                col.NodeList.ForEach(b => b.Body = null);
             }
         }
 
-        public SkirtColumn NextColumn(SkirtColumn col)
-        {
-            for (int i = 0; i < columnList.Count; i++)
-                if (columnList[i] == col)
-                {
-                    if (i == columnList.Count - 1)
-                        return columnList[0];
-                    else
-                        return columnList[i + 1];
-                    
-                }
-            return null;
 
-        }
 
+        /// <summary>
+        /// MX本体への参照をクリアする（nullにする）
+        /// </summary>
         public void Clear()
         {
             parentBone = null;
             columnList.ForEach(c => c.Clear());
         }
 
+        /// <summary>
+        /// PMX本体への参照を更新する
+        /// </summary>
         public void UpdatePlugin()
         {
             parentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == parentBoneName);
             columnList.ForEach(c => c.UpdatePlugin());
         }
 
+        /// <summary>
+        /// ファイルに保存する
+        /// </summary>
+        /// <param name="fileName">ファイル名</param>
         public void SaveToFile(string fileName)
         {
             var serializer = new XmlSerializer(typeof(SkirtModel));
@@ -115,67 +135,7 @@ namespace Aroima.Plugins.Skirt
 
     }
 
-    /// <summary>
-    /// 列
-    /// </summary>
-    public class SkirtColumn
-    {
-        List<SkirtBone> boneList = new List<SkirtBone>();
-        string name;
-        SkirtModel model;
-
-        /// <summary>
-        /// 名前
-        /// </summary>
-        public string Name { get => name; set => name = value; }
-
-        /// <summary>
-        /// ボーンリスト
-        /// </summary>
-        [XmlArray("Bones")]
-        public List<SkirtBone> BoneList { get => boneList; }
-
-        /// <summary>
-        /// モデル
-        /// </summary>
-        [XmlIgnore]
-        public SkirtModel Model { get => model; set => model = value; }
-
-        /// <summary>
-        /// 剛体を一気に作成する
-        /// </summary>
-        public void CreatedBody()
-        {
-            boneList.ForEach(b => b.AddBody());
-            boneList.ForEach(b => b.SetBodyRotation());
-        }
-
-        /// <summary>
-        /// 縦Jointの作成
-        /// </summary>
-        public void CreateVJoint()
-        {
-            boneList.ForEach(b => b.AddVJoint());
-        }
-
-        /// <summary>
-        /// 横Jointの作成
-        /// </summary>
-        public void CreateHJoint()
-        {
-            boneList.ForEach(b => b.AddHJoint());
-        }
-
-        public void Clear()
-        {
-            BoneList.ForEach(b => b.Clear());
-        }
-
-        public void UpdatePlugin()
-        {
-            BoneList.ForEach(b => b.UpdatePlugin());
-        }
-    }
+    
 
     
 

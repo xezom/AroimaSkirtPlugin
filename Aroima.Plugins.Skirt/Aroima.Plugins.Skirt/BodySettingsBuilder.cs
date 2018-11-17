@@ -36,7 +36,7 @@ namespace Aroima.Plugins.Skirt
                 Name = "剛体_階層" + layer.ToString(),
                 Mode = layer == 0 ? BodyMode.Static : BodyMode.Dynamic,
                 BoxSize = new V3(0.1f + 0.05f * layer, 0, 0),
-                Mass = Liner(layer, layerNum, 2f, 3f),
+                Mass = Liner(layer, layerNum, 2f, 0.5f),
                 Friction = Liner(layer, layerNum, 0.5f, 1.0f),
                 Restriction = 0,
                 RotationDamping = toRate(layer, layerNum),

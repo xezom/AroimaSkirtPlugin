@@ -3,18 +3,20 @@ using PEPlugin.Pmx;
 using PEPlugin.SDX;
 using SlimDX;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
+using log4net;
 
 namespace Aroima.Plugins.Skirt
 {
     /// <summary>
     /// スカートボーン
     /// </summary>
-    public class SkirtBone
+    public class SkirtNode
     {
+        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         int row;
         string name;
         IPXBone bone;
@@ -97,7 +99,7 @@ namespace Aroima.Plugins.Skirt
         public V3 Normal { get => normal; set => normal = value; }
         public V3 Position { get => position; set => position = value; }
 
-        public SkirtBone()
+        public SkirtNode()
         {
             normal = new V3();
             position = new V3();
@@ -126,17 +128,17 @@ namespace Aroima.Plugins.Skirt
             {
                 if (Column == null)
                     throw new ApplicationException("Column is null");
-                if (Column.BoneList == null)
+                if (Column.NodeList == null)
                     throw new ApplicationException("Column.BoneList is null");
-                bone.Parent = Column.BoneList[Row - 1].Bone;
+                bone.Parent = Column.NodeList[Row - 1].Bone;
             }
             if (Row < Model.LayerCount - 1)
             {
                 if (Column == null)
                     throw new ApplicationException("Column is null");
-                if (Column.BoneList == null)
+                if (Column.NodeList == null)
                     throw new ApplicationException("Column.BoneList is null");
-                bone.ToBone = Column.BoneList[Row + 1].Bone;
+                bone.ToBone = Column.NodeList[Row + 1].Bone;
             }
 
             bone.Visible = Row != Model.LayerCount - 1;
@@ -146,26 +148,36 @@ namespace Aroima.Plugins.Skirt
         }
 
         /// <summary>
-        /// 新規剛体の追加
+        /// 剛体の設定
+        /// 作成済みでなければ新規に作成する
         /// </summary>
         public void AddBody()
         {
+            if (bone == null)
+            {
+                LOG.Warn("bone is not set. node=" + Name);
+                return;
+            }
             bool createNew = Body == null;
-            //MessageBox.Show("BodyNull:" + createNew.ToString());
+
             if (createNew)
                 Body = (IPXBody)PEStaticBuilder.Pmx.Body();
             Body.Name = bone.Name;
             Body.Bone = bone;
             Body.Position = bone.Position;
 
-            // パラメータの適用
+            // 剛体設定の適用
             var bs = model.BodySettingList[Row];
             UpdateBodySetting(bs);
 
+            // 新規の場合、登録する
             if (createNew)
                 model.Plugin.PMX.Body.Add(body);
         }
 
+        /// <summary>
+        /// 本体への参照を更新する
+        /// </summary>
         public void UpdatePlugin()
         {
             bone = model.Plugin.PMX.Bone.FirstOrDefault(x => x.Name == name);
@@ -174,6 +186,9 @@ namespace Aroima.Plugins.Skirt
             h_joint = model.Plugin.PMX.Joint.FirstOrDefault(x => x.Name == "横" + name);
         }
 
+        /// <summary>
+        /// PMX本体への参照をクリアする（nullにする）
+        /// </summary>
         public void Clear()
         {
             vertex = null;
@@ -201,7 +216,7 @@ namespace Aroima.Plugins.Skirt
             // 相対ボーン方向の逆方向をY軸に
             Vector3 Y = Vector3.Zero;
             if (Row == Model.LayerCount - 1)
-                Y = column.BoneList[Row - 1].bone.Position - bone.Position;
+                Y = column.NodeList[Row - 1].bone.Position - bone.Position;
             else
                 Y = bone.Position - bone.ToBone.Position;
             Y.Normalize();
@@ -234,7 +249,7 @@ namespace Aroima.Plugins.Skirt
             if (Row == model.LayerCount - 1)
                 return;
 
-            var nextBone = column.BoneList[Row + 1];
+            var nextBone = column.NodeList[Row + 1];
             if (nextBone.body == null)
                 return;
             bool createNew = v_joint == null;
@@ -262,10 +277,10 @@ namespace Aroima.Plugins.Skirt
                 return;
             if (Body == null)
                 return;
-            var nextColumn = model.NextColumn(Column);
+            var nextColumn = column.NextColumn();
             if (nextColumn == null)
                 return;
-            var nextBone = nextColumn.BoneList[Row];
+            var nextBone = nextColumn.NodeList[Row];
             if (nextBone.body == null)
                 return;
 

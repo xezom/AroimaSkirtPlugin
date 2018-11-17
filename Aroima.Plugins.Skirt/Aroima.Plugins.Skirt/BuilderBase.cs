@@ -5,16 +5,34 @@ using System.Text;
 
 namespace Aroima.Plugins.Skirt
 {
+    /// <summary>
+    /// 設定生成クラスの基底クラス
+    /// </summary>
     public class BuilderBase
     {
-        public static float Liner(int layer, float initValue, float increase)
+        /// <summary>
+        /// 線形補間
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="initValue">初期値</param>
+        /// <param name="increment">増分</param>
+        /// <returns></returns>
+        public static float Liner(int n, float initValue, float increment)
         {
-            return initValue + increase * layer;
+            return initValue + increment * n;
         }
 
-        public static float Liner(int layer, int layerNum, float min, float max)
+        /// <summary>
+        /// 線形補間
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="nMax"></param>
+        /// <param name="min">最小値</param>
+        /// <param name="max">最大値</param>
+        /// <returns></returns>
+        public static float Liner(int n, int nMax, float min, float max)
         {
-            return min + (max - min) * layer / (layerNum - 1);
+            return min + (max - min) * n / (nMax - 1);
         }
     }
 }

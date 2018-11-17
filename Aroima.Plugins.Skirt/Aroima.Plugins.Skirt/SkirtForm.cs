@@ -5,10 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+
+using log4net;
+using log4net.Appender;
+using log4net.Config;
 
 using PEPlugin;
 using PEPlugin.Form;
@@ -23,9 +28,12 @@ namespace Aroima.Plugins.Skirt
 {
     public partial class SkirtForm : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         SkirtModel model = new SkirtModel();
         SkirtColumn column = null;
-        SkirtBone bone = null;
+        SkirtNode node = null;
         SkirtPlugin plugin = null;
         SkirtModelBuilder builder;
 
@@ -42,10 +50,17 @@ namespace Aroima.Plugins.Skirt
         public SkirtForm()
         {
             InitializeComponent();
+
+            var asm = Assembly.GetExecutingAssembly();
+            var dirName = System.IO.Path.GetDirectoryName(asm.Location);
+
+            XmlConfigurator.Configure(new System.IO.FileInfo(dirName + "\\log4net.config"));
+            LOG.Debug("assembly location: " + dirName);
         }
 
         private void SkirtForm_Load(object sender, EventArgs e)
         {
+            LOG.Info("loading form...");
             foreach (var bone in plugin.PMX.Bone)
                 cmbBoneList.Items.Add(bone.Name);
         }
@@ -59,120 +74,133 @@ namespace Aroima.Plugins.Skirt
             rootNode.Nodes.Clear();
             rootNode.Text =  model.ParentBoneName;
 
-            cmbBoneList.SelectedIndex = -1;
-            for (int i = 0; i < plugin.PMX.Bone.Count; i++)
-                if (plugin.PMX.Bone[i].Name == model.ParentBoneName)
-                {
-                    cmbBoneList.SelectedIndex = i;
-                    break;
-                }
+            // 親ノードの選択
+            var t = plugin.PMX.Bone.Select((b, i) => new { Bone = b, Index = i })
+                .FirstOrDefault(n => n.Bone.Name == model.ParentBoneName);
+            cmbBoneList.SelectedIndex = t != null ? t.Index : -1;
 
-
-            foreach (var column in model.ColumnList)
+            // ツリーノードの生成
+            model.ColumnList.ForEach(column =>
             {
                 var columnNode = new TreeNode(column.Name)
                 {
                     Tag = column
                 };
                 rootNode.Nodes.Add(columnNode);
-                foreach (var bone in column.BoneList)
+                column.NodeList.ForEach(node =>
                 {
-                    var boneNode = new TreeNode(bone.Name)
+                    var nodeNode = new TreeNode(node.Name)
                     {
-                        Tag = bone
+                        Tag = node
                     };
-                    columnNode.Nodes.Add(boneNode);
-                }
-            }
+                    columnNode.Nodes.Add(nodeNode);
+                });
+            });
             rootNode.Expand();
         }
 
 
         
-
+        /// <summary>
+        /// 一覧から選択
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mainTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            var prevNode = node;
             if (e.Node == null)
             {
-                bone = null;
-                return;
+                node = null;
             }
-            switch (e.Node.Level)
+            else
             {
-                case 0:
-                    tabControl1.SelectedTab = tabPageModel;
-                    break;
-                case 1:
-                    tabControl1.SelectedTab = tabPageColumn;
-                    column = (SkirtColumn)e.Node.Tag;
-                    ShowColumn(column);
-                    break;
-                case 2:
-                    tabControl1.SelectedTab = tabPageBone;
-                    bone = (SkirtBone)e.Node.Tag;
-                    column = bone.Column;
-                    ShowColumn(column);
-                    ShowBone(bone);
-                    break;
+                switch (e.Node.Level)
+                {
+                    case 0:
+                        tabControl1.SelectedTab = tabPageModel;
+                        break;
+                    case 1:
+                        tabControl1.SelectedTab = tabPageColumn;
+                        column = (SkirtColumn)e.Node.Tag;
+                        ShowColumn(column);
+                        break;
+                    case 2:
+                        tabControl1.SelectedTab = tabPageBone;
+                        node = (SkirtNode)e.Node.Tag;
+                        column = node.Column;
+                        ShowColumn(column);
+                        ShowNode(node);
+                        break;
+                }
             }
             setToolButtons();
 
-
-            if (plugin != null && bone != null &&  bone.Bone != null)
+            // ボーンを画面上で選択
+            if (plugin != null && node != null &&  node != prevNode && node.Bone != null)
             {
-                int id = -1;
-                for (int i = 0; i < plugin.PMX.Bone.Count; i++)
+                var s = plugin.PMX.Bone
+                    .Select((b, i) => new { Bone = b, Index = i })
+                    .FirstOrDefault(n => n.Bone == node.Bone);
+                if (s.Index != -1)
                 {
-                    if (plugin.PMX.Bone[i] == bone.Bone)
-                    {
-                        id = i;
-                        break;
-                    }
-                }
-                if (id != -1)
-                {
-                    plugin.FormConnector.SelectedBoneIndex = id;
+                    plugin.FormConnector.SelectedBoneIndex = s.Index;
                     plugin.Connect.View.PMDView.UpdateView();
                 }
             }
         }
 
+        /// <summary>
+        /// 列パネルの表示
+        /// </summary>
+        /// <param name="column"></param>
         private void ShowColumn(SkirtColumn column)
         {
+            
             textColumnName.Text = column.Name;
         }
-        private void ShowBone(SkirtBone bone)
+
+        /// <summary>
+        /// ボーンパネルの表示
+        /// </summary>
+        /// <param name="node"></param>
+        private void ShowNode(SkirtNode node)
         {
+            foreach (Control control in tabPageBone.Controls)
+            {
+                control.Enabled = node != null;
+            }
             
-            if (bone == null)
+            if (node == null)
                 return;
+
             // 名前
-            textBoneName.Text = bone.Name;
+            textBoneName.Text = node.Name;
 
             // 位置
-            textPosX.Text = bone.Position.X.ToString();
-            textPosY.Text = bone.Position.Y.ToString();
-            textPosZ.Text = bone.Position.Z.ToString();
+            textPosX.Text = node.Position.X.ToString();
+            textPosY.Text = node.Position.Y.ToString();
+            textPosZ.Text = node.Position.Z.ToString();
 
             // 法線
-            textNormalX.Text = bone.Normal.X.ToString();
-            textNormalY.Text = bone.Normal.Y.ToString();
-            textNormalZ.Text = bone.Normal.Z.ToString();
+            textNormalX.Text = node.Normal.X.ToString();
+            textNormalY.Text = node.Normal.Y.ToString();
+            textNormalZ.Text = node.Normal.Z.ToString();
 
 
 
 
 
-            if (bone.Bone != null && bone.Bone.Parent != null)
-                textParentName.Text = bone.Bone.Parent.Name;
+            if (node.Bone != null && node.Bone.Parent != null)
+                textParentName.Text = node.Bone.Parent.Name;
             else
                 textParentName.Text = "";
-            if (bone.Bone != null && bone.Bone.ToBone != null)
+            if (node.Bone != null && node.Bone.ToBone != null)
             {
-                textToBone.Text = bone.Bone.ToBone.Name;
-                textToBonePosX.Text = bone.Bone.ToBone.Position.X.ToString();
-                textToBonePosY.Text = bone.Bone.ToBone.Position.Y.ToString();
-                textToBonePosZ.Text = bone.Bone.ToBone.Position.Z.ToString();
+                textToBone.Text = node.Bone.ToBone.Name;
+                textToBonePosX.Text = node.Bone.ToBone.Position.X.ToString();
+                textToBonePosY.Text = node.Bone.ToBone.Position.Y.ToString();
+                textToBonePosZ.Text = node.Bone.ToBone.Position.Z.ToString();
             }
             else
             {
@@ -183,77 +211,60 @@ namespace Aroima.Plugins.Skirt
                 textToBonePosZ.Text = "";
             }
             
-                
-
-
-   
-           
-            if ( bone.Body != null )
+            if ( node.Body != null )
             {
-                textBody.Text = bone.Body.Name;
+                textBody.Text = node.Body.Name;
+                textAngleX.Text = node.Body.Rotation.X.ToString();
+                textAngleY.Text = node.Body.Rotation.Y.ToString();
+                textAngleZ.Text = node.Body.Rotation.Z.ToString();
             }
             else
             {
                 textBody.Text = "";
-            }
-            if (bone.RotaionMatrix != null)
-            {
-                textM11.Text = bone.RotaionMatrix.M11.ToString();
-                textM12.Text = bone.RotaionMatrix.M12.ToString();
-                textM13.Text = bone.RotaionMatrix.M13.ToString();
-                textM21.Text = bone.RotaionMatrix.M21.ToString();
-                textM22.Text = bone.RotaionMatrix.M22.ToString();
-                textM23.Text = bone.RotaionMatrix.M23.ToString();
-                textM31.Text = bone.RotaionMatrix.M31.ToString();
-                textM32.Text = bone.RotaionMatrix.M32.ToString();
-                textM33.Text = bone.RotaionMatrix.M33.ToString();
-            }
-            else
-            {
-                textM11.Text = "";
-                textM12.Text = "";
-                textM13.Text = "";
-                textM21.Text = "";
-                textM22.Text = "";
-                textM23.Text = "";
-                textM31.Text = "";
-                textM32.Text = "";
-                textM33.Text = "";
+                textAngleX.Text = "";
+                textAngleY.Text = "";
+                textAngleZ.Text = "";
             }
 
-            if (bone.V_Joint != null)
-                textVJoint.Text = bone.V_Joint.Name;
+            if (node.V_Joint != null)
+                textVJoint.Text = node.V_Joint.Name;
             else
                 textVJoint.Text = "";
 
-            if (bone.H_joint != null)
-                textHJoint.Text = bone.H_joint.Name;
+            if (node.H_joint != null)
+                textHJoint.Text = node.H_joint.Name;
             else
                 textHJoint.Text = "";
 
         }
 
+        /// <summary>
+        /// 頂点選択
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGetPosition_Click(object sender, EventArgs e)
         {
+            
+            if (node == null)
+            {
+                MessageBox.Show("ノードを選択してください");
+                return;
+            }
+            if (node.Row == 0 && model.ParentBone == null)
+            {
+                MessageBox.Show("親ノードを選択してください");
+                return;
+            }
             var idx = plugin.PmxView.GetSelectedVertexIndices();
             if (idx == null || idx.Length == 0)
             {
                 MessageBox.Show("頂点を選択してください");
                 return;
             }
-            if (bone == null)
-            {
-                MessageBox.Show("ボーンを選択してください");
-                return;
-            }
-            if (bone.Row == 0 && model.ParentBone == null)
-            {
-                MessageBox.Show("親ボーンを選択してください");
-                return;
-            }
-            List<IPXVertex> vertexList = new List<IPXVertex>();
-            foreach (var ind in idx)
-                vertexList.Add(plugin.PMX.Vertex[ind]);
+            // 選択頂点一覧の取得
+            var vertexList = idx.Select(i => plugin.PMX.Vertex[i]).ToList();
+
 
             using (var dlg = new VertexDialog()
             {
@@ -267,51 +278,41 @@ namespace Aroima.Plugins.Skirt
                 bool vertexOnly = dlg.VertexOnly;
 
                 var v = dlg.SelectedVertex;
-                if (bone.Bone == null)
+                if (node.Bone == null)
                 {
-                    bone.CreateBone(v);
+                    node.CreateBone(v);
 
-                    plugin.PMX.Bone.Add(bone.Bone);
+                    plugin.PMX.Bone.Add(node.Bone);
                 }
                 else
                 {
-                    bone.Vertex = v;
+                    node.Vertex = v;
                     if (!vertexOnly)
                     {
-                        bone.Bone.Position = v.Position;
-                        bone.Position = v.Position;
-                        if (bone.Body != null)
-                            bone.Body.Position = v.Position;
+                        node.Bone.Position = v.Position;
+                        node.Position = v.Position;
+                        if (node.Body != null)
+                            node.Body.Position = v.Position;
                     }
                 }
-                ShowBone(bone);
+                ShowNode(node);
+
+                // 頂点選択
+                var foundVertex = plugin.PMX.Vertex.Select((x, i) => new { Vertex = x, Index = i })
+                    .FirstOrDefault(p => p.Vertex == v);
+                if (foundVertex != null)
+                    plugin.FormConnector.SelectedVertexIndex = foundVertex.Index;
 
 
-                int id = -1;
-                for ( int i = 0; i < plugin.PMX.Vertex.Count; i++)
-                    if ( plugin.PMX.Vertex[i] == v)
-                    {
-                        id = i;
-                        break;
-                    }
-                if (id != -1)
-                {
-                    plugin.FormConnector.SelectedVertexIndex = id;
-                }
-                
+
                 plugin.UpdateView();
 
-
-                id = -1;
-                for (int i = 0; i < plugin.PMX.Bone.Count; i++)
-                    if (plugin.PMX.Bone[i] == bone)
-                    {
-                        id = i;
-                        break;
-                    }
-                if (id != -1)
+                // ボーン選択
+                var foundBone = plugin.PMX.Bone.Select((b, i) => new { Bone = b, Index = i })
+                    .FirstOrDefault(p => p.Bone == node.Bone);
+                if (foundBone != null)
                 {
-                    plugin.FormConnector.SelectedBoneIndex = id;
+                    plugin.FormConnector.SelectedBoneIndex = foundBone.Index;
                     //plugin.Connect.View.PMDView.UpdateView();
                     plugin.Connect.View.PMDView.UpdateView();
                 }
@@ -393,7 +394,7 @@ namespace Aroima.Plugins.Skirt
         #region メニュー
 
         /// <summary>
-        /// モデルの新規作成
+        /// スカートモデルの新規作成
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -402,6 +403,7 @@ namespace Aroima.Plugins.Skirt
             var boneNameList = new List<string>();
             foreach (var item in cmbBoneList.Items)
                 boneNameList.Add(item.ToString());
+            // ダイアログの表示
             using (var dlg = new NewModelDialog() {
                 StartPosition = FormStartPosition.CenterParent,
                 BoneNameList = boneNameList
@@ -409,7 +411,7 @@ namespace Aroima.Plugins.Skirt
             {
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
-
+                // スカートモデルの新規生成
                 model = builder.Build(dlg.ColumnNum, dlg.LayerNum);
                 model.ParentBoneName = dlg.ParentBoneName;
                 model.ParentBone = plugin.PMX.Bone.FirstOrDefault(x => x.Name == dlg.ParentBoneName);
@@ -419,35 +421,51 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
+        /// <summary>
+        /// モデルの読み込み
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void miImport_Click(object sender, EventArgs e)
         {
+            // スカートボーンをスキャン
+            // 列数と階層数を得る
             int imax = 0;
             int jmax = 0;
             var r = new Regex(@"スカート_(?<j>\d+)_(?<i>\d+)");
-            foreach (var b in plugin.PMX.Bone)
+            foreach ( var match in plugin.PMX.Bone.Select(b => r.Match(b.Name))
+                .Where(m => m.Success))
             {
-                var m = r.Match(b.Name);
-                if (m.Success)
-                {
-                    var j = int.Parse(m.Groups["j"].Value);
-                    var i = int.Parse(m.Groups["i"].Value);
-                    if (i + 1> imax)
-                        imax = i + 1;
-                    if (j + 1 > jmax)
-                        jmax = j + 1;
-                }
+                var j = int.Parse(match.Groups["j"].Value);
+                var i = int.Parse(match.Groups["i"].Value);
+                if (i + 1 > imax)
+                    imax = i + 1;
+                if (j + 1 > jmax)
+                    jmax = j + 1;
             }
+                
 
+            if (imax == 0 || jmax == 0)
+            {
+                MessageBox.Show("スカートボーンは見つかりませんでした");
+                return;
+            }
+            
+            
+            model = builder.Build(imax, jmax);
             var p = plugin.PMX.Bone.FirstOrDefault(b => b.Name == "スカート_0_0");
-            if (imax > 0 && jmax > 0 && p != null)
+            if (p != null)
             {
-                model = builder.Build(imax, jmax);
                 model.ParentBoneName = p.Name;
-                model.ParentBone = p; 
-                //plugin.FormConnector.SelectedBoneIndex =
-
-                ShowSkirtModel();
+                model.ParentBone = p;
             }
+            if (MessageBox.Show("パラメータファイルを読み込みますか?",
+                "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+            }
+
+            ShowSkirtModel();
+            
         }
 
         /// <summary>
@@ -459,8 +477,7 @@ namespace Aroima.Plugins.Skirt
         {
             using (var dlg = new SaveFileDialog()
             {
-                DefaultExt = "xml",
-                Filter = "XML(*.xml)|*.xml"
+                DefaultExt = "xml", Filter = "XML(*.xml)|*.xml"
             })
             {
                 if (dlg.ShowDialog() != DialogResult.OK)
@@ -485,6 +502,8 @@ namespace Aroima.Plugins.Skirt
             {
                 if (dlg.ShowDialog() != DialogResult.OK)
                     return;
+                LOG.Debug("loading file: " + dlg.FileName + " ...");
+
                 // 読み込み
                 model = builder.LoadFromFile(dlg.FileName);
                 // 表示
@@ -512,29 +531,31 @@ namespace Aroima.Plugins.Skirt
                         == DialogResult.No)
                     return;
 
-                if (dlg.RemoveJoint)
+                if (dlg.RemoveBone)
                 {
-                    plugin.RemoveAllSkirtJoint();
-
+                    LOG.Info("Removing all bones...");
+                    plugin.RemoveAllSkirtBone();
                     foreach (var col in model.ColumnList)
-                        foreach (var node in col.BoneList)
+                        foreach (var node in col.NodeList)
                             if (node.Bone != null)
                                 node.Bone = null;
                 }
                 if (dlg.RemoveBody)
                 {
+                    LOG.Info("Removing all bodys...");
                     plugin.RemoveAllSkirtBody();
                     foreach(var col in model.ColumnList)
-                        foreach (var node in col.BoneList)
+                        foreach (var node in col.NodeList)
                         if (node.Body != null)
                             node.Body = null;
 
                 }
-                if (dlg.RemoveBone)
+                if (dlg.RemoveJoint)
                 {
-                    plugin.RemoveAllSkirtBone();
+                    LOG.Info("Removing all joints...");
+                    plugin.RemoveAllSkirtJoint();
                     foreach (var col in model.ColumnList)
-                        foreach (var node in col.BoneList)
+                        foreach (var node in col.NodeList)
                         {
                             if (node.H_joint != null)
                                 node.H_joint = null;
@@ -546,6 +567,27 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
+        /// <summary>
+        /// 剛体再生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miCreateBodySettings_Click(object sender, EventArgs e)
+        {
+            model.ColumnList.ForEach(c => c.CreatedBody());
+            plugin.UpdateView();
+        }
+        /// <summary>
+        /// 縦Joint作成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void miCreateVJoint_Click(object sender, EventArgs e)
+        {
+            model.ColumnList.ForEach(col => col.CreateVJoint());
+            plugin.UpdateView();
+
+        }
         /// <summary>
         /// 横Joint作成
         /// </summary>
@@ -568,29 +610,29 @@ namespace Aroima.Plugins.Skirt
                     plugin.PMX.Joint.Remove(joint);
 
                     foreach (var col in model.ColumnList)
-                        foreach (var node in col.BoneList)
+                        foreach (var node in col.NodeList)
                             if (node.H_joint == joint)
                                 node.H_joint = null;
                 }
                 plugin.UpdateView();
             }
-            foreach (var col in model.ColumnList)
-                col.CreateHJoint();
+            bool closed = chkClosedLoop.Checked;
+            for (int i = 0; i < model.ColumnList.Count; i++)
+            {
+                if (i == model.ColumnList.Count - 1)
+                {
+                    if ( closed )
+                        model.ColumnList[i].CreateHJoint();
+                }
+                else
+                {
+                    model.ColumnList[i].CreateHJoint();
+                }
+            }
             plugin.UpdateView();
         }
 
-        /// <summary>
-        /// 縦Joint作成
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void miCreateVJoint_Click(object sender, EventArgs e)
-        {
-            foreach (var col in model.ColumnList)
-                col.CreateVJoint();
-            plugin.UpdateView();
 
-        }
 
 
         /// <summary>
@@ -616,7 +658,7 @@ namespace Aroima.Plugins.Skirt
                         {
                             var bs = model.BodySettingList[i];
 
-                            var bone = col.BoneList[i];
+                            var bone = col.NodeList[i];
                             bone.UpdateBodySetting(bs);
 
                             updated = true;
@@ -655,7 +697,7 @@ namespace Aroima.Plugins.Skirt
                         if (dlg.Vm.ModifedList[i])
                         {
                             var js = model.V_jointSettingList[i];
-                            var bone = col.BoneList[i];
+                            var bone = col.NodeList[i];
                             bone.UpdateVJointSetting(js);
                         }
                     }
@@ -680,7 +722,7 @@ namespace Aroima.Plugins.Skirt
                     for (int i = 0; i < model.LayerCount; i++)
                     {
                         var js = model.H_jointSettingList[i];
-                        var bone = col.BoneList[i];
+                        var bone = col.NodeList[i];
                         bone.UpdateVJointSetting(js);
                     }
                 }
@@ -692,7 +734,7 @@ namespace Aroima.Plugins.Skirt
 
         class Distance : IComparable<Distance>
         {
-            public SkirtBone Bone;
+            public SkirtNode Bone;
             public float Length;
 
             public int CompareTo(Distance other)
@@ -703,7 +745,11 @@ namespace Aroima.Plugins.Skirt
 
 
      
-
+        /// <summary>
+        /// ウエィトを塗る
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPaintWeight_Click(object sender, EventArgs e)
         {
 
@@ -719,7 +765,7 @@ namespace Aroima.Plugins.Skirt
 
                 foreach (var col in model.ColumnList)
                 {
-                    foreach (var b in col.BoneList)
+                    foreach (var b in col.NodeList)
                     {
                         list.Add(new Distance()
                         {
@@ -809,7 +855,7 @@ namespace Aroima.Plugins.Skirt
         {
             List<int> bones = new List<int>();
             foreach ( var col in model.ColumnList )
-                foreach ( var b in col.BoneList )
+                foreach ( var b in col.NodeList )
                     if ( b.Bone != null )
                     {
                         for (int i = 0; i < plugin.PMX.Bone.Count; i++)
@@ -888,23 +934,49 @@ namespace Aroima.Plugins.Skirt
 
         private void setToolButtons()
         {
+            var treeNode = mainTreeView.SelectedNode;
+            if (treeNode == null)
+                return;
 
+            switch (treeNode.Level)
+            {
+                case 2:
+                    if ( node.Row == model.LayerCount - 1 
+                        && node.Column.Pos == model.ColumnList.Count - 1 )
+                    {
+                        tbNext.Enabled = false;
+                    }
+                    else
+                    {
+                        tbNext.Enabled = true;
+                    }
+                    if (node.Row == 0 && node.Column.Pos == 0)
+                        tbPrev.Enabled = false;
+                    else
+                        tbPrev.Enabled = true;
+                    tbUp.Enabled = true;
+                    tbDown.Enabled = false;
+
+                    break;
+            }
         }
+
+
         private void tbPrev_Click(object sender, EventArgs e)
         {
-            var node = mainTreeView.SelectedNode;
-            if (node == null)
+            var treeNode = mainTreeView.SelectedNode;
+            if (treeNode == null)
                 return;
-            if (node.Level == 2)
+            if (treeNode.Level == 2)
             {
-                if ( node.PrevNode != null )
+                if ( treeNode.PrevNode != null )
                 {
-                    mainTreeView.SelectedNode = node.PrevNode;
+                    mainTreeView.SelectedNode = treeNode.PrevNode;
                 }
-                else if ( node.Parent.PrevNode != null && node.Parent.PrevNode.Nodes.Count > 0)
+                else if ( treeNode.Parent.PrevNode != null && treeNode.Parent.PrevNode.Nodes.Count > 0)
                 {
-                    mainTreeView.SelectedNode = node.Parent.PrevNode.Nodes[node.Parent.PrevNode.Nodes.Count - 1];
-                    node.Parent.Collapse();
+                    mainTreeView.SelectedNode = treeNode.Parent.PrevNode.Nodes[treeNode.Parent.PrevNode.Nodes.Count - 1];
+                    treeNode.Parent.Collapse();
                 }
             }
         }
@@ -989,7 +1061,7 @@ namespace Aroima.Plugins.Skirt
             temp.ForEach(b => plugin.PMX.Joint.Add(b));
         }
 
-        
+
     }
 
     

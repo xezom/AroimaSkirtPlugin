@@ -6,18 +6,24 @@ using System.Windows.Forms;
 
 namespace Aroima.Plugins.Skirt
 {
+    /// <summary>
+    /// 変更終了イベント引数
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ModelUpdatedEventArgs<T> : EventArgs where T : class
     {
         T src;
 
+        /// <summary>
+        /// 変更後データ
+        /// </summary>
         public T Src { get => src; }
+
         public ModelUpdatedEventArgs(T src)
         {
             this.src = src;
         }
     }
-    //public delegate void ModelUpdatedEventHandler<T> 
-    //    (object sender,ModelUpdatedEvent<T> e) where T : class;
 
 
     /// <summary>
@@ -26,6 +32,8 @@ namespace Aroima.Plugins.Skirt
     /// <typeparam name="T"></typeparam>
     public class ViewModel<T> where T : class, ICloneable,  new()
     {
+        #region メンバ変数
+
         bool modified = false;
         bool setup = true;
         T seleced = null;
@@ -34,20 +42,22 @@ namespace Aroima.Plugins.Skirt
         List<T> dataList = new List<T>();
         List<bool> modifedList = new List<bool>();
 
+        #endregion
+
         #region イベント
 
         /// <summary>
-        /// UIにてモデルデータの変更が発生した
+        /// モデルデータの変更が終了した
         /// </summary>
         public event EventHandler ModelModified;
 
         /// <summary>
-        /// UIにてデータ選択の変更が発生した
+        /// データ選択の変更が終了した
         /// </summary>
         public event EventHandler SelectionChanged;
 
         /// <summary>
-        /// UIにて選択の変更が発生した
+        /// 画面にて選択の変更が発生した
         /// </summary>
         public event EventHandler<ModelUpdatedEventArgs<T>> ModelUpdated;
 
@@ -89,13 +99,26 @@ namespace Aroima.Plugins.Skirt
             }
         }
 
+        /// <summary>
+        /// 選択中のインデックス
+        /// </summary>
         public int CurrentIndex { get => currentIndex; }
 
+        /// <summary>
+        /// 変更結果一覧
+        /// </summary>
         public List<bool> ModifedList { get => modifedList; set => modifedList = value; }
+
         public bool Setup { get => setup; set => setup = value; }
 
         #endregion
 
+        #region プライベートメソッド
+
+        /// <summary>
+        /// 変更発生時処理
+        /// </summary>
+        /// <param name="e"></param>
         private void OnModelModified(EventArgs e)
         {
             if (setup)
@@ -107,6 +130,10 @@ namespace Aroima.Plugins.Skirt
                 modifedList[currentIndex] = true;
         }
 
+        /// <summary>
+        /// 選択変更後時処理
+        /// </summary>
+        /// <param name="e"></param>
         private void OnSelectionChanged(EventArgs e)
         {
 
@@ -123,7 +150,38 @@ namespace Aroima.Plugins.Skirt
                 }
             }
         }
-        
+
+        /// <summary>
+        /// 画面変更の検証
+        /// </summary>
+        /// <returns>問題なければtrue、そうでなければfalse</returns>
+        private bool ValidateInput()
+        {
+            var temp = (T)seleced.Clone();
+            try
+            {
+                // 入力データの検証
+                foreach (var validator in validators)
+                    validator(temp);
+            }
+            catch (ValidationException ve)
+            {
+                MessageBox.Show(ve.Message, "入力不正",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // フォーカスをあてる
+                ve.TargetControl.Focus();
+                if (ve.TargetControl is TextBox)
+                    ((TextBox)ve.TargetControl).SelectAll();
+
+                return false;
+            }
+            // 変更終了イベント
+            if (ModelUpdated != null)
+                ModelUpdated(this, new ModelUpdatedEventArgs<T>(temp));
+            return true;
+        }
+
+        #endregion
 
         /// <summary>
         /// 画面検証処理の登録
@@ -146,6 +204,9 @@ namespace Aroima.Plugins.Skirt
             Modified = false;
         }
 
+        /// <summary>
+        /// 画面変更の取消
+        /// </summary>
         public void Cancel()
         {
             if (!modified)
@@ -154,6 +215,12 @@ namespace Aroima.Plugins.Skirt
             Modified = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newIndex"></param>
+        /// <param name="newobj"></param>
+        /// <returns></returns>
         public int SelectionChanging(int newIndex, T newobj)
         {
             if (currentIndex == newIndex)
@@ -177,36 +244,11 @@ namespace Aroima.Plugins.Skirt
             }
             return currentIndex;
         }
-
-
-        /// <summary>
-        /// 画面変更の検証
-        /// </summary>
-        /// <returns>問題なければtrue、そうでなければfalse</returns>
-        public bool ValidateInput()
-        {
-            var temp = (T)seleced.Clone();
-            //var temp = new T();
-            try
-            {
-                foreach (var validator in validators)
-                    validator(temp);
-            }
-            catch (ValidationException ve)
-            {
-                MessageBox.Show(ve.Message);
-                ve.TargetControl.Focus();
-                if (ve.TargetControl is TextBox)
-                    ((TextBox)ve.TargetControl).SelectAll();
-
-                return false;
-            }
-            if (ModelUpdated != null)
-                ModelUpdated(this, new ModelUpdatedEventArgs<T>(temp));
-            return true;
-        }
     }
 
+    /// <summary>
+    /// 入力検証例外
+    /// </summary>
     public class ValidationException : Exception
     {
         Control control_;
@@ -216,6 +258,9 @@ namespace Aroima.Plugins.Skirt
             this.control_ = control;
         }
 
+        /// <summary>
+        /// 発生元コントロール
+        /// </summary>
         public Control TargetControl { get => control_; set => control_ = value; }
     }
 }

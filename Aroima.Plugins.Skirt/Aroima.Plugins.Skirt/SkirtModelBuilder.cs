@@ -38,12 +38,13 @@ namespace Aroima.Plugins.Skirt
                 var col = new SkirtColumn()
                 {
                     Name = "列" + i.ToString(),
-                    Model = model
+                    Model = model,
+                    Pos =i
                 };
                 model.ColumnList.Add(col);
                 for (int j = 0; j < layerNum; j++)
                 {
-                    var bone = new SkirtBone()
+                    var bone = new SkirtNode()
                     {
                         Name = $"スカート_{j}_{i}",
                         Model = model,
@@ -52,7 +53,7 @@ namespace Aroima.Plugins.Skirt
                     };
 
 
-                    col.BoneList.Add(bone);
+                    col.NodeList.Add(bone);
                 }
             }
             AssociateWith(model);
@@ -65,9 +66,9 @@ namespace Aroima.Plugins.Skirt
         private static void UpdateSettings(SkirtModel model)
         {
             var col = model.ColumnList[0];
-            for (int i = 0; i < col.BoneList.Count; i++)
+            for (int i = 0; i < col.NodeList.Count; i++)
             {
-                var b = col.BoneList[i];
+                var b = col.NodeList[i];
                 if (b.Body != null)
                 {
                     var bs = model.BodySettingList[i];
@@ -116,6 +117,9 @@ namespace Aroima.Plugins.Skirt
             }
             // 関連付ける
             model.Plugin = plugin;
+
+            for (int i = 0; i < model.ColumnList.Count; i++)
+                model.ColumnList[i].Pos = i;
             AssociateWith(model);
             return model;
         }
@@ -126,7 +130,7 @@ namespace Aroima.Plugins.Skirt
             foreach (var col in model.ColumnList)
             {
                 col.Model = model;
-                foreach (var b in col.BoneList)
+                foreach (var b in col.NodeList)
                 {
                     b.Column = col;
                     b.Model = model;

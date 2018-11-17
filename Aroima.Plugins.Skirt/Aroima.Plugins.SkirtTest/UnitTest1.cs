@@ -38,11 +38,7 @@ namespace Aroima.Plugins.SkirtTest
             Console.WriteLine("y*z=" + Vector3.Dot(y, z).ToString());
 
 
-            Vector3 r = Operation.EulerAngleXYZ(x, y, z);
-
-            r *= 180f / (float)Math.PI;
-
-            Console.WriteLine("r=" + r.ToString());
+            Vector3 r;
 
             r = Geom.ToEuler_ZYX(x, y, z);
             r *= 180f / (float)Math.PI;
@@ -67,11 +63,9 @@ namespace Aroima.Plugins.SkirtTest
             var list = new List<BodySettings>();
             list.Add(new BodySettings());
             list.Add(new BodySettings());
-            using (var dlg = new BodySettingsDialog()
+            using (var dlg = new BodySettingsDialog())
             {
-                BodySettingsList = list
-            })
-            {
+                dlg.Vm.DataSource = list;
                 dlg.ShowDialog();
             }
         }

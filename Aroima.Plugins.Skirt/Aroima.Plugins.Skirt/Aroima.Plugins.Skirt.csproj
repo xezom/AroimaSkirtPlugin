@@ -88,7 +88,8 @@
     <Compile Include="RemoveDialog.Designer.cs">
       <DependentUpon>RemoveDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SkirtBone.cs" />
+    <Compile Include="SkirtNode.cs" />
+    <Compile Include="SkirtColumn.cs" />
     <Compile Include="SkirtForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +160,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="next2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

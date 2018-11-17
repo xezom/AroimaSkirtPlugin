@@ -15,6 +15,9 @@ namespace Aroima.Plugins.Skirt
     /// </summary>
     public class BodySettings : ICloneable
     {
+        /// <summary>
+        /// 非衝突グループ(PassGroup)の数
+        /// </summary>
         public const int GROUP_SIZE = 16;
 
         string name;
@@ -29,6 +32,7 @@ namespace Aroima.Plugins.Skirt
         int group = 9;
         bool[] passGroup = new bool[GROUP_SIZE];
 
+        #region プロパティ
 
         /// <summary>
         /// 剛体タイプ
@@ -39,6 +43,10 @@ namespace Aroima.Plugins.Skirt
         /// 形状
         /// </summary>
         public BodyBoxKind BoxKind { get => boxKind; set => boxKind = value; }
+
+        /// <summary>
+        /// 形状のサイズ
+        /// </summary>
         public V3 BoxSize { get => boxSize; set => boxSize = value; }
 
         /// <summary>
@@ -82,8 +90,15 @@ namespace Aroima.Plugins.Skirt
         /// </summary>
         public string Name { get => name; set => name = value; }
 
+        #endregion
+
+        /// <summary>
+        /// 割り当て
+        /// </summary>
+        /// <param name="src">割り当て元</param>
         public void Assign(BodySettings src)
         {
+       
             if ( src.name != null)
                 this.name = src.name;
             this.mode = src.mode;
@@ -93,6 +108,7 @@ namespace Aroima.Plugins.Skirt
             this.restriction = src.restriction;
             this.friction = src.friction;
             this.restriction = src.restriction;
+            //Array.Copy(src.passGroup, this.passGroup, GROUP_SIZE);
             for (int i = 0; i < GROUP_SIZE; i++)
                 this.passGroup[i] = src.passGroup[i];
         }

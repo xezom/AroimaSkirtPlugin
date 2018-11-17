@@ -54,8 +54,9 @@ namespace Aroima.Plugins.Skirt
                 checkBox16
             };
 
-
-
+            rbStatic.Tag = BodyMode.Static;
+            rbDynamic.Tag = BodyMode.Dynamic;
+            rbDynamicWithBone.Tag = BodyMode.DynamicWithBone;
 
             vm.SelectionChanged += Vm_SelectionChanged;
             vm.ModelUpdated += Vm_ModelUpdated;
@@ -91,36 +92,35 @@ namespace Aroima.Plugins.Skirt
         /// <param name="e"></param>
         private void BodySettingsDialog_Load(object sender, EventArgs e)
         {
-            
-                listBodySettings.Items.Clear();
-                if (vm.DataSource == null)
-                    return;
-
-                foreach (var s in vm.DataSource)
-                {
-                    listBodySettings.Items.Add(s);
-                }
-                listBodySettings.SelectedIndex = 0;
-            
+            // 一覧の表示
+            listBodySettings.Items.Clear();
+            if (vm.DataSource == null)
+                return;
+            foreach (var s in vm.DataSource)
+            {
+                listBodySettings.Items.Add(s);
+            }
+            listBodySettings.SelectedIndex = 0;   
         }
 
         /// <summary>
-        /// 一覧から選択
+        /// 一覧から選択時処理
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void listBodySettings_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selected = listBodySettings.SelectedIndex;
-            BodySettings obj = (BodySettings)listBodySettings.SelectedItem;
+            var selected = listBodySettings.SelectedIndex;
+            var obj = (BodySettings)listBodySettings.SelectedItem;
 
-            int r = vm.SelectionChanging(selected, obj);
-            if (r != selected)
-                listBodySettings.SelectedIndex = r;
+            int index = vm.SelectionChanging(selected, obj);
+            if (index != selected)
+                // 戻す
+                listBodySettings.SelectedIndex = index;
         }
 
         /// <summary>
-        /// 選択されたのを表示
+        /// 選択終了、選択されたのを表示
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -147,7 +147,8 @@ namespace Aroima.Plugins.Skirt
                     case BodyBoxKind.Sphere:
                         rbSphere.Checked = true;
                         textSize1.Text = settings.BoxSize.X.ToString();
-
+                        textSize2.Text = "";
+                        textSize3.Text = "";
                         break;
                     case BodyBoxKind.Box:
                         rbBox.Checked = true;
@@ -159,7 +160,7 @@ namespace Aroima.Plugins.Skirt
                         rbCapsule.Checked = true;
                         textSize1.Text = settings.BoxSize.X.ToString();
                         textSize2.Text = settings.BoxSize.Y.ToString();
-
+                        textSize3.Text = "";
                         break;
                 }
                 textMass.Text = settings.Mass.ToString();
@@ -198,21 +199,29 @@ namespace Aroima.Plugins.Skirt
 
         #region 入力検証
 
+        
+
         /// <summary>
-        /// 
+        /// 剛体タイプ
         /// </summary>
         /// <param name="temp"></param>
         private void validateMode(BodySettings temp)
         {
+            var b = groupBoxBoxMode.Controls.OfType<RadioButton>()
+                .FirstOrDefault(rb => rb.Checked && rb.Tag != null);
+            if (b != null)
+                temp.Mode = (BodyMode)b.Tag;
+            /*
             if (rbStatic.Checked)
                 temp.Mode = BodyMode.Static;
             else if (rbDynamic.Checked)
                 temp.Mode = BodyMode.Dynamic;
             else
                 temp.Mode = BodyMode.DynamicWithBone;
+                */
         }
         /// <summary>
-        /// 
+        /// 形状
         /// </summary>
         /// <param name="temp"></param>
         private void validateBoxKind(BodySettings temp)

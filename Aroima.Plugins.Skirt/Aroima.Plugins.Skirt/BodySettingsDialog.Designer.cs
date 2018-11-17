@@ -31,13 +31,14 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tbCommit = new System.Windows.Forms.ToolStripButton();
             this.tbCancel = new System.Windows.Forms.ToolStripButton();
+            this.tbClose = new System.Windows.Forms.ToolStripButton();
             this.textSize1 = new System.Windows.Forms.TextBox();
             this.labelSize1 = new System.Windows.Forms.Label();
             this.rbSphere = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbCapsule = new System.Windows.Forms.RadioButton();
             this.rbBox = new System.Windows.Forms.RadioButton();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBoxBoxMode = new System.Windows.Forms.GroupBox();
             this.rbDynamicWithBone = new System.Windows.Forms.RadioButton();
             this.rbDynamic = new System.Windows.Forms.RadioButton();
             this.rbStatic = new System.Windows.Forms.RadioButton();
@@ -79,10 +80,9 @@
             this.labelSize3 = new System.Windows.Forms.Label();
             this.textSize2 = new System.Windows.Forms.TextBox();
             this.labelSize2 = new System.Windows.Forms.Label();
-            this.tbClose = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxBoxMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -126,6 +126,17 @@
             this.tbCancel.Size = new System.Drawing.Size(36, 36);
             this.tbCancel.Text = "取り消し";
             this.tbCancel.Click += new System.EventHandler(this.tbCancel_Click);
+            // 
+            // tbClose
+            // 
+            this.tbClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tbClose.Image = global::Aroima.Plugins.Skirt.Properties.Resources.Close;
+            this.tbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tbClose.Name = "tbClose";
+            this.tbClose.Size = new System.Drawing.Size(36, 36);
+            this.tbClose.Text = "閉じる";
+            this.tbClose.ToolTipText = "閉じる";
+            this.tbClose.Click += new System.EventHandler(this.tbClose_Click);
             // 
             // textSize1
             // 
@@ -194,27 +205,27 @@
             this.rbBox.UseVisualStyleBackColor = true;
             this.rbBox.CheckedChanged += new System.EventHandler(this.rbBox_CheckedChanged);
             // 
-            // groupBox2
+            // groupBoxBoxMode
             // 
-            this.groupBox2.Controls.Add(this.rbDynamicWithBone);
-            this.groupBox2.Controls.Add(this.rbDynamic);
-            this.groupBox2.Controls.Add(this.rbStatic);
-            this.groupBox2.Location = new System.Drawing.Point(12, 15);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(440, 46);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "剛体タイプ";
+            this.groupBoxBoxMode.Controls.Add(this.rbDynamicWithBone);
+            this.groupBoxBoxMode.Controls.Add(this.rbDynamic);
+            this.groupBoxBoxMode.Controls.Add(this.rbStatic);
+            this.groupBoxBoxMode.Location = new System.Drawing.Point(12, 15);
+            this.groupBoxBoxMode.Name = "groupBoxBoxMode";
+            this.groupBoxBoxMode.Size = new System.Drawing.Size(440, 46);
+            this.groupBoxBoxMode.TabIndex = 4;
+            this.groupBoxBoxMode.TabStop = false;
+            this.groupBoxBoxMode.Text = "剛体タイプ";
             // 
             // rbDynamicWithBone
             // 
             this.rbDynamicWithBone.AutoSize = true;
             this.rbDynamicWithBone.Location = new System.Drawing.Point(165, 18);
             this.rbDynamicWithBone.Name = "rbDynamicWithBone";
-            this.rbDynamicWithBone.Size = new System.Drawing.Size(88, 16);
+            this.rbDynamicWithBone.Size = new System.Drawing.Size(138, 16);
             this.rbDynamicWithBone.TabIndex = 2;
             this.rbDynamicWithBone.TabStop = true;
-            this.rbDynamicWithBone.Text = "radioButton1";
+            this.rbDynamicWithBone.Text = "物理+ボーン位置合わせ";
             this.rbDynamicWithBone.UseVisualStyleBackColor = true;
             this.rbDynamicWithBone.CheckedChanged += new System.EventHandler(this.rbStatic_CheckedChanged);
             // 
@@ -262,7 +273,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.groupBox4);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
+            this.splitContainer1.Panel2.Controls.Add(this.groupBoxBoxMode);
             this.splitContainer1.Size = new System.Drawing.Size(649, 409);
             this.splitContainer1.SplitterDistance = 154;
             this.splitContainer1.TabIndex = 2;
@@ -676,7 +687,7 @@
             this.groupBox3.Controls.Add(this.labelSize1);
             this.groupBox3.Location = new System.Drawing.Point(12, 119);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(403, 46);
+            this.groupBox3.Size = new System.Drawing.Size(440, 46);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "サイズ";
@@ -719,17 +730,6 @@
             this.labelSize2.Text = "label1";
             this.labelSize2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // tbClose
-            // 
-            this.tbClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tbClose.Image = global::Aroima.Plugins.Skirt.Properties.Resources.Close;
-            this.tbClose.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tbClose.Name = "tbClose";
-            this.tbClose.Size = new System.Drawing.Size(36, 36);
-            this.tbClose.Text = "閉じる";
-            this.tbClose.ToolTipText = "閉じる";
-            this.tbClose.Click += new System.EventHandler(this.tbClose_Click);
-            // 
             // BodySettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -747,8 +747,8 @@
             this.toolStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBoxBoxMode.ResumeLayout(false);
+            this.groupBoxBoxMode.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -768,7 +768,7 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBoxBoxMode;
         private System.Windows.Forms.RadioButton rbStatic;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbCapsule;

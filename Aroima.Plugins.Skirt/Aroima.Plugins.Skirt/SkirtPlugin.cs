@@ -92,12 +92,22 @@ namespace Aroima.Plugins.Skirt
 
         public void RemoveAllSkirtJoint()
         {
-            var jointList = pmx.Joint.Where(j => j.Name.StartsWith("スカート")).ToList();
-            foreach ( var joint in jointList)
-            {
-                pmx.Joint.Remove(joint);
-            }
+            RemoveAllVJoints();
+            RemoveAllHJoints();
         }
+
+        private void RemoveAllHJoints()
+        {
+            var jointList = pmx.Joint.Where(j => j.Name.StartsWith("横スカート")).ToList();
+            jointList.ForEach(joint => pmx.Joint.Remove(joint));
+        }
+
+        private void RemoveAllVJoints()
+        {
+            var jointList = pmx.Joint.Where(j => j.Name.StartsWith("スカート")).ToList();
+            jointList.ForEach( joint => pmx.Joint.Remove(joint));
+        }
+
         public void RemoveAllSkirtBody()
         {
             var bodyList = pmx.Body.Where(j => j.Name.StartsWith("スカート_")).ToList();
